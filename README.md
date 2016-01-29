@@ -53,12 +53,14 @@ $ go get github.com/cyanly/gotrade
 Pre-Requisites:
   - Go 1.3 or higher
   - ``` go get github.com/erikstmartin/go-testdb ```
-  - An OSX or Linux machine (NATS.io having trouble in-line mocking messaging broker server under Windows).
 
 Run test cases in services:
 ```
-$ cd $GOPATH/src/github.com/cyanly/gotrade/services
-$ go test -v ./...
+$ cd $GOPATH/src/github.com/cyanly/gotrade/services/orderrouter
+$ go test -v 
+
+$ cd $GOPATH/src/github.com/cyanly/gotrade/services/marketconnectors/simulator
+$ go test -v 
 ```
 
 <p align="center">
