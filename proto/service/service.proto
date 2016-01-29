@@ -1,0 +1,41 @@
+syntax = "proto2";
+
+package proto.service;
+
+// CODE GEN FLAGS ===================================
+
+option go_package = "service";
+
+import "github.com/gogo/protobuf/gogoproto/gogo.proto";
+option (gogoproto.gostring_all) = true;
+option (gogoproto.equal_all) = true;
+option (gogoproto.verbose_equal_all) = true;
+option (gogoproto.goproto_stringer_all) = false;
+option (gogoproto.stringer_all) =  true;
+option (gogoproto.marshaler_all) = true;
+option (gogoproto.unmarshaler_all) = true;
+option (gogoproto.sizer_all) = true;
+option (gogoproto.populate_all) = true;
+option (gogoproto.testgen_all) = true;
+option (gogoproto.benchgen_all) = true;
+option (gogoproto.goproto_enum_prefix_all) = false;
+
+// ENTITIES ==========================================
+
+message Heartbeat {
+    enum Status {
+        STOPPED = 0;
+        STARTING = 1;
+        RUNNING = 2;
+        ERROR = 3;
+        STOPPING = 4;
+    }
+
+    required string name =              1;
+    optional string id =                2;
+    optional string machine =           3;
+    optional Status status =            4 [(gogoproto.nullable) = false];
+    optional string current_datetime =  5;
+    optional string creation_datetime = 6;
+    optional string description =       7;
+}

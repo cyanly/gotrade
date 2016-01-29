@@ -1,0 +1,111 @@
+syntax = "proto2";
+
+package proto.pricing;
+
+// CODE GEN FLAGS ===================================
+
+option go_package = "pricing";
+
+import "github.com/gogo/protobuf/gogoproto/gogo.proto";
+option (gogoproto.gostring_all) = true;
+option (gogoproto.equal_all) = true;
+option (gogoproto.verbose_equal_all) = true;
+option (gogoproto.goproto_stringer_all) = false;
+option (gogoproto.stringer_all) =  true;
+option (gogoproto.marshaler_all) = true;
+option (gogoproto.unmarshaler_all) = true;
+option (gogoproto.sizer_all) = true;
+option (gogoproto.populate_all) = true;
+option (gogoproto.testgen_all) = true;
+option (gogoproto.benchgen_all) = true;
+//option (gogoproto.goproto_enum_prefix_all) = false;
+
+// ENTITIES ==========================================
+
+message Quote {
+    //NOTE: Quote field name matching BloombergAPI
+
+    // Reference data
+    optional string isin				=	1;
+    optional string sedol				=	2;
+    optional string description			=	10;
+    optional string crncy				=	11;
+    optional double px_trade_lot_size	=	12;
+    optional double round_lot			=	13;
+    optional string exch_code			=	14;
+    optional string prim_exch			=	15;
+    optional string expiry 				=	16;
+    optional string multiplier			=	17;
+    optional double tick_size			=   18;
+    optional int32 	open_interest		=	19;
+    optional string first_notice_date	=	20;
+    optional string symbol				=	21;
+    optional string symbol_root			=	22;
+    optional double	margin				=	23;
+    optional double	price_scale			=	24;
+    optional string	country				=	25;
+
+    // level 1 market data
+    optional double last_price		=	100;
+    optional int32  size_last_trade	=	101;
+    optional double bid				=	102;
+    optional int32  bid_size		=	103;
+    optional double ask				=	104;
+    optional int32  ask_size		=	105;
+    optional double spread_ba		=	106;
+    optional double high			=	107;
+    optional double low				=	108;
+    optional double open			=	109;
+    optional double close			=	110;
+    optional int64 volume			=	111;
+    optional string bid_datetime	=	112;
+    optional string ask_datetime	=	113;
+    optional string last_datetime	=	114;
+
+    // level 2 market data
+    optional double bid1			=	201;
+    optional int32  bid1_size		=	202;
+    optional double bid2			=	203;
+    optional int32  bid2_size		=	204;
+    optional double bid3			=	205;
+    optional int32  bid3_size		=	206;
+    optional double bid4			=	207;
+    optional int32  bid4_size		=	208;
+    optional double bid5			=	209;
+    optional int32  bid5_size		=	210;
+    optional double ask1			=	211;
+    optional int32  ask1_size		=	212;
+    optional double ask2			=	213;
+    optional int32  ask2_size		=	214;
+    optional double ask3			=	215;
+    optional int32  ask3_size		=	216;
+    optional double ask4			=	217;
+    optional int32  ask4_size		=	218;
+    optional double ask5			=	219;
+    optional int32  ask5_size		=	220;
+}
+
+
+// MESSAGES =====================================
+
+message QuoteInitialRequest {
+    required string symbol				= 1;
+
+    // options
+    optional string exchange			= 5;
+    optional bool include_option_chain	= 6;
+    // entitlements
+    optional string           source	= 50;
+    optional string           user		= 51;
+    optional int32			  user_id	= 52;
+    optional string           machine	= 53;
+}
+message QuoteInitialResponse {
+    optional int32  error_code    = 1;
+    optional string error_message = 2;
+    optional Quote  quote		  = 8;
+}
+
+service QuoteService {
+    rpc QuoteInitial (QuoteInitialRequest) returns (QuoteInitialResponse);
+}
