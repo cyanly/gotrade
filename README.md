@@ -50,6 +50,11 @@ $ go get github.com/cyanly/gotrade
 ## Examples
 **OrderRouter** and **MarketConnector** test cases will mock a testdb and messaging bus for end-to-end, message to message test. 
 
+Pre-Requisites:
+  - Go 1.3 or higher
+  - ``` go get github.com/erikstmartin/go-testdb ```
+  - An OSX or Linux machine (NATS.io having trouble in-line mocking messaging broker server under Windows).
+
 Run test cases in services:
 ```
 $ cd $GOPATH/src/github.com/cyanly/gotrade/services
