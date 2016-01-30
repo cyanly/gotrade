@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="UTF-8">
+    <title>goTrade by cyanly</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="stylesheets/normalize.css" media="screen">
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="stylesheets/github-light.css" media="screen">
+  </head>
+  <body>
+    <section class="page-header">
+      <h1 class="project-name">goTrade</h1>
+      <h2 class="project-tagline">a FIX protocol electronic trading and order management system written in Golang, structured for typical multi-asset instituional use</h2>
+      <a href="https://github.com/cyanly/gotrade" class="btn">View on GitHub</a>
+      <a href="https://github.com/cyanly/gotrade/zipball/master" class="btn">Download .zip</a>
+      <a href="https://github.com/cyanly/gotrade/tarball/master" class="btn">Download .tar.gz</a>
+    </section>
+
+    <section class="main-content">
+      <h1>
+<a id="gotrade" class="anchor" href="#gotrade" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>GoTrade</h1>
+
+<blockquote>
+<p>GoTrade is a <strong>FIX</strong> protocol electronic trading and order management system written in Golang, structured for typical multi-asset instituional use</p>
+</blockquote>
+
+<p align="center">
+  <img src="https://cdn.rawgit.com/cyanly/gotrade/gh-pages/orderrouting.svg" alt="">
+</p>
+
+<p><a href="https://godoc.org/github.com/cyanly/gotrade"><img src="https://godoc.org/github.com/cyanly/gotrade?status.png" alt="GoDoc"></a> <a href="https://travis-ci.org/quickfixgo/quickfix"><img src="https://travis-ci.org/quickfixgo/quickfix.svg?branch=master" alt="Build Status"></a></p>
+
+<h2>
+<a id="status" class="anchor" href="#status" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Status</h2>
+
+<p>This project is currently more of a proof of concept. It is no where near in completeness of a commerical product. This public repo serves as mostly for the purpose of experimenting and share of ideas.</p>
+
+<h2>
+<a id="getting-started" class="anchor" href="#getting-started" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Getting Started</h2>
+
+<pre><code>$ go get github.com/cyanly/gotrade
+</code></pre>
+
+<h2>
+<a id="features" class="anchor" href="#features" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Features</h2>
+
+<ul>
+<li>[x] Trade in real-time via FIX through the broker-neutral API.</li>
+<li>[x] Normalized FIX order flow behavior across multiple FIX versions and asset classes.</li>
+<li>[x] Pure Go.
+
+<ul>
+<li>[x] Platform neutral: write once, build for any operating systems and arch (Linux/Windows/OSX etc).</li>
+<li>[x] Native code performance.</li>
+<li>[x] Ease of deployment.</li>
+<li>[x] Lack of OOP verbosity, works for small and big teams.</li>
+</ul>
+</li>
+<li>[x] Protobuf.
+
+<ul>
+<li>[x] Binary encoding format, efficient yet extensible.</li>
+<li>[x] Easy Language Interoperability (C++, Python, Java, C#, Javascript, etc).</li>
+<li>[x] Protocol backward compatibility.</li>
+</ul>
+</li>
+</ul>
+
+<h2>
+<a id="design" class="anchor" href="#design" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Design</h2>
+
+<pre><code>└─ gotrade/
+   ├─ core/                 -&gt; The low-level API that gives consumers all the knobs they need
+   │  ├─ order/
+   │  │  └─ execution/
+   │  ├─ service/
+   └─ proto/...             -&gt; Protobuf messaging protocol of various entities
+   └─ services/             -&gt; Core services managing multi-asset order flow
+   │  ├─ orderrouter/       -&gt; Centralized management facility for multi-asset global order flow
+   │  ├─ marketconnectors/  -&gt; Managing FIX connection to each trading venue, also performs pre-trade risk checks
+   │
+   └─cmd/...                -&gt; Command-line executables, binary build targets
+
+</code></pre>
+
+<h2>
+<a id="examples" class="anchor" href="#examples" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Examples</h2>
+
+<p><strong>OrderRouter</strong> and <strong>MarketConnector</strong> test cases will mock a testdb and messaging bus for end-to-end, message to message test. </p>
+
+<p>Pre-Requisites:</p>
+
+<ul>
+<li>Go 1.3 or higher</li>
+<li><code>go get github.com/erikstmartin/go-testdb</code></li>
+</ul>
+
+<p>Run test cases in services:</p>
+
+<pre><code>$ cd $GOPATH/src/github.com/cyanly/gotrade/services/orderrouter
+$ go test -v 
+
+$ cd $GOPATH/src/github.com/cyanly/gotrade/services/marketconnectors/simulator
+$ go test -v 
+</code></pre>
+
+<p align="center">
+  <img src="https://cdn.rawgit.com/cyanly/gotrade/gh-pages/servicestest.png" alt="">
+</p>
+
+<h2>
+<a id="benchmark" class="anchor" href="#benchmark" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Benchmark</h2>
+
+<h2>
+<a id="limitations" class="anchor" href="#limitations" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Limitations</h2>
+
+<h2>
+<a id="thanks" class="anchor" href="#thanks" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Thanks</h2>
+
+<p><strong>GoTrade</strong> © 2016+, Chao Yan. Released under the [GNU] General Public License.<br>
+Authored and maintained by Chao Yan with help from contributors (<a href="http://github.com/cyanly/gotrade/contributors">list</a>).</p>
+
+<blockquote>
+<p><a href="http://cyan.ly">cyan.ly</a>  · 
+GitHub <a href="https://github.com/cyanly">@cyanly</a>  · </p>
+</blockquote>
+
+      <footer class="site-footer">
+        <span class="site-footer-owner"><a href="https://github.com/cyanly/gotrade">goTrade</a> is maintained by <a href="https://github.com/cyanly">cyanly</a>.</span>
+
+        <span class="site-footer-credits">This page was generated by <a href="https://pages.github.com">GitHub Pages</a> using the <a href="https://github.com/jasonlong/cayman-theme">Cayman theme</a> by <a href="https://twitter.com/jasonlong">Jason Long</a>.</span>
+      </footer>
+
+    </section>
+
+  
+  </body>
+</html>
