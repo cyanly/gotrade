@@ -75,7 +75,7 @@ Machine: `Intel Core i5-5930K CPU @ 2.80GHz` + `Ubuntu 14.04 Desktop x86_64`
 
   - `test/benchmark/client2fix_test.go`
   - **CL &#8658; OR**:   <br>*Client send order protobuf to OrderRouter(OR)*
-  - **OR &#8658; MC**:   <br>*OrderRouter process order and dispatch persisted order entity or target MarketConnector*
+  - **OR &#8658; MC**:   <br>*OrderRouter process order and dispatch persisted order entity to target MarketConnector*
   - **MC &#8658; FIX**:  <br>*MarketConnector translate into NewOrderSingle FIX message based on the session with its counterparty*
   - **FIX &#8658; MC**:  <br>*MarketConnector received FIX message on its order, here Simulator sending a fully FILL execution*
   - **EXE &#8658; CL**:  <br>*MarketConnector publish processed and persisted Execution onto messaging bus, here our Client will listen to*
