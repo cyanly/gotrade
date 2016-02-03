@@ -71,7 +71,7 @@ $ go test -v
 
 ## Benchmark
 
-Machine: `Intel Core i5-5930K CPU @ 2.80GHz` + `Ubuntu 14.04 Desktop x86_64`
+Machine: `Intel Core i5 CPU @ 2.80GHz` + `Ubuntu 14.04 Desktop x86_64`
 
   - `test/benchmark/client2fix_test.go`
   - **CL &#8658; OR**:   <br>*Client send order protobuf to OrderRouter(OR)*
