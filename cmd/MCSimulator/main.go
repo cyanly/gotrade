@@ -12,7 +12,7 @@ func main() {
 
 	// Initialise Service Infrastructure
 	sc := service.NewConfig()
-	sc.ServiceName = "OrderRouter"
+	sc.ServiceName = "Simulator"
 	svc := service.NewService(sc)
 
 	// Initialise Database Connection

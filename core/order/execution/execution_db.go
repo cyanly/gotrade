@@ -1,16 +1,16 @@
 package execution
 
 import (
+	logger "github.com/apex/log"
 	order "github.com/cyanly/gotrade/core/order"
 	proto "github.com/cyanly/gotrade/proto/order"
 
-	"log"
 	"strconv"
 	"strings"
 )
 
 func InsertExecution(exe *proto.Execution) error {
-	log.Println("sql: INSERT INTO execution ...")
+	logger.Info("sql: INSERT INTO execution ...")
 	var lastId int
 
 	if err := order.DB.QueryRow(`
@@ -78,7 +78,7 @@ func InsertExecution(exe *proto.Execution) error {
 		return err
 	}
 
-	log.Printf("sql ret: ID = %d\n", lastId)
+	logger.Infof("sql ret: ID = %d", lastId)
 
 	lastId32 := int32(lastId)
 	exe.ExecutionId = &lastId32
@@ -97,7 +97,7 @@ func GetOrderIdentsByClientOrdId(clOrdId string) (ordKey int32, ordId int32) {
 	}
 	ordVer, _ := strconv.Atoi(keyVer[1])
 
-	log.Println("sql: SELECT order_id FROM orders")
+	logger.Info("sql: SELECT order_id FROM orders")
 
 	if err := order.DB.QueryRow(`
 	SELECT order_id FROM orders
@@ -106,7 +106,7 @@ func GetOrderIdentsByClientOrdId(clOrdId string) (ordKey int32, ordId int32) {
 		return
 	}
 
-	log.Printf("sql ret: ID = %d\n", ordId)
+	logger.Infof("sql ret: ID = %d", ordId)
 
 	return
 }

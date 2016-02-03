@@ -8,7 +8,7 @@ import (
 	fix44er "github.com/quickfixgo/quickfix/fix44/executionreport"
 	fix44nos "github.com/quickfixgo/quickfix/fix44/newordersingle"
 
-	"log"
+	logger "github.com/apex/log"
 	"strconv"
 )
 
@@ -56,7 +56,7 @@ func (e *Executor) FromApp(msg quickfix.Message, sessionID quickfix.SessionID) (
 }
 
 func (e *Executor) OnFIX44NewOrderSingle(msg fix44nos.Message, sessionID quickfix.SessionID) (err quickfix.MessageRejectError) {
-	log.Println("FIX->SIM: FIX44NewOrderSingle \n", msg.String())
+	logger.Infof("FIX->SIM: FIX44NewOrderSingle \n%v", msg.String())
 	symbol, err := msg.Symbol()
 	if err != nil {
 		return

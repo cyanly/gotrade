@@ -2,6 +2,7 @@
 package simulator
 
 import (
+	logger "github.com/apex/log"
 	orderCore "github.com/cyanly/gotrade/core/order"
 	util "github.com/cyanly/gotrade/services/marketconnectors"
 	//execCore "github.com/cyanly/gotrade/core/order/execution"
@@ -112,7 +113,7 @@ func (mc *MCSimulator) Start() {
 			//     Mandatory for CME exchanges. It contains a 2-character country. For the US and Canada, the state/province is included.
 			fixmsg.Body.SetField(142, quickfix.NewFIXString("UK"))
 
-			log.Println("MC->FIX FIX44NewOrderSingle")
+			logger.Info("MC->FIX FIX44NewOrderSingle")
 			if err := quickfix.SendToTarget(fixmsg.Message, mc.session); err != nil {
 				log.Panic(err)
 			}

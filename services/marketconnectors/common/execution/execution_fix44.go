@@ -1,19 +1,19 @@
 package execution
 
 import (
+	logger "github.com/apex/log"
 	proto "github.com/cyanly/gotrade/proto/order"
 	util "github.com/cyanly/gotrade/services/marketconnectors"
 
 	"github.com/quickfixgo/quickfix"
 	fix44er "github.com/quickfixgo/quickfix/fix44/executionreport"
-	"log"
 	"time"
 )
 
 // Common route handler for FIX4.4 Execution Report message
 //   this function can be sub-classed to extend with special fields if a market connector requires
 func OnFIX44ExecutionReport(msg fix44er.Message, sessionID quickfix.SessionID) (err quickfix.MessageRejectError) {
-	log.Println("FIX->MC EXEC: \n", msg.Message.String())
+	logger.Infof("FIX->MC EXEC: \n%v", msg.Message.String())
 
 	// Execution Report common fields
 	er, err := NewExecutionFromFIX44Message(msg)

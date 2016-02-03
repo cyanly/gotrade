@@ -1,10 +1,10 @@
 package order
 
 import (
+	logger "github.com/apex/log"
 	proto "github.com/cyanly/gotrade/proto/order"
 
 	"database/sql"
-	"log"
 )
 
 var (
@@ -12,7 +12,7 @@ var (
 )
 
 func GetOrderByOrderId(id int32) (*proto.Order, error) {
-	log.Printf("sql: SELECT orders WHERE order_id = %v\n", id)
+	logger.Infof("sql: SELECT orders WHERE order_id = %v", id)
 	rows, err := DB.Query(`
 	SELECT
 		order_id,
@@ -180,7 +180,7 @@ func GetOrderByOrderId(id int32) (*proto.Order, error) {
 }
 
 func GetOrderByOrderKey(key int32) (*proto.Order, error) {
-	log.Printf("sql: SELECT orders WHERE order_key = %v\n", key)
+	logger.Infof("sql: SELECT orders WHERE order_key = %v", key)
 	rows, err := DB.Query(`
 	SELECT
 		order_id,
@@ -348,20 +348,20 @@ func GetOrderByOrderKey(key int32) (*proto.Order, error) {
 }
 
 func GetNextOrderKey() (int32, error) {
-	log.Println("sql: SELECT nextval('orderkeysequence')")
+	logger.Info("sql: SELECT nextval('orderkeysequence')")
 
 	var nextOrderKey int32
 	if err := DB.QueryRow(`SELECT nextval('orderkeysequence')::INT`).Scan(&nextOrderKey); err != nil {
 		return 0, err
 	}
 
-	log.Printf("sql ret: ID = %d\n", nextOrderKey)
+	logger.Infof("sql ret: ID = %d", nextOrderKey)
 
 	return nextOrderKey, nil
 }
 
 func InsertOrder(order *proto.Order) error {
-	log.Println("sql: INSERT INTO orders ...")
+	logger.Info("sql: INSERT INTO orders ...")
 	var lastId int
 
 	if err := DB.QueryRow(`
@@ -462,7 +462,7 @@ func InsertOrder(order *proto.Order) error {
 		return err
 	}
 
-	log.Printf("sql ret: ID = %d\n", lastId)
+	logger.Infof("sql ret: ID = %d", lastId)
 
 	lastId32 := int32(lastId)
 	order.OrderId = &lastId32
@@ -471,7 +471,7 @@ func InsertOrder(order *proto.Order) error {
 }
 
 func UpdateOrderStatus(order *proto.Order) error {
-	log.Printf("sql: UPDATE orders WHERE order_id = %v\n", *order.OrderId)
+	logger.Infof("sql: UPDATE orders WHERE order_id = %v", *order.OrderId)
 	if _, err := DB.Exec(`
 		UPDATE orders SET
 				filled_qty = $1,

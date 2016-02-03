@@ -2,6 +2,7 @@
 package orderrouter
 
 import (
+	logger "github.com/apex/log"
 	orderCore "github.com/cyanly/gotrade/core/order"
 	execCore "github.com/cyanly/gotrade/core/order/execution"
 	proto "github.com/cyanly/gotrade/proto/order"
@@ -76,7 +77,8 @@ func NewOrderRouter(c Config) *OrderRouter {
 		msgbus.Subscribe("order.NewOrderRequest", func(m *nats.Msg) {
 			request := new(proto.NewOrderRequest)
 			if err := request.Unmarshal(m.Data); err == nil && len(m.Reply) > 0 {
-				log.Println("CL->OR NEW ", orderCore.Stringify(request.Order))
+
+				logger.Infof("CL->OR NEW %v", orderCore.Stringify(request.Order))
 				or.reqChan <- OrderRequest{
 					ReplyAddr:   m.Reply,
 					RequestType: REQ_NEW,
@@ -89,7 +91,7 @@ func NewOrderRouter(c Config) *OrderRouter {
 		msgbus.Subscribe("order.CancelOrderRequest", func(m *nats.Msg) {
 			request := new(proto.CancelOrderRequest)
 			if err := request.Unmarshal(m.Data); err == nil && len(m.Reply) > 0 {
-				log.Println("CL->OR CXL OrderKey := ", request.OrderKey, " OrderId := ", request.OrderId)
+				logger.Infof("CL->OR CXL OrderKey := %v OrderId := %v", request.OrderKey, request.OrderId)
 				or.reqChan <- OrderRequest{
 					ReplyAddr:   m.Reply,
 					RequestType: REQ_CANCEL,
@@ -102,7 +104,7 @@ func NewOrderRouter(c Config) *OrderRouter {
 		msgbus.Subscribe("order.ReplaceOrderRequest", func(m *nats.Msg) {
 			request := new(proto.ReplaceOrderRequest)
 			if err := request.Unmarshal(m.Data); err == nil && len(m.Reply) > 0 {
-				log.Println("CL->OR RPL ", orderCore.Stringify(request.Order))
+				logger.Infof("CL->OR RPL %v", orderCore.Stringify(request.Order))
 				or.reqChan <- OrderRequest{
 					ReplyAddr:   m.Reply,
 					RequestType: REQ_REPLACE,
@@ -186,7 +188,7 @@ func (self *OrderRouter) Start() {
 
 						// check target market connector is up
 						if _, ok := self.mclist[*request.Order.MarketConnector]; ok == false {
-							log.Println("OR->CL REJECT:", *resp.Order.OrderKey, ": LINK TO BROKER DOWN")
+							logger.Warnf("OR->CL REJECT:%v : %v", *resp.Order.OrderKey, "LINK TO BROKER DOWN")
 
 							// REJECT due to market connector down
 							respErr = -1
@@ -196,7 +198,7 @@ func (self *OrderRouter) Start() {
 							// insert Reject execution
 							execCore.NewStatusExecution(resp.Order, proto.Execution_REJECTED, "LINK TO BROKER DOWN")
 						} else {
-							log.Println("OR->MC NewOrderRequest")
+							logger.Info("OR->MC NewOrderRequest")
 
 							// relay order with idents to its market connector
 							data, _ := request.Marshal()
@@ -257,7 +259,7 @@ func (self *OrderRouter) Start() {
 
 							// check target market connector is up
 							if _, ok := self.mclist[*order.MarketConnector]; ok == false {
-								log.Println("OR->CL REJECT CXL:", *resp.Order.OrderKey, ": LINK TO BROKER DOWN")
+								logger.Warnf("OR->CL REJECT CXL:%v : %v", *resp.Order.OrderKey, "LINK TO BROKER DOWN")
 
 								// REJECT due to market connector down
 								respErr = -1
@@ -267,7 +269,7 @@ func (self *OrderRouter) Start() {
 								// insert Reject execution
 								execCore.NewStatusExecution(resp.Order, proto.Execution_REJECTED, "LINK TO BROKER DOWN")
 							} else {
-								log.Println("OR->MC CancelOrderRequest")
+								logger.Info("OR->MC CancelOrderRequest")
 
 								// relay order with idents to its market connector
 								data, _ := request.Marshal()
@@ -328,7 +330,7 @@ func (self *OrderRouter) Start() {
 
 							// check target market connector is up
 							if _, ok := self.mclist[*order.MarketConnector]; ok == false {
-								log.Println("OR->CL REJECT RPL:", *resp.Order.OrderKey, ": LINK TO BROKER DOWN")
+								logger.Warnf("OR->CL REJECT RPL:%v : %v", *resp.Order.OrderKey, "LINK TO BROKER DOWN")
 
 								// REJECT due to market connector down
 								respErr = -1
@@ -338,7 +340,7 @@ func (self *OrderRouter) Start() {
 								// insert Reject execution
 								execCore.NewStatusExecution(resp.Order, proto.Execution_REJECTED, "LINK TO BROKER DOWN")
 							} else {
-								log.Println("OR->MC ReplaceOrderRequest")
+								logger.Info("OR->MC ReplaceOrderRequest")
 
 								// relay order with idents to its market connector
 								data, _ := request.Marshal()

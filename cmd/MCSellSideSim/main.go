@@ -7,7 +7,6 @@ import (
 )
 
 func main() {
-
 	// Load configurations
 
 	// Initialise Service Infrastructure

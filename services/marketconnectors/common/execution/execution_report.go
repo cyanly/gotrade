@@ -2,6 +2,7 @@
 package execution
 
 import (
+	logger "github.com/apex/log"
 	orderCore "github.com/cyanly/gotrade/core/order"
 	exeCore "github.com/cyanly/gotrade/core/order/execution"
 	proto "github.com/cyanly/gotrade/proto/order"
@@ -32,7 +33,7 @@ func ProcessExecutionReport(er *proto.Execution) {
 		//TODO: update order status
 
 		//Publish Execution
-		log.Println("Execution Report: \n", er)
+		logger.Infof("Execution Report: %v", er)
 		if data, err := er.Marshal(); err != nil {
 			log.Panic(err)
 		} else {
