@@ -90,7 +90,7 @@ Included:
 Excluded:
   - Database transaction time (hard-wired to an inline mock DB driver) 
 
-Result:   **`0.176ms per op,  5670 order/fill pairs per sec`**
+Result:   **`0.176ms per op,  5670 order+fill pairs per sec`**
 <p align="center">
   <img src="https://cdn.rawgit.com/cyanly/gotrade/gh-pages/benchmark.png" alt=""/>
 </p>
