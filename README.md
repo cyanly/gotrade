@@ -55,16 +55,7 @@ Pre-Requisites:
   - ``` go get github.com/nats-io/gnatsd ```
 
 
-The best way to see goTrade in action is to take a look at **benchmark test** (result below):
-`test/benchmark/client2fix_test.go`
-  - **CL->OR**:   Client send order protobuf to OrderRouter(OR)
-  - **OR->MC**:   OrderRouter process order and dispatch persisted order entity or target MarketConnector
-  - **MC->FIX**:  MarketConnector translate into NewOrderSingle FIX message based on the session with its counterparty
-  - **FIX->MC**:  MarketConnector received FIX message on its order, here Simulator sending a fully FILL execution
-  - **EXE->CL**: MarketConnector publish processed and persisted Execution onto messaging bus, here our Client will listen to
-
-Or check out test cases for each service:
-
+The best way to see goTrade in action is to take a look at tests (see Benchmark section below):<br>
 **OrderRouter** and **MarketConnector** test cases will mock a testdb and messaging bus for end-to-end, message to message test. 
 ```
 $ cd $GOPATH/src/github.com/cyanly/gotrade/services/orderrouter
@@ -81,6 +72,13 @@ $ go test -v
 ## Benchmark
 
 Machine: `Intel Core i5-5930K CPU @ 2.80GHz` + `Ubuntu 14.04 Desktop x86_64`
+
+  - `test/benchmark/client2fix_test.go`
+  - **CL->OR**:   <br>*Client send order protobuf to OrderRouter(OR)*
+  - **OR->MC**:   <br>*OrderRouter process order and dispatch persisted order entity or target MarketConnector*
+  - **MC->FIX**:  <br>*MarketConnector translate into NewOrderSingle FIX message based on the session with its counterparty*
+  - **FIX->MC**:  <br>*MarketConnector received FIX message on its order, here Simulator sending a fully FILL execution*
+  - **EXE->CL**:  <br>*MarketConnector publish processed and persisted Execution onto messaging bus, here our Client will listen to*
 
 Included: 
   - from order to FIX to a fully fill execution message to execution protobuf published back
