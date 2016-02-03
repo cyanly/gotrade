@@ -2,6 +2,8 @@
 package service
 
 import (
+	logger "github.com/apex/log"
+	"github.com/apex/log/handlers/cli"
 	proto "github.com/cyanly/gotrade/proto/service"
 	"github.com/nats-io/nats"
 
@@ -18,19 +20,29 @@ type Service struct {
 	Status proto.Heartbeat_Status
 
 	shutdownChannel chan bool
+	messageBus      *nats.Conn
+	lastHBMsg       *proto.Heartbeat
+	publishAddress  string
 }
 
 func NewService(c Config) *Service {
+	// Structured Logging
+	logger.SetHandler(cli.Default)
+
+	// Hardware Info
 	uuid = fmt.Sprint(hostname, ":", pid)
 	log.Println("Service [", c.ServiceName, "] starting @ ", uuid)
 
+	// Service handle
 	svc := &Service{
 		Config:          c,
 		Status:          proto.STARTING,
 		shutdownChannel: make(chan bool),
 	}
 
+	// Messaging bus
 	messageBus, err := nats.Connect(svc.Config.MessageBusURL)
+	svc.messageBus = messageBus
 	if err != nil {
 		log.Fatal("error: Cannot connect to message bus @ ", svc.Config.MessageBusURL)
 	}
@@ -45,6 +57,7 @@ func NewService(c Config) *Service {
 		CreationDatetime: &currDateTime,
 		CurrentDatetime:  &currDateTime,
 	}
+	svc.lastHBMsg = hbMsg
 	hbTicker := time.NewTicker(time.Second * time.Duration(svc.Config.HeartbeatFreq))
 	go func(shutdownChannel chan bool) {
 		publish_address := "service.Heartbeat." + svc.Config.ServiceName
@@ -97,6 +110,18 @@ func (self *Service) Start() chan bool {
 
 	self.Status = proto.RUNNING
 
+	// Immediately publish heartbeat
+	currDateTime := time.Now().UTC().Format(time.RFC3339)
+	self.lastHBMsg.CurrentDatetime = &currDateTime
+	self.lastHBMsg.Status = self.Status
+	if data, _ := self.lastHBMsg.Marshal(); data != nil {
+		self.messageBus.Publish("service.Heartbeat."+self.Config.ServiceName, data)
+	}
+
 	log.Println("Service [", self.Config.ServiceName, "] Started")
 	return shutdownCallerChannel
+}
+
+func (self *Service) Stop() {
+	self.shutdownChannel <- true
 }

@@ -1,6 +1,8 @@
 package simulator
 
 import (
+	logger "github.com/apex/log"
+	"github.com/apex/log/handlers/cli"
 	order "github.com/cyanly/gotrade/core/order"
 	proto "github.com/cyanly/gotrade/proto/order"
 	"github.com/cyanly/gotrade/services/marketconnectors/sellsidesim"
@@ -12,47 +14,24 @@ import (
 	"database/sql/driver"
 	"github.com/erikstmartin/go-testdb"
 	"log"
+	"os"
 	"strings"
 	"testing"
 	"time"
 )
 
-var (
-	sellsvc *sellsidesim.SellSideSimulator // needs to declare local variable, QuickFixGo does not close net.Listener on .Stop()
-)
+func TestMain(m *testing.M) {
+	logger.SetHandler(cli.Default)
 
-func TestNewMarketConnectorStartAndStop(t *testing.T) {
 	//mock message bus
 	gnatsd.DefaultTestOptions.Port = 22222
 	ts := gnatsd.RunDefaultServer()
 	defer ts.Shutdown()
 
 	//simulate a sell side FIX server
-	if sellsvc == nil {
-		sellsvc = sellsidesim.NewSellSideSimulator("")
-		sellsvc.Start()
-	}
-
-	//config
-	sc := NewConfig()
-	sc.MessageBusURL = "nats://localhost:22222"
-
-	//start MC
-	svc := NewMarketConnector(sc)
-	svc.Start()
-
-	//stop and disconnect MC
-	time.Sleep(100 * time.Millisecond)
-	svc.Close()
-
-	//expect no panic
-}
-
-func TestNewMarketConnectorNewOrderRequest(t *testing.T) {
-	//mock message bus
-	gnatsd.DefaultTestOptions.Port = 22222
-	ts := gnatsd.RunDefaultServer()
-	defer ts.Shutdown()
+	sellsvc := sellsidesim.NewSellSideSimulator("")
+	sellsvc.Start()
+	defer sellsvc.Close()
 
 	//mock db
 	db, _ := sql.Open("testdb", "")
@@ -81,12 +60,27 @@ func TestNewMarketConnectorNewOrderRequest(t *testing.T) {
 		return testdb.RowsFromCSVString(columns, rows), nil
 	})
 
-	//simulate a sell side FIX server
-	if sellsvc == nil {
-		sellsvc = sellsidesim.NewSellSideSimulator("")
-		sellsvc.Start()
-	}
+	code := m.Run()
+	os.Exit(code)
+}
 
+func TestNewMarketConnectorStartAndStop(t *testing.T) {
+	//config
+	sc := NewConfig()
+	sc.MessageBusURL = "nats://localhost:22222"
+
+	//start MC
+	svc := NewMarketConnector(sc)
+	svc.Start()
+
+	//stop and disconnect MC
+	time.Sleep(100 * time.Millisecond)
+	svc.Close()
+
+	//expect no panic
+}
+
+func TestNewMarketConnectorNewOrderRequest(t *testing.T) {
 	//config
 	sc := NewConfig()
 	sc.MessageBusURL = "nats://localhost:22222"

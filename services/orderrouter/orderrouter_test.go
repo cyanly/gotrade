@@ -1,6 +1,8 @@
 package orderrouter
 
 import (
+	logger "github.com/apex/log"
+	"github.com/apex/log/handlers/cli"
 	order "github.com/cyanly/gotrade/core/order"
 	proto "github.com/cyanly/gotrade/proto/order"
 	pService "github.com/cyanly/gotrade/proto/service"
@@ -12,28 +14,30 @@ import (
 	"fmt"
 	"github.com/erikstmartin/go-testdb"
 	"log"
+	"os"
 	"strings"
 	"testing"
 	"time"
 )
 
-type testResult struct {
-	lastId       int64
-	affectedRows int64
-}
+func TestMain(m *testing.M) {
+	logger.SetHandler(cli.Default)
 
-func (r testResult) LastInsertId() (int64, error) {
-	return r.lastId, nil
-}
-
-func (r testResult) RowsAffected() (int64, error) {
-	return r.affectedRows, nil
-}
-
-func TestOrderRouterStartAndStop(t *testing.T) {
+	//mock message bus
 	gnatsd.DefaultTestOptions.Port = 22222
 	ts := gnatsd.RunDefaultServer()
 	defer ts.Shutdown()
+
+	//mock db
+	db, _ := sql.Open("testdb", "")
+	order.DB = db
+	mockDB()
+
+	code := m.Run()
+	os.Exit(code)
+}
+
+func TestOrderRouterStartAndStop(t *testing.T) {
 
 	sc := NewConfig()
 	sc.MessageBusURL = "nats://localhost:22222"
@@ -51,42 +55,9 @@ func TestOrderRouterStartAndStop(t *testing.T) {
 }
 
 func TestOrderRouterNewOrderRequest(t *testing.T) {
-	gnatsd.DefaultTestOptions.Port = 22222
-	ts := gnatsd.RunDefaultServer()
-	defer ts.Shutdown()
 
 	svc := mockOrderRouter()
 
-	orderKey := int(0)
-	testdb.SetQueryWithArgsFunc(func(query string, args []driver.Value) (result driver.Rows, err error) {
-		columns := []string{"id", "name", "age", "created"}
-		rows := "unknown"
-
-		if strings.Contains(query, "INSERT INTO orders") {
-			columns = []string{"order_id"}
-			rows = "123"
-		}
-
-		if strings.Contains(query, "INSERT INTO execution") {
-			columns = []string{"execution_id"}
-			rows = "111"
-		}
-
-		if strings.Contains(query, "SELECT nextval('orderkeysequence')::INT") {
-			columns = []string{"orderkeysequence"}
-			orderKey++
-			rows = fmt.Sprint(orderKey)
-		}
-
-		if rows == "unknown" {
-			log.Println(query)
-		}
-
-		//if args[0] == "joe" {
-		//	rows = "2,joe,25,2012-10-02 02:00:02"
-		//}
-		return testdb.RowsFromCSVString(columns, rows), nil
-	})
 	testdb.SetExecWithArgsFunc(func(query string, args []driver.Value) (result driver.Result, err error) {
 		return testResult{1, 1}, nil
 	})
@@ -157,9 +128,66 @@ func TestOrderRouterNewOrderRequest(t *testing.T) {
 	}
 }
 
+type testResult struct {
+	lastId       int64
+	affectedRows int64
+}
+
+func (r testResult) LastInsertId() (int64, error) {
+	return r.lastId, nil
+}
+
+func (r testResult) RowsAffected() (int64, error) {
+	return r.affectedRows, nil
+}
+
+// Simulate Database behaviours
+func mockDB() {
+	orderKey := int(0)
+	testdb.SetQueryWithArgsFunc(func(query string, args []driver.Value) (result driver.Rows, err error) {
+		columns := []string{"id", "name", "age", "created"}
+		rows := "unknown"
+
+		// Orders
+		if strings.Contains(query, "INSERT INTO orders") {
+			columns = []string{"order_id"}
+			rows = "123"
+		}
+
+		if strings.Contains(query, "INSERT INTO execution") {
+			columns = []string{"execution_id"}
+			rows = "111"
+		}
+
+		if strings.Contains(query, "SELECT nextval('orderkeysequence')::INT") {
+			columns = []string{"orderkeysequence"}
+			orderKey++
+			rows = fmt.Sprint(orderKey)
+		}
+
+		// Executions
+		if strings.Contains(query, "INSERT INTO execution") {
+			columns = []string{"execution_id"}
+			rows = "111"
+		}
+
+		if strings.Contains(query, "SELECT order_id FROM orders") {
+			columns = []string{"order_id"}
+			rows = "123"
+		}
+
+		if rows == "unknown" {
+			log.Println(query)
+		}
+
+		return testdb.RowsFromCSVString(columns, rows), nil
+	})
+	testdb.SetExecWithArgsFunc(func(query string, args []driver.Value) (result driver.Result, err error) {
+		return testResult{1, 1}, nil
+	})
+}
+
 func mockOrderRouter() *OrderRouter {
-	db, _ := sql.Open("testdb", "")
-	order.DB = db
 
 	sc := NewConfig()
 	sc.MessageBusURL = "nats://localhost:22222"
