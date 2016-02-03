@@ -13,7 +13,7 @@ This project is currently more of a proof of concept. It is no where near in com
 
 ## Getting Started
 ```
-$ go get github.com/cyanly/gotrade
+$ go get -u github.com/cyanly/gotrade
 ```
 
 ## Features
@@ -48,13 +48,24 @@ $ go get github.com/cyanly/gotrade
 
 
 ## Examples
-**OrderRouter** and **MarketConnector** test cases will mock a testdb and messaging bus for end-to-end, message to message test. 
 
 Pre-Requisites:
-  - Go 1.3 or higher
+  - Go 1.4 or higher
   - ``` go get github.com/erikstmartin/go-testdb ```
+  - ``` go get github.com/nats-io/gnatsd ```
 
-Run test cases in services:
+
+The best way to see goTrade in action is to take a look at **benchmark test** (result below):
+`test/benchmark/client2fix_test.go`
+  - **CL->OR**:   Client send order protobuf to OrderRouter(OR)
+  - **OR->MC**:   OrderRouter process order and dispatch persisted order entity or target MarketConnector
+  - **MC->FIX**:  MarketConnector translate into NewOrderSingle FIX message based on the session with its counterparty
+  - **FIX->MC**:  MarketConnector received FIX message on its order, here Simulator sending a fully FILL execution
+  - **EXE->CL**: MarketConnector publish processed and persisted Execution onto messaging bus, here our Client will listen to
+
+Or check out test cases for each service:
+
+**OrderRouter** and **MarketConnector** test cases will mock a testdb and messaging bus for end-to-end, message to message test. 
 ```
 $ cd $GOPATH/src/github.com/cyanly/gotrade/services/orderrouter
 $ go test -v 
@@ -69,17 +80,35 @@ $ go test -v
 
 ## Benchmark
 
+Machine: `Intel Core i5-5930K CPU @ 2.80GHz` + `Ubuntu 14.04 Desktop x86_64`
+
+Included: 
+  - from order to FIX to a fully fill execution message to execution protobuf published back
+  - serialsing/deserialsing mock order into protobuf messages
+  - Request/Publish and Response/Subscribe via NATS.io message bus
+  - Time spent in the Linux TCP/IP stack
+  - Decode FIX messages and reply by a simulated broker
+  
+Excluded:
+  - Database transaction time (hard-wired to an inline mock DB driver) 
+
+Result:   **`0.176ms per op,  5670 order/fill pairs per sec`**
+<p align="center">
+  <img src="https://cdn.rawgit.com/cyanly/gotrade/gh-pages/benchmark.png" alt=""/>
+</p>
+
 
 ## Limitations
 
 
-## Thanks
+## Contributing
 
 **GoTrade** © 2016+, Chao Yan. Released under the [GNU] General Public License.<br>
-Authored and maintained by Chao Yan with help from contributors ([list][contributors]).
+Authored and maintained by Chao Yan with help from contributors ([list][contributors]). <br>
+Contributions are welcome. 
 
 > [cyan.ly](http://cyan.ly) &nbsp;&middot;&nbsp;
 > GitHub [@cyanly](https://github.com/cyanly) &nbsp;&middot;&nbsp;
 
-[MIT]: http://www.gnu.org/licenses/gpl-3.0.en.html
+[GNU]: http://www.gnu.org/licenses/gpl-3.0.en.html
 [contributors]: http://github.com/cyanly/gotrade/contributors
