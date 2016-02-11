@@ -14,6 +14,9 @@ This project is currently more of a proof of concept. It is no where near in com
 ## Getting Started
 ```
 $ go get -u github.com/cyanly/gotrade
+
+$ cd $GOPATH/src/github.com/cyanly/gotrade
+$ go get -u -t ./...
 ```
 
 ## Features
