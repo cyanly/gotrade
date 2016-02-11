@@ -15,8 +15,6 @@ This project is currently more of a proof of concept. It is no where near in com
 ```
 $ go get -u github.com/cyanly/gotrade
 
-$ cd $GOPATH/src/github.com/cyanly/gotrade
-$ go get -u -t ./...
 ```
 
 ## Features
@@ -54,8 +52,11 @@ $ go get -u -t ./...
 
 Pre-Requisites:
   - Go 1.4 or higher
-  - ``` go get github.com/erikstmartin/go-testdb ```
-  - ``` go get github.com/nats-io/gnatsd ```
+  - get dependencies:
+```
+$ cd $GOPATH/src/github.com/cyanly/gotrade
+$ go get -u -t ./...
+```
 
 
 The best way to see goTrade in action is to take a look at tests (see Benchmark section below):<br>
