@@ -50,6 +50,8 @@ $ go get -u github.com/cyanly/gotrade
 
 ## Examples
 
+The best way to see goTrade in action is to take a look at tests (see Benchmark section below):
+
 Pre-Requisites:
   - Go 1.4 or higher
   - get dependencies:
@@ -58,8 +60,6 @@ $ cd $GOPATH/src/github.com/cyanly/gotrade
 $ go get -u -t ./...
 ```
 
-
-The best way to see goTrade in action is to take a look at tests (see Benchmark section below):<br>
 **OrderRouter** and **MarketConnector** test cases will mock a testdb and messaging bus for end-to-end, message to message test. 
 ```
 $ cd $GOPATH/src/github.com/cyanly/gotrade/services/orderrouter
