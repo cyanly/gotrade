@@ -210,7 +210,7 @@ func (m *OrderBook) ProcessOrderBookUpdate(triggerQuote *marketdata.Quote) {
 }
 
 func DoTrade(order *ems.Order, quantity float64, price float64) {
-	log.Println(fmt.Sprintf("fill %v: %v @ %v", *order.OrderId, quantity, price))
+	log.Println(fmt.Sprintf("fill %v: %v @ %v", order.OrderId, quantity, price))
 	er.NewTradeExecution(order, quantity, price, "")
 
 	if orac.IsCompleted(order) {
