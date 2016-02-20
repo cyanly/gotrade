@@ -36,3 +36,8 @@ of shell from core/....
 
 */
 package gotrade
+
+import (
+	_ "github.com/cyanly/gotrade/services/marketconnectors/simulator"
+	_ "github.com/cyanly/gotrade/services/orderrouter"
+)
