@@ -95,18 +95,12 @@ func TestNewMarketConnectorNewOrderRequest(t *testing.T) {
 	request := &proto.NewOrderRequest{
 		Order: testOrder.MockOrder(),
 	}
-	os_OR := proto.OrderStatus_ORDER_RECEIVED
-	request.Order.OrderStatus = &os_OR
-	o_stime := time.Now().UTC().Format(time.RFC3339Nano)
-	request.Order.SubmitDatetime = &o_stime
-	o_oi := proto.Order_NEW
-	request.Order.Instruction = &o_oi
-	oid := int32(123)
-	request.Order.OrderId = &oid
-	okey := int32(321)
-	request.Order.OrderKey = &okey
-	oVer := int32(1)
-	request.Order.Version = &oVer
+	request.Order.OrderStatus = proto.OrderStatus_ORDER_RECEIVED
+	request.Order.SubmitDatetime = time.Now().UTC().Format(time.RFC3339Nano)
+	request.Order.Instruction = proto.Order_NEW
+	request.Order.OrderId = int32(123)
+	request.Order.OrderKey = int32(321)
+	request.Order.Version = int32(1)
 
 	// subscribe to check if we can receive a fill execution report from sim broker
 	recvExecutionReport := false
@@ -114,11 +108,11 @@ func TestNewMarketConnectorNewOrderRequest(t *testing.T) {
 		recvExecutionReport = true
 		exec := new(proto.Execution)
 		if err := exec.Unmarshal(m.Data); err == nil {
-			if *exec.ClientOrderId != "321.1" {
-				t.Fatalf("unexpected execution report ClOrdId %v, expecting 321.1", *exec.ClientOrderId)
+			if exec.ClientOrderId != "321.1" {
+				t.Fatalf("unexpected execution report ClOrdId %v, expecting 321.1", exec.ClientOrderId)
 			}
-			if *exec.OrderId != 123 {
-				t.Fatalf("unexpected execution report OrderId %v, expecting 123", *exec.OrderId)
+			if exec.OrderId != 123 {
+				t.Fatalf("unexpected execution report OrderId %v, expecting 123", exec.OrderId)
 			}
 		} else {
 			t.Fatalf("unexpected execution report: %v", err)

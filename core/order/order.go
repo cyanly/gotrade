@@ -14,7 +14,7 @@ var (
 )
 
 func IsCompleted(m *proto.Order) bool {
-	switch *m.OrderStatus {
+	switch m.OrderStatus {
 	case proto.OrderStatus_CANCELLED,
 		proto.OrderStatus_REJECTED,
 		proto.OrderStatus_FILLED,
@@ -28,13 +28,13 @@ func IsCompleted(m *proto.Order) bool {
 }
 
 func CanCancel(m *proto.Order) bool {
-	switch *m.OrderStatus {
+	switch m.OrderStatus {
 	case proto.OrderStatus_NEW,
 		proto.OrderStatus_PARTIALLY_FILLED,
 		proto.OrderStatus_REPLACED:
 		return true
 	case proto.OrderStatus_REJECTED:
-		switch *m.Instruction {
+		switch m.Instruction {
 		case proto.Order_NEW:
 			return false
 		default:
@@ -51,7 +51,7 @@ func CanReplace(m *proto.Order) bool {
 }
 
 func Validate(m *proto.Order) error {
-	if m.OrderId == nil || *m.OrderId <= 0 {
+	if m.OrderId <= 0 {
 		return errors.New("Invalid OrderId")
 	}
 
@@ -59,5 +59,5 @@ func Validate(m *proto.Order) error {
 }
 
 func Stringify(m *proto.Order) string {
-	return fmt.Sprintf("(%s) %s %v %s -> %s", *m.Trader, *m.Side, *m.Quantity, *m.Symbol, *m.MarketConnector)
+	return fmt.Sprintf("(%s) %s %v %s -> %s", m.Trader, m.Side, m.Quantity, m.Symbol, m.MarketConnector)
 }

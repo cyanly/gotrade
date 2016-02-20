@@ -81,7 +81,7 @@ func InsertExecution(exe *proto.Execution) error {
 	logger.Infof("sql ret: ID = %d", lastId)
 
 	lastId32 := int32(lastId)
-	exe.ExecutionId = &lastId32
+	exe.ExecutionId = lastId32
 
 	return nil
 }

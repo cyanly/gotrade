@@ -53,117 +53,72 @@ func GetOrderByOrderId(id int32) (*proto.Order, error) {
 
 	for rows.Next() {
 		order := &proto.Order{}
-		var OrderId int32
-		var ClientGuid string
-		var OrderKey int32
-		var OrderKeyVersion int32
-		var OrderSubmittedTime string
 		var MessageType string
-		var MarketConnector string
 		var OrderType string
 		var TimeInForce string
 		var HandlInst string
-		var Symbol string
-		var Exchange string
 		var Side string
-		var Qty float64
 		var LimitPrice sql.NullFloat64
 		var FilledQty sql.NullFloat64
 		var FilledAvgPrice sql.NullFloat64
 		var OrderStatusId int32
-		var IsComplete bool
-		var IsBooked bool
-		var IsExpired bool
 		var TradeBookingId sql.NullInt64
-		var TraderId int32
-		var Account int32
-		var BrokerUserID string
-		var BrokerAccount string
-		var Description string
-		var Source string
-		var OpenClose string
-		var AlgoOne string
 
 		if err := rows.Scan(
-			&OrderId,
-			&ClientGuid,
-			&OrderKey,
-			&OrderKeyVersion,
-			&OrderSubmittedTime,
+			&order.OrderId,
+			&order.ClientGuid,
+			&order.OrderKey,
+			&order.Version,
+			&order.SubmitDatetime,
 			&MessageType,
-			&MarketConnector,
+			&order.MarketConnector,
 			&OrderType,
 			&TimeInForce,
 			&HandlInst,
-			&Symbol,
-			&Exchange,
+			&order.Symbol,
+			&order.Exchange,
 			&Side,
-			&Qty,
+			&order.Quantity,
 			&LimitPrice,
 			&FilledQty,
 			&FilledAvgPrice,
 			&OrderStatusId,
-			&IsComplete,
-			&IsBooked,
-			&IsExpired,
+			&order.IsComplete,
+			&order.IsBooked,
+			&order.IsExpired,
 			&TradeBookingId,
-			&TraderId,
-			&Account,
-			&BrokerUserID,
-			&BrokerAccount,
-			&Description,
-			&Source,
-			&OpenClose,
-			&AlgoOne,
+			&order.TraderId,
+			&order.AccountId,
+			&order.BrokerUserid,
+			&order.BrokerAccount,
+			&order.Description,
+			&order.Source,
+			&order.OpenClose,
+			&order.Algo,
 		); err != nil {
 			return nil, err
 		}
 
-		order.OrderId = &OrderId
-		order.ClientGuid = &ClientGuid
-		order.OrderKey = &OrderKey
-		order.Version = &OrderKeyVersion
-		order.SubmitDatetime = &OrderSubmittedTime
-		orderinstruct := proto.Order_OrderInstruction(proto.Order_OrderInstruction_value[MessageType])
-		order.Instruction = &orderinstruct
-		order.MarketConnector = &MarketConnector
-		ordType := proto.OrderType(proto.OrderType_value[OrderType])
-		order.OrderType = &ordType
-		timeinforce := proto.TimeInForce(proto.TimeInForce_value[TimeInForce])
-		order.Timeinforce = &timeinforce
-		handlinst := proto.HandlInst(proto.HandlInst_value[HandlInst])
-		order.HandleInst = &handlinst
-		order.Symbol = &Symbol
-		order.Exchange = &Exchange
-		side := proto.Side(proto.Side_value[Side])
-		order.Side = &side
-		order.Quantity = &Qty
+		order.Instruction = proto.Order_OrderInstruction(proto.Order_OrderInstruction_value[MessageType])
+		order.OrderType = proto.OrderType(proto.OrderType_value[OrderType])
+		order.Timeinforce = proto.TimeInForce(proto.TimeInForce_value[TimeInForce])
+		order.HandleInst = proto.HandlInst(proto.HandlInst_value[HandlInst])
+		order.Side = proto.Side(proto.Side_value[Side])
+
 		if LimitPrice.Valid {
-			order.LimitPrice = &LimitPrice.Float64
+			order.LimitPrice = LimitPrice.Float64
 		}
 		if FilledQty.Valid {
-			order.FilledQuantity = &FilledQty.Float64
+			order.FilledQuantity = FilledQty.Float64
 		}
 		if FilledAvgPrice.Valid {
-			order.FilledAvgPrice = &FilledAvgPrice.Float64
+			order.FilledAvgPrice = FilledAvgPrice.Float64
 		}
-		ordStatus := proto.OrderStatus(OrderStatusId)
-		order.OrderStatus = &ordStatus
-		order.IsComplete = &IsComplete
-		order.IsBooked = &IsBooked
-		order.IsExpired = &IsExpired
+		order.OrderStatus = proto.OrderStatus(OrderStatusId)
+
 		if TradeBookingId.Valid {
-			tradebookid := int32(TradeBookingId.Int64)
-			order.TradeBookingId = &tradebookid
+			order.TradeBookingId = int32(TradeBookingId.Int64)
 		}
-		order.TraderId = &TraderId
-		order.AccountId = &Account
-		order.BrokerUserid = &BrokerUserID
-		order.BrokerAccount = &BrokerAccount
-		order.Description = &Description
-		order.Source = &Source
-		order.OpenClose = &OpenClose
-		order.Algo = &AlgoOne
 
 		if err := Validate(order); err != nil {
 			return nil, err
@@ -221,117 +176,72 @@ func GetOrderByOrderKey(key int32) (*proto.Order, error) {
 
 	for rows.Next() {
 		order := &proto.Order{}
-		var OrderId int32
-		var ClientGuid string
-		var OrderKey int32
-		var OrderKeyVersion int32
-		var OrderSubmittedTime string
 		var MessageType string
-		var MarketConnector string
 		var OrderType string
 		var TimeInForce string
 		var HandlInst string
-		var Symbol string
-		var Exchange string
 		var Side string
-		var Qty float64
 		var LimitPrice sql.NullFloat64
 		var FilledQty sql.NullFloat64
 		var FilledAvgPrice sql.NullFloat64
 		var OrderStatusId int32
-		var IsComplete bool
-		var IsBooked bool
-		var IsExpired bool
 		var TradeBookingId sql.NullInt64
-		var TraderId int32
-		var Account int32
-		var BrokerUserID string
-		var BrokerAccount string
-		var Description string
-		var Source string
-		var OpenClose string
-		var AlgoOne string
 
 		if err := rows.Scan(
-			&OrderId,
-			&ClientGuid,
-			&OrderKey,
-			&OrderKeyVersion,
-			&OrderSubmittedTime,
+			&order.OrderId,
+			&order.ClientGuid,
+			&order.OrderKey,
+			&order.Version,
+			&order.SubmitDatetime,
 			&MessageType,
-			&MarketConnector,
+			&order.MarketConnector,
 			&OrderType,
 			&TimeInForce,
 			&HandlInst,
-			&Symbol,
-			&Exchange,
+			&order.Symbol,
+			&order.Exchange,
 			&Side,
-			&Qty,
+			&order.Quantity,
 			&LimitPrice,
 			&FilledQty,
 			&FilledAvgPrice,
 			&OrderStatusId,
-			&IsComplete,
-			&IsBooked,
-			&IsExpired,
+			&order.IsComplete,
+			&order.IsBooked,
+			&order.IsExpired,
 			&TradeBookingId,
-			&TraderId,
-			&Account,
-			&BrokerUserID,
-			&BrokerAccount,
-			&Description,
-			&Source,
-			&OpenClose,
-			&AlgoOne,
+			&order.TraderId,
+			&order.AccountId,
+			&order.BrokerUserid,
+			&order.BrokerAccount,
+			&order.Description,
+			&order.Source,
+			&order.OpenClose,
+			&order.Algo,
 		); err != nil {
 			return nil, err
 		}
 
-		order.OrderId = &OrderId
-		order.ClientGuid = &ClientGuid
-		order.OrderKey = &OrderKey
-		order.Version = &OrderKeyVersion
-		order.SubmitDatetime = &OrderSubmittedTime
-		orderinstruct := proto.Order_OrderInstruction(proto.Order_OrderInstruction_value[MessageType])
-		order.Instruction = &orderinstruct
-		order.MarketConnector = &MarketConnector
-		ordType := proto.OrderType(proto.OrderType_value[OrderType])
-		order.OrderType = &ordType
-		timeinforce := proto.TimeInForce(proto.TimeInForce_value[TimeInForce])
-		order.Timeinforce = &timeinforce
-		handlinst := proto.HandlInst(proto.HandlInst_value[HandlInst])
-		order.HandleInst = &handlinst
-		order.Symbol = &Symbol
-		order.Exchange = &Exchange
-		side := proto.Side(proto.Side_value[Side])
-		order.Side = &side
-		order.Quantity = &Qty
+		order.Instruction = proto.Order_OrderInstruction(proto.Order_OrderInstruction_value[MessageType])
+		order.OrderType = proto.OrderType(proto.OrderType_value[OrderType])
+		order.Timeinforce = proto.TimeInForce(proto.TimeInForce_value[TimeInForce])
+		order.HandleInst = proto.HandlInst(proto.HandlInst_value[HandlInst])
+		order.Side = proto.Side(proto.Side_value[Side])
+
 		if LimitPrice.Valid {
-			order.LimitPrice = &LimitPrice.Float64
+			order.LimitPrice = LimitPrice.Float64
 		}
 		if FilledQty.Valid {
-			order.FilledQuantity = &FilledQty.Float64
+			order.FilledQuantity = FilledQty.Float64
 		}
 		if FilledAvgPrice.Valid {
-			order.FilledAvgPrice = &FilledAvgPrice.Float64
+			order.FilledAvgPrice = FilledAvgPrice.Float64
 		}
-		ordStatus := proto.OrderStatus(OrderStatusId)
-		order.OrderStatus = &ordStatus
-		order.IsComplete = &IsComplete
-		order.IsBooked = &IsBooked
-		order.IsExpired = &IsExpired
+		order.OrderStatus = proto.OrderStatus(OrderStatusId)
+
 		if TradeBookingId.Valid {
-			tradebookid := int32(TradeBookingId.Int64)
-			order.TradeBookingId = &tradebookid
+			order.TradeBookingId = int32(TradeBookingId.Int64)
 		}
-		order.TraderId = &TraderId
-		order.AccountId = &Account
-		order.BrokerUserid = &BrokerUserID
-		order.BrokerAccount = &BrokerAccount
-		order.Description = &Description
-		order.Source = &Source
-		order.OpenClose = &OpenClose
-		order.Algo = &AlgoOne
 
 		if err := Validate(order); err != nil {
 			return nil, err
@@ -464,14 +374,13 @@ func InsertOrder(order *proto.Order) error {
 
 	logger.Infof("sql ret: ID = %d", lastId)
 
-	lastId32 := int32(lastId)
-	order.OrderId = &lastId32
+	order.OrderId = int32(lastId)
 
 	return nil
 }
 
 func UpdateOrderStatus(order *proto.Order) error {
-	logger.Infof("sql: UPDATE orders WHERE order_id = %v", *order.OrderId)
+	logger.Infof("sql: UPDATE orders WHERE order_id = %v", order.OrderId)
 	if _, err := DB.Exec(`
 		UPDATE orders SET
 				filled_qty = $1,

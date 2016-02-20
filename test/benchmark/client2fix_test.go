@@ -89,8 +89,7 @@ func BenchmarkTradeflow(b *testing.B) {
 	request := &proto.NewOrderRequest{
 		Order: testOrder.MockOrder(),
 	}
-	mcName := "Simulator"
-	request.Order.MarketConnector = &mcName
+	request.Order.MarketConnector = "Simulator"
 	data, merr := request.Marshal()
 	if merr != nil {
 		b.Fatal(merr)

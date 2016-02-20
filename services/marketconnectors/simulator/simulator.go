@@ -89,25 +89,25 @@ func (mc *MCSimulator) Start() {
 			order := request.Order
 
 			fixmsg := fix44nos.New(
-				field.NewClOrdID(strconv.Itoa(int(*order.OrderKey))+"."+strconv.Itoa(int(*order.Version))),
-				field.NewSide(util.ProtoEnumToFIXEnum(int(*order.Side))),
+				field.NewClOrdID(strconv.Itoa(int(order.OrderKey))+"."+strconv.Itoa(int(order.Version))),
+				field.NewSide(util.ProtoEnumToFIXEnum(int(order.Side))),
 				&field.TransactTimeField{},
-				field.NewOrdType(util.ProtoEnumToFIXEnum(int(*order.OrderType))),
+				field.NewOrdType(util.ProtoEnumToFIXEnum(int(order.OrderType))),
 			)
 
 			// Instrument
 			//TODO: migrate marketconnectors/common/... for common fields
-			fixmsg.Body.Set(field.NewSymbol(*order.Symbol))
+			fixmsg.Body.Set(field.NewSymbol(order.Symbol))
 
 			//TODO: migrate common limit checks into common/limit
-			fixmsg.Body.Set(field.NewOrderQty(*order.Quantity))
-			if *order.OrderType == proto.OrderType_LIMIT || *order.OrderType == proto.OrderType_LIMIT_ON_CLOSE {
-				fixmsg.Body.Set(field.NewPrice(*order.LimitPrice))
+			fixmsg.Body.Set(field.NewOrderQty(order.Quantity))
+			if order.OrderType == proto.OrderType_LIMIT || order.OrderType == proto.OrderType_LIMIT_ON_CLOSE {
+				fixmsg.Body.Set(field.NewPrice(order.LimitPrice))
 			}
 
 			// Broker specific
-			fixmsg.Body.Set(field.NewAccount(*order.BrokerAccount))
-			fixmsg.Body.Set(field.NewHandlInst(util.ProtoEnumToFIXEnum(int(*order.HandleInst))))
+			fixmsg.Body.Set(field.NewAccount(order.BrokerAccount))
+			fixmsg.Body.Set(field.NewHandlInst(util.ProtoEnumToFIXEnum(int(order.HandleInst))))
 
 			// 142 SenderLocationID
 			//     Mandatory for CME exchanges. It contains a 2-character country. For the US and Canada, the state/province is included.

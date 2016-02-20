@@ -95,7 +95,7 @@ func TestOrderRouterNewOrderRequest(t *testing.T) {
 	// mock a test market connector
 	mcname := "MC.TestCase"
 	hbMsg := pService.Heartbeat{
-		Name:   &mcname,
+		Name:   mcname,
 		Status: pService.RUNNING,
 	}
 	if hbMsgData, err := hbMsg.Marshal(); err != nil {
@@ -117,12 +117,12 @@ func TestOrderRouterNewOrderRequest(t *testing.T) {
 				t.Fatalf("unexpected NewOrderResponse error message: %s", *resp.ErrorMessage)
 			}
 
-			if resp.Order == nil || resp.Order.OrderId == nil || *resp.Order.OrderId != 123 {
+			if resp.Order == nil || resp.Order.OrderId != 123 {
 				t.Fatalf("unexpected NewOrderResponse id not matching mock OrderId(123)")
 			}
 
-			if resp.Order == nil || resp.Order.OrderKey == nil || *resp.Order.OrderKey != 2 {
-				t.Fatalf("unexpected NewOrderResponse OrderKey %v, expecting 2", *resp.Order.OrderKey)
+			if resp.Order == nil || resp.Order.OrderKey != 2 {
+				t.Fatalf("unexpected NewOrderResponse OrderKey %v, expecting 2", resp.Order.OrderKey)
 			}
 		}
 	}

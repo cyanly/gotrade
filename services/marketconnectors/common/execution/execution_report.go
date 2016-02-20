@@ -13,14 +13,12 @@ import (
 // Common behaviours to persist and publish populated Execution entity into our data layer and message bus
 func ProcessExecutionReport(er *proto.Execution) {
 
-	ordKey, ordId := exeCore.GetOrderIdentsByClientOrdId(*er.ClientOrderId)
-	if ordKey <= 0 || ordId <= 0 {
-		log.Panic("Unrecognised Order Ident: ", *er.ClientOrderId)
+	er.OrderKey, er.OrderId = exeCore.GetOrderIdentsByClientOrdId(er.ClientOrderId)
+	if er.OrderId <= 0 || er.OrderKey <= 0 {
+		log.Panic("Unrecognised Order Ident: ", er.ClientOrderId)
 	}
-	er.OrderId = &ordId
-	er.OrderKey = &ordKey
 
-	switch *er.ExecType {
+	switch er.ExecType {
 	case proto.Execution_TRADE_CANCEL:
 	case proto.Execution_TRADE_CORRECT:
 		//TODO: TryGetAmendedExecution

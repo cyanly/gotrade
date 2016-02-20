@@ -63,20 +63,20 @@ func init() {
 				return
 			case order := <-newOrderChan:
 
-				if listener, exists := listeningSymbols[*order.Symbol]; exists == false {
+				if listener, exists := listeningSymbols[order.Symbol]; exists == false {
 					quote := &marketdata.Quote{}
 					listener := &OrderBook{
 						OrdersList: make(map[int32]*ems.Order),
-						Symbol:     *order.Symbol,
+						Symbol:     order.Symbol,
 						//			Subscriber: subscriber,
 						Quote: quote,
 					}
-					listeningSymbols[*order.Symbol] = listener
-					listener.OrdersList[*order.OrderId] = order
+					listeningSymbols[order.Symbol] = listener
+					listener.OrdersList[order.OrderId] = order
 
 					go func(order *ems.Order, listener *OrderBook) {
 						quoteInitialReq := &marketdata.QuoteInitialRequest{
-							Symbol: order.Symbol,
+							Symbol: &order.Symbol,
 						}
 						data, _ := quoteInitialReq.Marshal()
 						initMsg, err := PXMessageBus.Request("Schemas.Pricefeed.QuoteInitialRequest", data, 5*time.Second)
@@ -94,7 +94,7 @@ func init() {
 						if len(listener.OrdersList) == 0 {
 							return
 						}
-						subscriber, _ := PXMessageBus.Subscribe(*order.Symbol, func(m *nats.Msg) {
+						subscriber, _ := PXMessageBus.Subscribe(order.Symbol, func(m *nats.Msg) {
 							//Simulate trade filling triggered only by a trade in market
 							quote := &marketdata.Quote{}
 							quote.Unmarshal(m.Data)
@@ -105,10 +105,10 @@ func init() {
 						})
 						listener.Subscriber = subscriber
 
-						log.Println("SUB " + *order.Symbol)
+						log.Println("SUB " + order.Symbol)
 					}(order, listener)
 				} else {
-					listener.OrdersList[*order.OrderId] = order
+					listener.OrdersList[order.OrderId] = order
 				}
 
 			case listener := <-rejectListenerChan:
@@ -117,22 +117,22 @@ func init() {
 					er.NewStatusExecution(order, ems.Execution_REJECTED, "Missing Market Data")
 					OrderUpdateChan <- order
 					if first {
-						delete(listeningSymbols, *order.Symbol)
-						log.Println("UNSUB " + *order.Symbol)
+						delete(listeningSymbols, order.Symbol)
+						log.Println("UNSUB " + order.Symbol)
 						first = false
 					}
 				}
 				listener.Subscriber.Unsubscribe()
 
 			case order := <-removeOrderChan:
-				if listener, exists := listeningSymbols[*order.Symbol]; exists == true {
-					if order, exists := listener.OrdersList[*order.OrderId]; exists == true {
-						delete(listener.OrdersList, *order.OrderId)
+				if listener, exists := listeningSymbols[order.Symbol]; exists == true {
+					if order, exists := listener.OrdersList[order.OrderId]; exists == true {
+						delete(listener.OrdersList, order.OrderId)
 					}
 					if len(listener.OrdersList) == 0 {
 						listener.Subscriber.Unsubscribe()
-						delete(listeningSymbols, *order.Symbol)
-						log.Println("UNSUB " + *order.Symbol)
+						delete(listeningSymbols, order.Symbol)
+						log.Println("UNSUB " + order.Symbol)
 					}
 				}
 			}
@@ -146,10 +146,8 @@ func Close() {
 }
 
 func RegisterOrder(order *ems.Order) {
-	cumqty := float64(0)
-	avgprice := float64(0)
-	order.FilledQuantity = &cumqty
-	order.FilledAvgPrice = &avgprice
+	order.FilledQuantity = float64(0)
+	order.FilledAvgPrice = float64(0)
 
 	newOrderChan <- order
 }
@@ -167,7 +165,7 @@ func (m *OrderBook) ProcessOrderBookUpdate(triggerQuote *marketdata.Quote) {
 		}
 
 		var quotebands *QuoteBand
-		if *order.Side == ems.Side_BUY {
+		if order.Side == ems.Side_BUY {
 			quotebands = askQuotes
 		} else {
 			quotebands = bidQuotes
@@ -176,9 +174,9 @@ func (m *OrderBook) ProcessOrderBookUpdate(triggerQuote *marketdata.Quote) {
 			continue
 		}
 
-		if *order.OrderType == ems.OrderType_MARKET {
-			for quotebands != nil && *order.Quantity > *order.FilledQuantity {
-				fillQty := math.Min(quotebands.quantity, (*order.Quantity - *order.FilledQuantity))
+		if order.OrderType == ems.OrderType_MARKET {
+			for quotebands != nil && order.Quantity > order.FilledQuantity {
+				fillQty := math.Min(quotebands.quantity, (order.Quantity - order.FilledQuantity))
 				DoTrade(order, fillQty, quotebands.price)
 				quotebands.quantity -= fillQty
 				if quotebands.quantity == 0 {
@@ -189,18 +187,18 @@ func (m *OrderBook) ProcessOrderBookUpdate(triggerQuote *marketdata.Quote) {
 		if triggerQuote.LastPrice == nil {
 			continue
 		}
-		if *order.OrderType == ems.OrderType_LIMIT {
-			for quotebands != nil && *order.Quantity > *order.FilledQuantity {
-				if *order.Side == ems.Side_BUY {
-					if *order.LimitPrice < quotebands.price {
+		if order.OrderType == ems.OrderType_LIMIT {
+			for quotebands != nil && order.Quantity > order.FilledQuantity {
+				if order.Side == ems.Side_BUY {
+					if order.LimitPrice < quotebands.price {
 						break
 					}
 				} else {
-					if *order.LimitPrice > quotebands.price {
+					if order.LimitPrice > quotebands.price {
 						break
 					}
 				}
-				fillQty := math.Min(quotebands.quantity, (*order.Quantity - *order.FilledQuantity))
+				fillQty := math.Min(quotebands.quantity, (order.Quantity - order.FilledQuantity))
 				DoTrade(order, fillQty, quotebands.price)
 				quotebands.quantity -= fillQty
 				if quotebands.quantity == 0 {

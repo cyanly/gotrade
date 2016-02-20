@@ -24,76 +24,76 @@ option (gogoproto.goproto_enum_prefix_all) = true;
 
 message Order {
     // Idents
-    required string      client_guid = 1;
-    required int32          order_id = 2;
-    required int32         order_key = 3;
-    required int32           version = 4;
+    required string      client_guid = 1 [(gogoproto.nullable) = false];
+    required int32          order_id = 2 [(gogoproto.nullable) = false];
+    required int32         order_key = 3 [(gogoproto.nullable) = false];
+    required int32           version = 4 [(gogoproto.nullable) = false];
     enum OrderInstruction {
         NEW         = 0;
         CANCEL   	= 1;
         REPLACE     = 2;
     }
-    optional OrderInstruction instruction = 5;
+    optional OrderInstruction instruction = 5 [(gogoproto.nullable) = false];
 
     // basic
-    required Side               side = 6;
-    required double         quantity = 7;
-    required string           symbol = 8;
+    required Side               side = 6 [(gogoproto.nullable) = false];
+    required double         quantity = 7 [(gogoproto.nullable) = false];
+    required string           symbol = 8 [(gogoproto.nullable) = false];
 
     // execution specific
-    required OrderType    order_type = 16;
-    required TimeInForce timeinforce = 17;
-    optional double      limit_price = 18;
-    optional string         exchange = 19;
-    optional string      description = 20;
-    optional double  filled_quantity = 21;
-    optional double filled_avg_price = 22;
-    optional OrderStatus order_status = 23;
+    required OrderType    order_type = 16 [(gogoproto.nullable) = false];
+    required TimeInForce timeinforce = 17 [(gogoproto.nullable) = false];
+    optional double      limit_price = 18 [(gogoproto.nullable) = false];
+    optional string         exchange = 19 [(gogoproto.nullable) = false];
+    optional string      description = 20 [(gogoproto.nullable) = false];
+    optional double  filled_quantity = 21 [(gogoproto.nullable) = false];
+    optional double filled_avg_price = 22 [(gogoproto.nullable) = false];
+    optional OrderStatus order_status = 23 [(gogoproto.nullable) = false];
 
     // accounts
-    required int32        account_id = 30;
-    optional string    broker_userid = 31;
-    optional string   broker_account = 32;
-    optional string market_connector = 33;
+    required int32        account_id = 30 [(gogoproto.nullable) = false];
+    optional string    broker_userid = 31 [(gogoproto.nullable) = false];
+    optional string   broker_account = 32 [(gogoproto.nullable) = false];
+    optional string market_connector = 33 [(gogoproto.nullable) = false];
 
     // execution extra
-    optional string        settl_ccy = 40;
-    required HandlInst   handle_inst = 41;
-    optional string             algo = 42;
-    optional bool        is_complete = 43;
-    optional bool          is_booked = 44;
-    optional bool         is_expired = 45;
-    optional int32  trade_booking_id = 46;
-    optional string       open_close = 47;
+    optional string        settl_ccy = 40 [(gogoproto.nullable) = false];
+    required HandlInst   handle_inst = 41 [(gogoproto.nullable) = false];
+    optional string             algo = 42 [(gogoproto.nullable) = false];
+    optional bool        is_complete = 43 [(gogoproto.nullable) = false];
+    optional bool          is_booked = 44 [(gogoproto.nullable) = false];
+    optional bool         is_expired = 45 [(gogoproto.nullable) = false];
+    optional int32  trade_booking_id = 46 [(gogoproto.nullable) = false];
+    optional string       open_close = 47 [(gogoproto.nullable) = false];
 
     // source
-    optional string           source = 50;
-    optional string           trader = 51;
-    required int32         trader_id = 52;
-    optional string          machine = 53;
-    optional string             memo = 54;
+    optional string           source = 50 [(gogoproto.nullable) = false];
+    optional string           trader = 51 [(gogoproto.nullable) = false];
+    required int32         trader_id = 52 [(gogoproto.nullable) = false];
+    optional string          machine = 53 [(gogoproto.nullable) = false];
+    optional string             memo = 54 [(gogoproto.nullable) = false];
 
     // timing
-    optional string  create_datetime = 60;
-    optional string  submit_datetime = 61;
+    optional string  create_datetime = 60 [(gogoproto.nullable) = false];
+    optional string  submit_datetime = 61 [(gogoproto.nullable) = false];
 
     // array components
-    repeated Execution    executions = 70;
-    repeated Allocation  allocations = 80;
+    repeated Execution    executions = 70 [(gogoproto.nullable) = false];
+    repeated Allocation  allocations = 80 [(gogoproto.nullable) = false];
 }
 
 message Execution {
-    required int32         execution_id = 1;
-    required int32             order_id = 2;
-    optional int32            order_key = 3;
+    required int32         execution_id = 1 [(gogoproto.nullable) = false];
+    required int32             order_id = 2 [(gogoproto.nullable) = false];
+    optional int32            order_key = 3 [(gogoproto.nullable) = false];
 
-    optional string	    client_order_id = 5;
-    optional string     broker_order_id = 6;
-    optional string      broker_exec_id = 7;
-    optional string prev_broker_exec_id = 8;
-    optional int32  cancel_replace_by_exececution_id=9;
+    optional string	    client_order_id = 5 [(gogoproto.nullable) = false];
+    optional string     broker_order_id = 6 [(gogoproto.nullable) = false];
+    optional string      broker_exec_id = 7 [(gogoproto.nullable) = false];
+    optional string prev_broker_exec_id = 8 [(gogoproto.nullable) = false];
+    optional int32  cancel_replace_by_exececution_id=9 [(gogoproto.nullable) = false];
 
-    optional OrderStatus   order_status = 10;
+    optional OrderStatus   order_status = 10 [(gogoproto.nullable) = false];
 
     enum ExecType {
         NEW 			= 0;
@@ -116,39 +116,38 @@ message Execution {
         TRADE_CANCEL 	= 17;
         ORDER_STATUS 	= 18;
     }
-    optional ExecType         exec_type = 11;
+    optional ExecType         exec_type = 11 [(gogoproto.nullable) = false];
 
-    optional double            quantity = 20;
-    optional double               price = 21;
+    optional double            quantity = 20 [(gogoproto.nullable) = false];
+    optional double               price = 21 [(gogoproto.nullable) = false];
 
-    optional string                text = 30;
-    optional string             lastmkt = 31;
-    optional string         exec_broker = 32;
-    optional LastLiquidityInd   last_liquidity = 33;
+    optional string                text = 30 [(gogoproto.nullable) = false];
+    optional string             lastmkt = 31 [(gogoproto.nullable) = false];
+    optional string         exec_broker = 32 [(gogoproto.nullable) = false];
+    optional LastLiquidityInd   last_liquidity = 33 [(gogoproto.nullable) = false];
 
-    optional double        cum_quantity = 50;
-    optional double           avg_price = 51;
-    optional double   calc_cum_quantity = 52;
-    optional double      calc_avg_price = 53;
+    optional double        cum_quantity = 50 [(gogoproto.nullable) = false];
+    optional double           avg_price = 51 [(gogoproto.nullable) = false];
+    optional double   calc_cum_quantity = 52 [(gogoproto.nullable) = false];
+    optional double      calc_avg_price = 53 [(gogoproto.nullable) = false];
 
     // timing
-    optional string broker_exec_datetime = 60;
-    optional string      create_datetime = 61;
+    optional string broker_exec_datetime = 60 [(gogoproto.nullable) = false];
+    optional string      create_datetime = 61 [(gogoproto.nullable) = false];
 }
 
 message Allocation {
-    optional int32         allocation_id = 1;
-    optional int32             order_key = 2;
-    optional int32           strategy_id = 3;
+    optional int32         allocation_id = 1 [(gogoproto.nullable) = false];
+    optional int32             order_key = 2 [(gogoproto.nullable) = false];
+    optional int32           strategy_id = 3 [(gogoproto.nullable) = false];
 
-    optional double             quantity = 10;
-    optional double             ratio    = 11;
+    optional double             quantity = 10 [(gogoproto.nullable) = false];
+    optional double             ratio    = 11 [(gogoproto.nullable) = false];
 }
 
 // ENUMS ==============================================
 
 enum OrderStatus {
-
     NEW                     = 0;
     PARTIALLY_FILLED        = 1;
     FILLED                  = 2;
@@ -188,6 +187,7 @@ enum OrderStatus {
 }
 
 enum Side {
+    UNKNOWN_SIDE        = 0;
     BUY                 = 1;
     SELL                = 2;
     BUY_MINUS           = 3;
@@ -207,6 +207,7 @@ enum Side {
 }
 
 enum OrderType {
+    UNKNOWN_ORDER_TYPE              = 0;
     MARKET                          = 1;
     LIMIT                           = 2;
     STOP                            = 3;
@@ -244,12 +245,14 @@ enum TimeInForce {
 }
 
 enum HandlInst {
+    UNKNOWN_HANDL_INST                  = 0;
     AUTOMATED_EXECUTION_ORDER_PRIVATE   = 1;
     AUTOMATED_EXECUTION_ORDER_PUBLIC    = 2;
     MANUAL_ORDER                        = 3;
 }
 
 enum LastLiquidityInd {
+    UNKNOWN_LAST_LIQUIDITY_IND = 0;
     ADDED_LIQUIDITY         = 1;
     REMOVED_LIQUIDITY       = 2;
     LIQUIDITY_ROUTED_OUT    = 3;
@@ -263,37 +266,37 @@ message NewOrderRequest {
     optional Order order = 1;
 }
 message NewOrderResponse {
-    optional int32 error_code = 1;
+    optional int32 error_code = 1 [(gogoproto.nullable) = false];
     optional string error_message = 2;
     optional Order order = 10;
 
 }
 
 message CancelOrderRequest {
-    required string      client_guid = 1;
-    optional int32          order_id = 2;
-    required int32         order_key = 3;
-    optional int32           version = 4;
-    optional string           source = 50;
-    optional string           trader = 51;
-    required int32         trader_id = 52;
-    optional string          machine = 53;
+    required string      client_guid = 1 [(gogoproto.nullable) = false];
+    optional int32          order_id = 2 [(gogoproto.nullable) = false];
+    required int32         order_key = 3 [(gogoproto.nullable) = false];
+    optional int32           version = 4 [(gogoproto.nullable) = false];
+    optional string           source = 50 [(gogoproto.nullable) = false];
+    optional string           trader = 51 [(gogoproto.nullable) = false];
+    required int32         trader_id = 52 [(gogoproto.nullable) = false];
+    optional string          machine = 53 [(gogoproto.nullable) = false];
 }
 message CancelOrderResponse {
-    optional int32 error_code = 1;
+    optional int32 error_code = 1 [(gogoproto.nullable) = false];
     optional string error_message = 2;
     optional Order order = 10;
 }
 
 message ReplaceOrderRequest {
     optional Order order = 1;
-    optional string           source = 50;
-    optional string           trader = 51;
-    required int32         trader_id = 52;
-    optional string          machine = 53;
+    optional string           source = 50 [(gogoproto.nullable) = false];
+    optional string           trader = 51 [(gogoproto.nullable) = false];
+    required int32         trader_id = 52 [(gogoproto.nullable) = false];
+    optional string          machine = 53 [(gogoproto.nullable) = false];
 }
 message ReplaceOrderResponse {
-    optional int32 error_code = 1;
+    optional int32 error_code = 1 [(gogoproto.nullable) = false];
     optional string error_message = 2;
     optional Order order = 10;
 }

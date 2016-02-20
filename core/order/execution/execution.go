@@ -16,27 +16,24 @@ func NewStatusExecution(o *proto.Order, execType proto.Execution_ExecType, text 
 		OrderId:  o.OrderId,
 		OrderKey: o.OrderKey,
 	}
-	clientOrderId := fmt.Sprintf("%v.%v", *o.OrderKey, *o.Version)
-	execution.ClientOrderId = &clientOrderId
+	clientOrderId := fmt.Sprintf("%v.%v", o.OrderKey, o.Version)
+	execution.ClientOrderId = clientOrderId
 
 	//BrokerOrderId := fmt.Sprintf("SIM-%v", *o.OrderId)
-	execution.BrokerOrderId = &clientOrderId
+	execution.BrokerOrderId = clientOrderId
 
-	BrokerExecId := fmt.Sprintf("%v", len(o.Executions)+1)
-	execution.BrokerExecId = &BrokerExecId
-
+	execution.BrokerExecId = fmt.Sprintf("%v", len(o.Executions)+1)
 	execution.ExecBroker = o.MarketConnector
-
-	execution.ExecType = &execType
+	execution.ExecType = execType
 
 	var OrderStatus proto.OrderStatus
 	switch execType {
 	case proto.Execution_ORDER_STATUS:
 		OrderStatus = proto.OrderStatus_ORDER_SENT
-		if *o.Instruction == proto.Order_CANCEL {
+		if o.Instruction == proto.Order_CANCEL {
 			OrderStatus = proto.OrderStatus_MC_SENT_CANCEL
 		}
-		if *o.Instruction == proto.Order_REPLACE {
+		if o.Instruction == proto.Order_REPLACE {
 			OrderStatus = proto.OrderStatus_MC_SENT_REPLACE
 		}
 	case proto.Execution_NEW:
@@ -52,20 +49,17 @@ func NewStatusExecution(o *proto.Order, execType proto.Execution_ExecType, text 
 	case proto.Execution_REJECTED:
 		OrderStatus = proto.OrderStatus_REJECTED
 	}
-	execution.OrderStatus = &OrderStatus
-
-	BrokerExecDatetime := time.Now().UTC().Format(time.RFC3339Nano)
-	execution.BrokerExecDatetime = &BrokerExecDatetime
+	execution.OrderStatus = OrderStatus
+	execution.BrokerExecDatetime = time.Now().UTC().Format(time.RFC3339Nano)
 
 	if text != "" {
-		execution.Text = &text
+		execution.Text = text
 	}
 
 	if err := InsertExecution(execution); err == nil {
-		o.Executions = append(o.Executions, execution)
+		o.Executions = append(o.Executions, *execution)
 		o.OrderStatus = execution.OrderStatus
-		isComplete := order.IsCompleted(o)
-		o.IsComplete = &isComplete
+		o.IsComplete = order.IsCompleted(o)
 		if err = order.UpdateOrderStatus(o); err == nil {
 			//Publis Execution
 			data, _ := execution.Marshal()
@@ -84,58 +78,51 @@ func NewTradeExecution(o *proto.Order, fillQty float64, fillPrice float64, text 
 		OrderId:  o.OrderId,
 		OrderKey: o.OrderKey,
 	}
-	clientOrderId := fmt.Sprintf("%v.%v", *o.OrderKey, *o.Version)
-	execution.ClientOrderId = &clientOrderId
 
+	clientOrderId := fmt.Sprintf("%v.%v", o.OrderKey, o.Version)
+	execution.ClientOrderId = clientOrderId
 	//BrokerOrderId := fmt.Sprintf("SIM-%v", *o.OrderId)
-	execution.BrokerOrderId = &clientOrderId
+	execution.BrokerOrderId = clientOrderId
 
-	BrokerExecId := fmt.Sprintf("%v", len(o.Executions)+1)
-	execution.BrokerExecId = &BrokerExecId
-
+	execution.BrokerExecId = fmt.Sprintf("%v", len(o.Executions)+1)
 	execution.ExecBroker = o.MarketConnector
-
-	execType := proto.Execution_TRADE
-	execution.ExecType = &execType
+	execution.ExecType = proto.Execution_TRADE
 	OrderStatus := proto.OrderStatus_PARTIALLY_FILLED
-	*o.FilledQuantity += fillQty
-	if *o.FilledQuantity >= *o.Quantity {
+	o.FilledQuantity += fillQty
+	if o.FilledQuantity >= o.Quantity {
 		OrderStatus = proto.OrderStatus_FILLED
 	}
-	execution.OrderStatus = &OrderStatus
+	execution.OrderStatus = OrderStatus
 
-	execution.Quantity = &fillQty
-	execution.Price = &fillPrice
+	execution.Quantity = fillQty
+	execution.Price = fillPrice
 
 	cumQty := fillQty
 	cumAvgPrice := fillPrice * fillQty
 	for i := 0; i < len(o.Executions); i++ {
-		if o.Executions[i].Quantity != nil {
-			cumQty += *o.Executions[i].Quantity
+		if o.Executions[i].Quantity > 0 {
+			cumQty += o.Executions[i].Quantity
 
-			if o.Executions[i].Price != nil {
-				cumAvgPrice += *o.Executions[i].Price * *o.Executions[i].Quantity
+			if o.Executions[i].Price != 0 {
+				cumAvgPrice += o.Executions[i].Price * o.Executions[i].Quantity
 			}
 		}
 	}
 	cumAvgPrice /= cumQty
-	execution.CumQuantity = &cumQty
-	execution.AvgPrice = &cumAvgPrice
-	execution.CalcCumQuantity = &cumQty
-	execution.CalcAvgPrice = &cumAvgPrice
-
-	BrokerExecDatetime := time.Now().UTC().Format(time.RFC3339Nano)
-	execution.BrokerExecDatetime = &BrokerExecDatetime
+	execution.CumQuantity = cumQty
+	execution.AvgPrice = cumAvgPrice
+	execution.CalcCumQuantity = cumQty
+	execution.CalcAvgPrice = cumAvgPrice
+	execution.BrokerExecDatetime = time.Now().UTC().Format(time.RFC3339Nano)
 
 	if text != "" {
-		execution.Text = &text
+		execution.Text = text
 	}
 
 	if err := InsertExecution(execution); err == nil {
-		o.Executions = append(o.Executions, execution)
+		o.Executions = append(o.Executions, *execution)
 		o.OrderStatus = execution.OrderStatus
-		isComplete := order.IsCompleted(o)
-		o.IsComplete = &isComplete
+		o.IsComplete = order.IsCompleted(o)
 		if err = order.UpdateOrderStatus(o); err == nil {
 			//Publish Execution
 			data, _ := execution.Marshal()

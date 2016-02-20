@@ -77,13 +77,13 @@ func (x *Heartbeat_Status) UnmarshalJSON(data []byte) error {
 }
 
 type Heartbeat struct {
-	Name             *string          `protobuf:"bytes,1,req,name=name" json:"name,omitempty"`
-	Id               *string          `protobuf:"bytes,2,opt,name=id" json:"id,omitempty"`
-	Machine          *string          `protobuf:"bytes,3,opt,name=machine" json:"machine,omitempty"`
+	Name             string           `protobuf:"bytes,1,req,name=name" json:"name"`
+	Id               string           `protobuf:"bytes,2,opt,name=id" json:"id"`
+	Machine          string           `protobuf:"bytes,3,opt,name=machine" json:"machine"`
 	Status           Heartbeat_Status `protobuf:"varint,4,opt,name=status,enum=proto.service.Heartbeat_Status" json:"status"`
-	CurrentDatetime  *string          `protobuf:"bytes,5,opt,name=current_datetime" json:"current_datetime,omitempty"`
-	CreationDatetime *string          `protobuf:"bytes,6,opt,name=creation_datetime" json:"creation_datetime,omitempty"`
-	Description      *string          `protobuf:"bytes,7,opt,name=description" json:"description,omitempty"`
+	CurrentDatetime  string           `protobuf:"bytes,5,opt,name=current_datetime" json:"current_datetime"`
+	CreationDatetime string           `protobuf:"bytes,6,opt,name=creation_datetime" json:"creation_datetime"`
+	Description      string           `protobuf:"bytes,7,opt,name=description" json:"description"`
 	XXX_unrecognized []byte           `json:"-"`
 }
 
@@ -91,22 +91,22 @@ func (m *Heartbeat) Reset()      { *m = Heartbeat{} }
 func (*Heartbeat) ProtoMessage() {}
 
 func (m *Heartbeat) GetName() string {
-	if m != nil && m.Name != nil {
-		return *m.Name
+	if m != nil {
+		return m.Name
 	}
 	return ""
 }
 
 func (m *Heartbeat) GetId() string {
-	if m != nil && m.Id != nil {
-		return *m.Id
+	if m != nil {
+		return m.Id
 	}
 	return ""
 }
 
 func (m *Heartbeat) GetMachine() string {
-	if m != nil && m.Machine != nil {
-		return *m.Machine
+	if m != nil {
+		return m.Machine
 	}
 	return ""
 }
@@ -119,22 +119,22 @@ func (m *Heartbeat) GetStatus() Heartbeat_Status {
 }
 
 func (m *Heartbeat) GetCurrentDatetime() string {
-	if m != nil && m.CurrentDatetime != nil {
-		return *m.CurrentDatetime
+	if m != nil {
+		return m.CurrentDatetime
 	}
 	return ""
 }
 
 func (m *Heartbeat) GetCreationDatetime() string {
-	if m != nil && m.CreationDatetime != nil {
-		return *m.CreationDatetime
+	if m != nil {
+		return m.CreationDatetime
 	}
 	return ""
 }
 
 func (m *Heartbeat) GetDescription() string {
-	if m != nil && m.Description != nil {
-		return *m.Description
+	if m != nil {
+		return m.Description
 	}
 	return ""
 }
@@ -182,8 +182,7 @@ func (m *Heartbeat) Unmarshal(data []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			s := string(data[iNdEx:postIndex])
-			m.Name = &s
+			m.Name = string(data[iNdEx:postIndex])
 			iNdEx = postIndex
 			hasFields[0] |= uint64(0x00000001)
 		case 2:
@@ -206,8 +205,7 @@ func (m *Heartbeat) Unmarshal(data []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			s := string(data[iNdEx:postIndex])
-			m.Id = &s
+			m.Id = string(data[iNdEx:postIndex])
 			iNdEx = postIndex
 		case 3:
 			if wireType != 2 {
@@ -229,8 +227,7 @@ func (m *Heartbeat) Unmarshal(data []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			s := string(data[iNdEx:postIndex])
-			m.Machine = &s
+			m.Machine = string(data[iNdEx:postIndex])
 			iNdEx = postIndex
 		case 4:
 			if wireType != 0 {
@@ -267,8 +264,7 @@ func (m *Heartbeat) Unmarshal(data []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			s := string(data[iNdEx:postIndex])
-			m.CurrentDatetime = &s
+			m.CurrentDatetime = string(data[iNdEx:postIndex])
 			iNdEx = postIndex
 		case 6:
 			if wireType != 2 {
@@ -290,8 +286,7 @@ func (m *Heartbeat) Unmarshal(data []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			s := string(data[iNdEx:postIndex])
-			m.CreationDatetime = &s
+			m.CreationDatetime = string(data[iNdEx:postIndex])
 			iNdEx = postIndex
 		case 7:
 			if wireType != 2 {
@@ -313,8 +308,7 @@ func (m *Heartbeat) Unmarshal(data []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			s := string(data[iNdEx:postIndex])
-			m.Description = &s
+			m.Description = string(data[iNdEx:postIndex])
 			iNdEx = postIndex
 		default:
 			var sizeOfWire int
@@ -432,13 +426,13 @@ func (this *Heartbeat) String() string {
 		return "nil"
 	}
 	s := strings.Join([]string{`&Heartbeat{`,
-		`Name:` + valueToStringService(this.Name) + `,`,
-		`Id:` + valueToStringService(this.Id) + `,`,
-		`Machine:` + valueToStringService(this.Machine) + `,`,
+		`Name:` + fmt.Sprintf("%v", this.Name) + `,`,
+		`Id:` + fmt.Sprintf("%v", this.Id) + `,`,
+		`Machine:` + fmt.Sprintf("%v", this.Machine) + `,`,
 		`Status:` + fmt.Sprintf("%v", this.Status) + `,`,
-		`CurrentDatetime:` + valueToStringService(this.CurrentDatetime) + `,`,
-		`CreationDatetime:` + valueToStringService(this.CreationDatetime) + `,`,
-		`Description:` + valueToStringService(this.Description) + `,`,
+		`CurrentDatetime:` + fmt.Sprintf("%v", this.CurrentDatetime) + `,`,
+		`CreationDatetime:` + fmt.Sprintf("%v", this.CreationDatetime) + `,`,
+		`Description:` + fmt.Sprintf("%v", this.Description) + `,`,
 		`XXX_unrecognized:` + fmt.Sprintf("%v", this.XXX_unrecognized) + `,`,
 		`}`,
 	}, "")
@@ -455,31 +449,19 @@ func valueToStringService(v interface{}) string {
 func (m *Heartbeat) Size() (n int) {
 	var l int
 	_ = l
-	if m.Name != nil {
-		l = len(*m.Name)
-		n += 1 + l + sovService(uint64(l))
-	}
-	if m.Id != nil {
-		l = len(*m.Id)
-		n += 1 + l + sovService(uint64(l))
-	}
-	if m.Machine != nil {
-		l = len(*m.Machine)
-		n += 1 + l + sovService(uint64(l))
-	}
+	l = len(m.Name)
+	n += 1 + l + sovService(uint64(l))
+	l = len(m.Id)
+	n += 1 + l + sovService(uint64(l))
+	l = len(m.Machine)
+	n += 1 + l + sovService(uint64(l))
 	n += 1 + sovService(uint64(m.Status))
-	if m.CurrentDatetime != nil {
-		l = len(*m.CurrentDatetime)
-		n += 1 + l + sovService(uint64(l))
-	}
-	if m.CreationDatetime != nil {
-		l = len(*m.CreationDatetime)
-		n += 1 + l + sovService(uint64(l))
-	}
-	if m.Description != nil {
-		l = len(*m.Description)
-		n += 1 + l + sovService(uint64(l))
-	}
+	l = len(m.CurrentDatetime)
+	n += 1 + l + sovService(uint64(l))
+	l = len(m.CreationDatetime)
+	n += 1 + l + sovService(uint64(l))
+	l = len(m.Description)
+	n += 1 + l + sovService(uint64(l))
 	if m.XXX_unrecognized != nil {
 		n += len(m.XXX_unrecognized)
 	}
@@ -501,29 +483,13 @@ func sozService(x uint64) (n int) {
 }
 func NewPopulatedHeartbeat(r randyService, easy bool) *Heartbeat {
 	this := &Heartbeat{}
-	v1 := randStringService(r)
-	this.Name = &v1
-	if r.Intn(10) != 0 {
-		v2 := randStringService(r)
-		this.Id = &v2
-	}
-	if r.Intn(10) != 0 {
-		v3 := randStringService(r)
-		this.Machine = &v3
-	}
+	this.Name = randStringService(r)
+	this.Id = randStringService(r)
+	this.Machine = randStringService(r)
 	this.Status = Heartbeat_Status([]int32{0, 1, 2, 3, 4}[r.Intn(5)])
-	if r.Intn(10) != 0 {
-		v4 := randStringService(r)
-		this.CurrentDatetime = &v4
-	}
-	if r.Intn(10) != 0 {
-		v5 := randStringService(r)
-		this.CreationDatetime = &v5
-	}
-	if r.Intn(10) != 0 {
-		v6 := randStringService(r)
-		this.Description = &v6
-	}
+	this.CurrentDatetime = randStringService(r)
+	this.CreationDatetime = randStringService(r)
+	this.Description = randStringService(r)
 	if !easy && r.Intn(10) != 0 {
 		this.XXX_unrecognized = randUnrecognizedService(r, 8)
 	}
@@ -549,9 +515,9 @@ func randUTF8RuneService(r randyService) rune {
 	return rune(ru + 61)
 }
 func randStringService(r randyService) string {
-	v7 := r.Intn(100)
-	tmps := make([]rune, v7)
-	for i := 0; i < v7; i++ {
+	v1 := r.Intn(100)
+	tmps := make([]rune, v1)
+	for i := 0; i < v1; i++ {
 		tmps[i] = randUTF8RuneService(r)
 	}
 	return string(tmps)
@@ -573,11 +539,11 @@ func randFieldService(data []byte, r randyService, fieldNumber int, wire int) []
 	switch wire {
 	case 0:
 		data = encodeVarintPopulateService(data, uint64(key))
-		v8 := r.Int63()
+		v2 := r.Int63()
 		if r.Intn(2) == 0 {
-			v8 *= -1
+			v2 *= -1
 		}
-		data = encodeVarintPopulateService(data, uint64(v8))
+		data = encodeVarintPopulateService(data, uint64(v2))
 	case 1:
 		data = encodeVarintPopulateService(data, uint64(key))
 		data = append(data, byte(r.Intn(256)), byte(r.Intn(256)), byte(r.Intn(256)), byte(r.Intn(256)), byte(r.Intn(256)), byte(r.Intn(256)), byte(r.Intn(256)), byte(r.Intn(256)))
@@ -617,47 +583,33 @@ func (m *Heartbeat) MarshalTo(data []byte) (n int, err error) {
 	_ = i
 	var l int
 	_ = l
-	if m.Name == nil {
-		return 0, github_com_gogo_protobuf_proto.NewRequiredNotSetError("name")
-	} else {
-		data[i] = 0xa
-		i++
-		i = encodeVarintService(data, i, uint64(len(*m.Name)))
-		i += copy(data[i:], *m.Name)
-	}
-	if m.Id != nil {
-		data[i] = 0x12
-		i++
-		i = encodeVarintService(data, i, uint64(len(*m.Id)))
-		i += copy(data[i:], *m.Id)
-	}
-	if m.Machine != nil {
-		data[i] = 0x1a
-		i++
-		i = encodeVarintService(data, i, uint64(len(*m.Machine)))
-		i += copy(data[i:], *m.Machine)
-	}
+	data[i] = 0xa
+	i++
+	i = encodeVarintService(data, i, uint64(len(m.Name)))
+	i += copy(data[i:], m.Name)
+	data[i] = 0x12
+	i++
+	i = encodeVarintService(data, i, uint64(len(m.Id)))
+	i += copy(data[i:], m.Id)
+	data[i] = 0x1a
+	i++
+	i = encodeVarintService(data, i, uint64(len(m.Machine)))
+	i += copy(data[i:], m.Machine)
 	data[i] = 0x20
 	i++
 	i = encodeVarintService(data, i, uint64(m.Status))
-	if m.CurrentDatetime != nil {
-		data[i] = 0x2a
-		i++
-		i = encodeVarintService(data, i, uint64(len(*m.CurrentDatetime)))
-		i += copy(data[i:], *m.CurrentDatetime)
-	}
-	if m.CreationDatetime != nil {
-		data[i] = 0x32
-		i++
-		i = encodeVarintService(data, i, uint64(len(*m.CreationDatetime)))
-		i += copy(data[i:], *m.CreationDatetime)
-	}
-	if m.Description != nil {
-		data[i] = 0x3a
-		i++
-		i = encodeVarintService(data, i, uint64(len(*m.Description)))
-		i += copy(data[i:], *m.Description)
-	}
+	data[i] = 0x2a
+	i++
+	i = encodeVarintService(data, i, uint64(len(m.CurrentDatetime)))
+	i += copy(data[i:], m.CurrentDatetime)
+	data[i] = 0x32
+	i++
+	i = encodeVarintService(data, i, uint64(len(m.CreationDatetime)))
+	i += copy(data[i:], m.CreationDatetime)
+	data[i] = 0x3a
+	i++
+	i = encodeVarintService(data, i, uint64(len(m.Description)))
+	i += copy(data[i:], m.Description)
 	if m.XXX_unrecognized != nil {
 		i += copy(data[i:], m.XXX_unrecognized)
 	}
@@ -696,13 +648,13 @@ func (this *Heartbeat) GoString() string {
 		return "nil"
 	}
 	s := strings.Join([]string{`&service.Heartbeat{` +
-		`Name:` + valueToGoStringService(this.Name, "string"),
-		`Id:` + valueToGoStringService(this.Id, "string"),
-		`Machine:` + valueToGoStringService(this.Machine, "string"),
+		`Name:` + fmt.Sprintf("%#v", this.Name),
+		`Id:` + fmt.Sprintf("%#v", this.Id),
+		`Machine:` + fmt.Sprintf("%#v", this.Machine),
 		`Status:` + fmt.Sprintf("%#v", this.Status),
-		`CurrentDatetime:` + valueToGoStringService(this.CurrentDatetime, "string"),
-		`CreationDatetime:` + valueToGoStringService(this.CreationDatetime, "string"),
-		`Description:` + valueToGoStringService(this.Description, "string"),
+		`CurrentDatetime:` + fmt.Sprintf("%#v", this.CurrentDatetime),
+		`CreationDatetime:` + fmt.Sprintf("%#v", this.CreationDatetime),
+		`Description:` + fmt.Sprintf("%#v", this.Description),
 		`XXX_unrecognized:` + fmt.Sprintf("%#v", this.XXX_unrecognized) + `}`}, ", ")
 	return s
 }
@@ -751,61 +703,25 @@ func (this *Heartbeat) VerboseEqual(that interface{}) error {
 	} else if this == nil {
 		return fmt.Errorf("that is type *Heartbeatbut is not nil && this == nil")
 	}
-	if this.Name != nil && that1.Name != nil {
-		if *this.Name != *that1.Name {
-			return fmt.Errorf("Name this(%v) Not Equal that(%v)", *this.Name, *that1.Name)
-		}
-	} else if this.Name != nil {
-		return fmt.Errorf("this.Name == nil && that.Name != nil")
-	} else if that1.Name != nil {
+	if this.Name != that1.Name {
 		return fmt.Errorf("Name this(%v) Not Equal that(%v)", this.Name, that1.Name)
 	}
-	if this.Id != nil && that1.Id != nil {
-		if *this.Id != *that1.Id {
-			return fmt.Errorf("Id this(%v) Not Equal that(%v)", *this.Id, *that1.Id)
-		}
-	} else if this.Id != nil {
-		return fmt.Errorf("this.Id == nil && that.Id != nil")
-	} else if that1.Id != nil {
+	if this.Id != that1.Id {
 		return fmt.Errorf("Id this(%v) Not Equal that(%v)", this.Id, that1.Id)
 	}
-	if this.Machine != nil && that1.Machine != nil {
-		if *this.Machine != *that1.Machine {
-			return fmt.Errorf("Machine this(%v) Not Equal that(%v)", *this.Machine, *that1.Machine)
-		}
-	} else if this.Machine != nil {
-		return fmt.Errorf("this.Machine == nil && that.Machine != nil")
-	} else if that1.Machine != nil {
+	if this.Machine != that1.Machine {
 		return fmt.Errorf("Machine this(%v) Not Equal that(%v)", this.Machine, that1.Machine)
 	}
 	if this.Status != that1.Status {
 		return fmt.Errorf("Status this(%v) Not Equal that(%v)", this.Status, that1.Status)
 	}
-	if this.CurrentDatetime != nil && that1.CurrentDatetime != nil {
-		if *this.CurrentDatetime != *that1.CurrentDatetime {
-			return fmt.Errorf("CurrentDatetime this(%v) Not Equal that(%v)", *this.CurrentDatetime, *that1.CurrentDatetime)
-		}
-	} else if this.CurrentDatetime != nil {
-		return fmt.Errorf("this.CurrentDatetime == nil && that.CurrentDatetime != nil")
-	} else if that1.CurrentDatetime != nil {
+	if this.CurrentDatetime != that1.CurrentDatetime {
 		return fmt.Errorf("CurrentDatetime this(%v) Not Equal that(%v)", this.CurrentDatetime, that1.CurrentDatetime)
 	}
-	if this.CreationDatetime != nil && that1.CreationDatetime != nil {
-		if *this.CreationDatetime != *that1.CreationDatetime {
-			return fmt.Errorf("CreationDatetime this(%v) Not Equal that(%v)", *this.CreationDatetime, *that1.CreationDatetime)
-		}
-	} else if this.CreationDatetime != nil {
-		return fmt.Errorf("this.CreationDatetime == nil && that.CreationDatetime != nil")
-	} else if that1.CreationDatetime != nil {
+	if this.CreationDatetime != that1.CreationDatetime {
 		return fmt.Errorf("CreationDatetime this(%v) Not Equal that(%v)", this.CreationDatetime, that1.CreationDatetime)
 	}
-	if this.Description != nil && that1.Description != nil {
-		if *this.Description != *that1.Description {
-			return fmt.Errorf("Description this(%v) Not Equal that(%v)", *this.Description, *that1.Description)
-		}
-	} else if this.Description != nil {
-		return fmt.Errorf("this.Description == nil && that.Description != nil")
-	} else if that1.Description != nil {
+	if this.Description != that1.Description {
 		return fmt.Errorf("Description this(%v) Not Equal that(%v)", this.Description, that1.Description)
 	}
 	if !bytes.Equal(this.XXX_unrecognized, that1.XXX_unrecognized) {
@@ -833,61 +749,25 @@ func (this *Heartbeat) Equal(that interface{}) bool {
 	} else if this == nil {
 		return false
 	}
-	if this.Name != nil && that1.Name != nil {
-		if *this.Name != *that1.Name {
-			return false
-		}
-	} else if this.Name != nil {
-		return false
-	} else if that1.Name != nil {
+	if this.Name != that1.Name {
 		return false
 	}
-	if this.Id != nil && that1.Id != nil {
-		if *this.Id != *that1.Id {
-			return false
-		}
-	} else if this.Id != nil {
-		return false
-	} else if that1.Id != nil {
+	if this.Id != that1.Id {
 		return false
 	}
-	if this.Machine != nil && that1.Machine != nil {
-		if *this.Machine != *that1.Machine {
-			return false
-		}
-	} else if this.Machine != nil {
-		return false
-	} else if that1.Machine != nil {
+	if this.Machine != that1.Machine {
 		return false
 	}
 	if this.Status != that1.Status {
 		return false
 	}
-	if this.CurrentDatetime != nil && that1.CurrentDatetime != nil {
-		if *this.CurrentDatetime != *that1.CurrentDatetime {
-			return false
-		}
-	} else if this.CurrentDatetime != nil {
-		return false
-	} else if that1.CurrentDatetime != nil {
+	if this.CurrentDatetime != that1.CurrentDatetime {
 		return false
 	}
-	if this.CreationDatetime != nil && that1.CreationDatetime != nil {
-		if *this.CreationDatetime != *that1.CreationDatetime {
-			return false
-		}
-	} else if this.CreationDatetime != nil {
-		return false
-	} else if that1.CreationDatetime != nil {
+	if this.CreationDatetime != that1.CreationDatetime {
 		return false
 	}
-	if this.Description != nil && that1.Description != nil {
-		if *this.Description != *that1.Description {
-			return false
-		}
-	} else if this.Description != nil {
-		return false
-	} else if that1.Description != nil {
+	if this.Description != that1.Description {
 		return false
 	}
 	if !bytes.Equal(this.XXX_unrecognized, that1.XXX_unrecognized) {

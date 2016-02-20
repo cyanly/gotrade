@@ -31,11 +31,11 @@ message Heartbeat {
         STOPPING = 4;
     }
 
-    required string name =              1;
-    optional string id =                2;
-    optional string machine =           3;
+    required string name =              1 [(gogoproto.nullable) = false];
+    optional string id =                2 [(gogoproto.nullable) = false];
+    optional string machine =           3 [(gogoproto.nullable) = false];
     optional Status status =            4 [(gogoproto.nullable) = false];
-    optional string current_datetime =  5;
-    optional string creation_datetime = 6;
-    optional string description =       7;
+    optional string current_datetime =  5 [(gogoproto.nullable) = false];
+    optional string creation_datetime = 6 [(gogoproto.nullable) = false];
+    optional string description =       7 [(gogoproto.nullable) = false];
 }

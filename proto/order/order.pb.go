@@ -177,6 +177,7 @@ func (x *OrderStatus) UnmarshalJSON(data []byte) error {
 type Side int32
 
 const (
+	Side_UNKNOWN_SIDE       Side = 0
 	Side_BUY                Side = 1
 	Side_SELL               Side = 2
 	Side_BUY_MINUS          Side = 3
@@ -196,6 +197,7 @@ const (
 )
 
 var Side_name = map[int32]string{
+	0:  "UNKNOWN_SIDE",
 	1:  "BUY",
 	2:  "SELL",
 	3:  "BUY_MINUS",
@@ -214,6 +216,7 @@ var Side_name = map[int32]string{
 	16: "BORROW",
 }
 var Side_value = map[string]int32{
+	"UNKNOWN_SIDE":       0,
 	"BUY":                1,
 	"SELL":               2,
 	"BUY_MINUS":          3,
@@ -252,6 +255,7 @@ func (x *Side) UnmarshalJSON(data []byte) error {
 type OrderType int32
 
 const (
+	OrderType_UNKNOWN_ORDER_TYPE            OrderType = 0
 	OrderType_MARKET                        OrderType = 1
 	OrderType_LIMIT                         OrderType = 2
 	OrderType_STOP                          OrderType = 3
@@ -278,6 +282,7 @@ const (
 )
 
 var OrderType_name = map[int32]string{
+	0:  "UNKNOWN_ORDER_TYPE",
 	1:  "MARKET",
 	2:  "LIMIT",
 	3:  "STOP",
@@ -303,6 +308,7 @@ var OrderType_name = map[int32]string{
 	23: "PEGGED",
 }
 var OrderType_value = map[string]int32{
+	"UNKNOWN_ORDER_TYPE":            0,
 	"MARKET":                        1,
 	"LIMIT":                         2,
 	"STOP":                          3,
@@ -399,17 +405,20 @@ func (x *TimeInForce) UnmarshalJSON(data []byte) error {
 type HandlInst int32
 
 const (
+	HandlInst_UNKNOWN_HANDL_INST                HandlInst = 0
 	HandlInst_AUTOMATED_EXECUTION_ORDER_PRIVATE HandlInst = 1
 	HandlInst_AUTOMATED_EXECUTION_ORDER_PUBLIC  HandlInst = 2
 	HandlInst_MANUAL_ORDER                      HandlInst = 3
 )
 
 var HandlInst_name = map[int32]string{
+	0: "UNKNOWN_HANDL_INST",
 	1: "AUTOMATED_EXECUTION_ORDER_PRIVATE",
 	2: "AUTOMATED_EXECUTION_ORDER_PUBLIC",
 	3: "MANUAL_ORDER",
 }
 var HandlInst_value = map[string]int32{
+	"UNKNOWN_HANDL_INST":                0,
 	"AUTOMATED_EXECUTION_ORDER_PRIVATE": 1,
 	"AUTOMATED_EXECUTION_ORDER_PUBLIC":  2,
 	"MANUAL_ORDER":                      3,
@@ -435,23 +444,26 @@ func (x *HandlInst) UnmarshalJSON(data []byte) error {
 type LastLiquidityInd int32
 
 const (
-	LastLiquidityInd_ADDED_LIQUIDITY      LastLiquidityInd = 1
-	LastLiquidityInd_REMOVED_LIQUIDITY    LastLiquidityInd = 2
-	LastLiquidityInd_LIQUIDITY_ROUTED_OUT LastLiquidityInd = 3
-	LastLiquidityInd_AUCTION              LastLiquidityInd = 4
+	LastLiquidityInd_UNKNOWN_LAST_LIQUIDITY_IND LastLiquidityInd = 0
+	LastLiquidityInd_ADDED_LIQUIDITY            LastLiquidityInd = 1
+	LastLiquidityInd_REMOVED_LIQUIDITY          LastLiquidityInd = 2
+	LastLiquidityInd_LIQUIDITY_ROUTED_OUT       LastLiquidityInd = 3
+	LastLiquidityInd_AUCTION                    LastLiquidityInd = 4
 )
 
 var LastLiquidityInd_name = map[int32]string{
+	0: "UNKNOWN_LAST_LIQUIDITY_IND",
 	1: "ADDED_LIQUIDITY",
 	2: "REMOVED_LIQUIDITY",
 	3: "LIQUIDITY_ROUTED_OUT",
 	4: "AUCTION",
 }
 var LastLiquidityInd_value = map[string]int32{
-	"ADDED_LIQUIDITY":      1,
-	"REMOVED_LIQUIDITY":    2,
-	"LIQUIDITY_ROUTED_OUT": 3,
-	"AUCTION":              4,
+	"UNKNOWN_LAST_LIQUIDITY_IND": 0,
+	"ADDED_LIQUIDITY":            1,
+	"REMOVED_LIQUIDITY":          2,
+	"LIQUIDITY_ROUTED_OUT":       3,
+	"AUCTION":                    4,
 }
 
 func (x LastLiquidityInd) Enum() *LastLiquidityInd {
@@ -593,309 +605,309 @@ func (x *Execution_ExecType) UnmarshalJSON(data []byte) error {
 
 type Order struct {
 	// Idents
-	ClientGuid  *string                 `protobuf:"bytes,1,req,name=client_guid" json:"client_guid,omitempty"`
-	OrderId     *int32                  `protobuf:"varint,2,req,name=order_id" json:"order_id,omitempty"`
-	OrderKey    *int32                  `protobuf:"varint,3,req,name=order_key" json:"order_key,omitempty"`
-	Version     *int32                  `protobuf:"varint,4,req,name=version" json:"version,omitempty"`
-	Instruction *Order_OrderInstruction `protobuf:"varint,5,opt,name=instruction,enum=proto.order.Order_OrderInstruction" json:"instruction,omitempty"`
+	ClientGuid  string                 `protobuf:"bytes,1,req,name=client_guid" json:"client_guid"`
+	OrderId     int32                  `protobuf:"varint,2,req,name=order_id" json:"order_id"`
+	OrderKey    int32                  `protobuf:"varint,3,req,name=order_key" json:"order_key"`
+	Version     int32                  `protobuf:"varint,4,req,name=version" json:"version"`
+	Instruction Order_OrderInstruction `protobuf:"varint,5,opt,name=instruction,enum=proto.order.Order_OrderInstruction" json:"instruction"`
 	// basic
-	Side     *Side    `protobuf:"varint,6,req,name=side,enum=proto.order.Side" json:"side,omitempty"`
-	Quantity *float64 `protobuf:"fixed64,7,req,name=quantity" json:"quantity,omitempty"`
-	Symbol   *string  `protobuf:"bytes,8,req,name=symbol" json:"symbol,omitempty"`
+	Side     Side    `protobuf:"varint,6,req,name=side,enum=proto.order.Side" json:"side"`
+	Quantity float64 `protobuf:"fixed64,7,req,name=quantity" json:"quantity"`
+	Symbol   string  `protobuf:"bytes,8,req,name=symbol" json:"symbol"`
 	// execution specific
-	OrderType      *OrderType   `protobuf:"varint,16,req,name=order_type,enum=proto.order.OrderType" json:"order_type,omitempty"`
-	Timeinforce    *TimeInForce `protobuf:"varint,17,req,name=timeinforce,enum=proto.order.TimeInForce" json:"timeinforce,omitempty"`
-	LimitPrice     *float64     `protobuf:"fixed64,18,opt,name=limit_price" json:"limit_price,omitempty"`
-	Exchange       *string      `protobuf:"bytes,19,opt,name=exchange" json:"exchange,omitempty"`
-	Description    *string      `protobuf:"bytes,20,opt,name=description" json:"description,omitempty"`
-	FilledQuantity *float64     `protobuf:"fixed64,21,opt,name=filled_quantity" json:"filled_quantity,omitempty"`
-	FilledAvgPrice *float64     `protobuf:"fixed64,22,opt,name=filled_avg_price" json:"filled_avg_price,omitempty"`
-	OrderStatus    *OrderStatus `protobuf:"varint,23,opt,name=order_status,enum=proto.order.OrderStatus" json:"order_status,omitempty"`
+	OrderType      OrderType   `protobuf:"varint,16,req,name=order_type,enum=proto.order.OrderType" json:"order_type"`
+	Timeinforce    TimeInForce `protobuf:"varint,17,req,name=timeinforce,enum=proto.order.TimeInForce" json:"timeinforce"`
+	LimitPrice     float64     `protobuf:"fixed64,18,opt,name=limit_price" json:"limit_price"`
+	Exchange       string      `protobuf:"bytes,19,opt,name=exchange" json:"exchange"`
+	Description    string      `protobuf:"bytes,20,opt,name=description" json:"description"`
+	FilledQuantity float64     `protobuf:"fixed64,21,opt,name=filled_quantity" json:"filled_quantity"`
+	FilledAvgPrice float64     `protobuf:"fixed64,22,opt,name=filled_avg_price" json:"filled_avg_price"`
+	OrderStatus    OrderStatus `protobuf:"varint,23,opt,name=order_status,enum=proto.order.OrderStatus" json:"order_status"`
 	// accounts
-	AccountId       *int32  `protobuf:"varint,30,req,name=account_id" json:"account_id,omitempty"`
-	BrokerUserid    *string `protobuf:"bytes,31,opt,name=broker_userid" json:"broker_userid,omitempty"`
-	BrokerAccount   *string `protobuf:"bytes,32,opt,name=broker_account" json:"broker_account,omitempty"`
-	MarketConnector *string `protobuf:"bytes,33,opt,name=market_connector" json:"market_connector,omitempty"`
+	AccountId       int32  `protobuf:"varint,30,req,name=account_id" json:"account_id"`
+	BrokerUserid    string `protobuf:"bytes,31,opt,name=broker_userid" json:"broker_userid"`
+	BrokerAccount   string `protobuf:"bytes,32,opt,name=broker_account" json:"broker_account"`
+	MarketConnector string `protobuf:"bytes,33,opt,name=market_connector" json:"market_connector"`
 	// execution extra
-	SettlCcy       *string    `protobuf:"bytes,40,opt,name=settl_ccy" json:"settl_ccy,omitempty"`
-	HandleInst     *HandlInst `protobuf:"varint,41,req,name=handle_inst,enum=proto.order.HandlInst" json:"handle_inst,omitempty"`
-	Algo           *string    `protobuf:"bytes,42,opt,name=algo" json:"algo,omitempty"`
-	IsComplete     *bool      `protobuf:"varint,43,opt,name=is_complete" json:"is_complete,omitempty"`
-	IsBooked       *bool      `protobuf:"varint,44,opt,name=is_booked" json:"is_booked,omitempty"`
-	IsExpired      *bool      `protobuf:"varint,45,opt,name=is_expired" json:"is_expired,omitempty"`
-	TradeBookingId *int32     `protobuf:"varint,46,opt,name=trade_booking_id" json:"trade_booking_id,omitempty"`
-	OpenClose      *string    `protobuf:"bytes,47,opt,name=open_close" json:"open_close,omitempty"`
+	SettlCcy       string    `protobuf:"bytes,40,opt,name=settl_ccy" json:"settl_ccy"`
+	HandleInst     HandlInst `protobuf:"varint,41,req,name=handle_inst,enum=proto.order.HandlInst" json:"handle_inst"`
+	Algo           string    `protobuf:"bytes,42,opt,name=algo" json:"algo"`
+	IsComplete     bool      `protobuf:"varint,43,opt,name=is_complete" json:"is_complete"`
+	IsBooked       bool      `protobuf:"varint,44,opt,name=is_booked" json:"is_booked"`
+	IsExpired      bool      `protobuf:"varint,45,opt,name=is_expired" json:"is_expired"`
+	TradeBookingId int32     `protobuf:"varint,46,opt,name=trade_booking_id" json:"trade_booking_id"`
+	OpenClose      string    `protobuf:"bytes,47,opt,name=open_close" json:"open_close"`
 	// source
-	Source   *string `protobuf:"bytes,50,opt,name=source" json:"source,omitempty"`
-	Trader   *string `protobuf:"bytes,51,opt,name=trader" json:"trader,omitempty"`
-	TraderId *int32  `protobuf:"varint,52,req,name=trader_id" json:"trader_id,omitempty"`
-	Machine  *string `protobuf:"bytes,53,opt,name=machine" json:"machine,omitempty"`
-	Memo     *string `protobuf:"bytes,54,opt,name=memo" json:"memo,omitempty"`
+	Source   string `protobuf:"bytes,50,opt,name=source" json:"source"`
+	Trader   string `protobuf:"bytes,51,opt,name=trader" json:"trader"`
+	TraderId int32  `protobuf:"varint,52,req,name=trader_id" json:"trader_id"`
+	Machine  string `protobuf:"bytes,53,opt,name=machine" json:"machine"`
+	Memo     string `protobuf:"bytes,54,opt,name=memo" json:"memo"`
 	// timing
-	CreateDatetime *string `protobuf:"bytes,60,opt,name=create_datetime" json:"create_datetime,omitempty"`
-	SubmitDatetime *string `protobuf:"bytes,61,opt,name=submit_datetime" json:"submit_datetime,omitempty"`
+	CreateDatetime string `protobuf:"bytes,60,opt,name=create_datetime" json:"create_datetime"`
+	SubmitDatetime string `protobuf:"bytes,61,opt,name=submit_datetime" json:"submit_datetime"`
 	// array components
-	Executions       []*Execution  `protobuf:"bytes,70,rep,name=executions" json:"executions,omitempty"`
-	Allocations      []*Allocation `protobuf:"bytes,80,rep,name=allocations" json:"allocations,omitempty"`
-	XXX_unrecognized []byte        `json:"-"`
+	Executions       []Execution  `protobuf:"bytes,70,rep,name=executions" json:"executions"`
+	Allocations      []Allocation `protobuf:"bytes,80,rep,name=allocations" json:"allocations"`
+	XXX_unrecognized []byte       `json:"-"`
 }
 
 func (m *Order) Reset()      { *m = Order{} }
 func (*Order) ProtoMessage() {}
 
 func (m *Order) GetClientGuid() string {
-	if m != nil && m.ClientGuid != nil {
-		return *m.ClientGuid
+	if m != nil {
+		return m.ClientGuid
 	}
 	return ""
 }
 
 func (m *Order) GetOrderId() int32 {
-	if m != nil && m.OrderId != nil {
-		return *m.OrderId
+	if m != nil {
+		return m.OrderId
 	}
 	return 0
 }
 
 func (m *Order) GetOrderKey() int32 {
-	if m != nil && m.OrderKey != nil {
-		return *m.OrderKey
+	if m != nil {
+		return m.OrderKey
 	}
 	return 0
 }
 
 func (m *Order) GetVersion() int32 {
-	if m != nil && m.Version != nil {
-		return *m.Version
+	if m != nil {
+		return m.Version
 	}
 	return 0
 }
 
 func (m *Order) GetInstruction() Order_OrderInstruction {
-	if m != nil && m.Instruction != nil {
-		return *m.Instruction
+	if m != nil {
+		return m.Instruction
 	}
 	return Order_NEW
 }
 
 func (m *Order) GetSide() Side {
-	if m != nil && m.Side != nil {
-		return *m.Side
+	if m != nil {
+		return m.Side
 	}
-	return Side_BUY
+	return Side_UNKNOWN_SIDE
 }
 
 func (m *Order) GetQuantity() float64 {
-	if m != nil && m.Quantity != nil {
-		return *m.Quantity
+	if m != nil {
+		return m.Quantity
 	}
 	return 0
 }
 
 func (m *Order) GetSymbol() string {
-	if m != nil && m.Symbol != nil {
-		return *m.Symbol
+	if m != nil {
+		return m.Symbol
 	}
 	return ""
 }
 
 func (m *Order) GetOrderType() OrderType {
-	if m != nil && m.OrderType != nil {
-		return *m.OrderType
+	if m != nil {
+		return m.OrderType
 	}
-	return OrderType_MARKET
+	return OrderType_UNKNOWN_ORDER_TYPE
 }
 
 func (m *Order) GetTimeinforce() TimeInForce {
-	if m != nil && m.Timeinforce != nil {
-		return *m.Timeinforce
+	if m != nil {
+		return m.Timeinforce
 	}
 	return TimeInForce_DAY
 }
 
 func (m *Order) GetLimitPrice() float64 {
-	if m != nil && m.LimitPrice != nil {
-		return *m.LimitPrice
+	if m != nil {
+		return m.LimitPrice
 	}
 	return 0
 }
 
 func (m *Order) GetExchange() string {
-	if m != nil && m.Exchange != nil {
-		return *m.Exchange
+	if m != nil {
+		return m.Exchange
 	}
 	return ""
 }
 
 func (m *Order) GetDescription() string {
-	if m != nil && m.Description != nil {
-		return *m.Description
+	if m != nil {
+		return m.Description
 	}
 	return ""
 }
 
 func (m *Order) GetFilledQuantity() float64 {
-	if m != nil && m.FilledQuantity != nil {
-		return *m.FilledQuantity
+	if m != nil {
+		return m.FilledQuantity
 	}
 	return 0
 }
 
 func (m *Order) GetFilledAvgPrice() float64 {
-	if m != nil && m.FilledAvgPrice != nil {
-		return *m.FilledAvgPrice
+	if m != nil {
+		return m.FilledAvgPrice
 	}
 	return 0
 }
 
 func (m *Order) GetOrderStatus() OrderStatus {
-	if m != nil && m.OrderStatus != nil {
-		return *m.OrderStatus
+	if m != nil {
+		return m.OrderStatus
 	}
 	return OrderStatus_NEW
 }
 
 func (m *Order) GetAccountId() int32 {
-	if m != nil && m.AccountId != nil {
-		return *m.AccountId
+	if m != nil {
+		return m.AccountId
 	}
 	return 0
 }
 
 func (m *Order) GetBrokerUserid() string {
-	if m != nil && m.BrokerUserid != nil {
-		return *m.BrokerUserid
+	if m != nil {
+		return m.BrokerUserid
 	}
 	return ""
 }
 
 func (m *Order) GetBrokerAccount() string {
-	if m != nil && m.BrokerAccount != nil {
-		return *m.BrokerAccount
+	if m != nil {
+		return m.BrokerAccount
 	}
 	return ""
 }
 
 func (m *Order) GetMarketConnector() string {
-	if m != nil && m.MarketConnector != nil {
-		return *m.MarketConnector
+	if m != nil {
+		return m.MarketConnector
 	}
 	return ""
 }
 
 func (m *Order) GetSettlCcy() string {
-	if m != nil && m.SettlCcy != nil {
-		return *m.SettlCcy
+	if m != nil {
+		return m.SettlCcy
 	}
 	return ""
 }
 
 func (m *Order) GetHandleInst() HandlInst {
-	if m != nil && m.HandleInst != nil {
-		return *m.HandleInst
+	if m != nil {
+		return m.HandleInst
 	}
-	return HandlInst_AUTOMATED_EXECUTION_ORDER_PRIVATE
+	return HandlInst_UNKNOWN_HANDL_INST
 }
 
 func (m *Order) GetAlgo() string {
-	if m != nil && m.Algo != nil {
-		return *m.Algo
+	if m != nil {
+		return m.Algo
 	}
 	return ""
 }
 
 func (m *Order) GetIsComplete() bool {
-	if m != nil && m.IsComplete != nil {
-		return *m.IsComplete
+	if m != nil {
+		return m.IsComplete
 	}
 	return false
 }
 
 func (m *Order) GetIsBooked() bool {
-	if m != nil && m.IsBooked != nil {
-		return *m.IsBooked
+	if m != nil {
+		return m.IsBooked
 	}
 	return false
 }
 
 func (m *Order) GetIsExpired() bool {
-	if m != nil && m.IsExpired != nil {
-		return *m.IsExpired
+	if m != nil {
+		return m.IsExpired
 	}
 	return false
 }
 
 func (m *Order) GetTradeBookingId() int32 {
-	if m != nil && m.TradeBookingId != nil {
-		return *m.TradeBookingId
+	if m != nil {
+		return m.TradeBookingId
 	}
 	return 0
 }
 
 func (m *Order) GetOpenClose() string {
-	if m != nil && m.OpenClose != nil {
-		return *m.OpenClose
+	if m != nil {
+		return m.OpenClose
 	}
 	return ""
 }
 
 func (m *Order) GetSource() string {
-	if m != nil && m.Source != nil {
-		return *m.Source
+	if m != nil {
+		return m.Source
 	}
 	return ""
 }
 
 func (m *Order) GetTrader() string {
-	if m != nil && m.Trader != nil {
-		return *m.Trader
+	if m != nil {
+		return m.Trader
 	}
 	return ""
 }
 
 func (m *Order) GetTraderId() int32 {
-	if m != nil && m.TraderId != nil {
-		return *m.TraderId
+	if m != nil {
+		return m.TraderId
 	}
 	return 0
 }
 
 func (m *Order) GetMachine() string {
-	if m != nil && m.Machine != nil {
-		return *m.Machine
+	if m != nil {
+		return m.Machine
 	}
 	return ""
 }
 
 func (m *Order) GetMemo() string {
-	if m != nil && m.Memo != nil {
-		return *m.Memo
+	if m != nil {
+		return m.Memo
 	}
 	return ""
 }
 
 func (m *Order) GetCreateDatetime() string {
-	if m != nil && m.CreateDatetime != nil {
-		return *m.CreateDatetime
+	if m != nil {
+		return m.CreateDatetime
 	}
 	return ""
 }
 
 func (m *Order) GetSubmitDatetime() string {
-	if m != nil && m.SubmitDatetime != nil {
-		return *m.SubmitDatetime
+	if m != nil {
+		return m.SubmitDatetime
 	}
 	return ""
 }
 
-func (m *Order) GetExecutions() []*Execution {
+func (m *Order) GetExecutions() []Execution {
 	if m != nil {
 		return m.Executions
 	}
 	return nil
 }
 
-func (m *Order) GetAllocations() []*Allocation {
+func (m *Order) GetAllocations() []Allocation {
 	if m != nil {
 		return m.Allocations
 	}
@@ -903,232 +915,232 @@ func (m *Order) GetAllocations() []*Allocation {
 }
 
 type Execution struct {
-	ExecutionId                  *int32              `protobuf:"varint,1,req,name=execution_id" json:"execution_id,omitempty"`
-	OrderId                      *int32              `protobuf:"varint,2,req,name=order_id" json:"order_id,omitempty"`
-	OrderKey                     *int32              `protobuf:"varint,3,opt,name=order_key" json:"order_key,omitempty"`
-	ClientOrderId                *string             `protobuf:"bytes,5,opt,name=client_order_id" json:"client_order_id,omitempty"`
-	BrokerOrderId                *string             `protobuf:"bytes,6,opt,name=broker_order_id" json:"broker_order_id,omitempty"`
-	BrokerExecId                 *string             `protobuf:"bytes,7,opt,name=broker_exec_id" json:"broker_exec_id,omitempty"`
-	PrevBrokerExecId             *string             `protobuf:"bytes,8,opt,name=prev_broker_exec_id" json:"prev_broker_exec_id,omitempty"`
-	CancelReplaceByExececutionId *int32              `protobuf:"varint,9,opt,name=cancel_replace_by_exececution_id" json:"cancel_replace_by_exececution_id,omitempty"`
-	OrderStatus                  *OrderStatus        `protobuf:"varint,10,opt,name=order_status,enum=proto.order.OrderStatus" json:"order_status,omitempty"`
-	ExecType                     *Execution_ExecType `protobuf:"varint,11,opt,name=exec_type,enum=proto.order.Execution_ExecType" json:"exec_type,omitempty"`
-	Quantity                     *float64            `protobuf:"fixed64,20,opt,name=quantity" json:"quantity,omitempty"`
-	Price                        *float64            `protobuf:"fixed64,21,opt,name=price" json:"price,omitempty"`
-	Text                         *string             `protobuf:"bytes,30,opt,name=text" json:"text,omitempty"`
-	Lastmkt                      *string             `protobuf:"bytes,31,opt,name=lastmkt" json:"lastmkt,omitempty"`
-	ExecBroker                   *string             `protobuf:"bytes,32,opt,name=exec_broker" json:"exec_broker,omitempty"`
-	LastLiquidity                *LastLiquidityInd   `protobuf:"varint,33,opt,name=last_liquidity,enum=proto.order.LastLiquidityInd" json:"last_liquidity,omitempty"`
-	CumQuantity                  *float64            `protobuf:"fixed64,50,opt,name=cum_quantity" json:"cum_quantity,omitempty"`
-	AvgPrice                     *float64            `protobuf:"fixed64,51,opt,name=avg_price" json:"avg_price,omitempty"`
-	CalcCumQuantity              *float64            `protobuf:"fixed64,52,opt,name=calc_cum_quantity" json:"calc_cum_quantity,omitempty"`
-	CalcAvgPrice                 *float64            `protobuf:"fixed64,53,opt,name=calc_avg_price" json:"calc_avg_price,omitempty"`
+	ExecutionId                  int32              `protobuf:"varint,1,req,name=execution_id" json:"execution_id"`
+	OrderId                      int32              `protobuf:"varint,2,req,name=order_id" json:"order_id"`
+	OrderKey                     int32              `protobuf:"varint,3,opt,name=order_key" json:"order_key"`
+	ClientOrderId                string             `protobuf:"bytes,5,opt,name=client_order_id" json:"client_order_id"`
+	BrokerOrderId                string             `protobuf:"bytes,6,opt,name=broker_order_id" json:"broker_order_id"`
+	BrokerExecId                 string             `protobuf:"bytes,7,opt,name=broker_exec_id" json:"broker_exec_id"`
+	PrevBrokerExecId             string             `protobuf:"bytes,8,opt,name=prev_broker_exec_id" json:"prev_broker_exec_id"`
+	CancelReplaceByExececutionId int32              `protobuf:"varint,9,opt,name=cancel_replace_by_exececution_id" json:"cancel_replace_by_exececution_id"`
+	OrderStatus                  OrderStatus        `protobuf:"varint,10,opt,name=order_status,enum=proto.order.OrderStatus" json:"order_status"`
+	ExecType                     Execution_ExecType `protobuf:"varint,11,opt,name=exec_type,enum=proto.order.Execution_ExecType" json:"exec_type"`
+	Quantity                     float64            `protobuf:"fixed64,20,opt,name=quantity" json:"quantity"`
+	Price                        float64            `protobuf:"fixed64,21,opt,name=price" json:"price"`
+	Text                         string             `protobuf:"bytes,30,opt,name=text" json:"text"`
+	Lastmkt                      string             `protobuf:"bytes,31,opt,name=lastmkt" json:"lastmkt"`
+	ExecBroker                   string             `protobuf:"bytes,32,opt,name=exec_broker" json:"exec_broker"`
+	LastLiquidity                LastLiquidityInd   `protobuf:"varint,33,opt,name=last_liquidity,enum=proto.order.LastLiquidityInd" json:"last_liquidity"`
+	CumQuantity                  float64            `protobuf:"fixed64,50,opt,name=cum_quantity" json:"cum_quantity"`
+	AvgPrice                     float64            `protobuf:"fixed64,51,opt,name=avg_price" json:"avg_price"`
+	CalcCumQuantity              float64            `protobuf:"fixed64,52,opt,name=calc_cum_quantity" json:"calc_cum_quantity"`
+	CalcAvgPrice                 float64            `protobuf:"fixed64,53,opt,name=calc_avg_price" json:"calc_avg_price"`
 	// timing
-	BrokerExecDatetime *string `protobuf:"bytes,60,opt,name=broker_exec_datetime" json:"broker_exec_datetime,omitempty"`
-	CreateDatetime     *string `protobuf:"bytes,61,opt,name=create_datetime" json:"create_datetime,omitempty"`
-	XXX_unrecognized   []byte  `json:"-"`
+	BrokerExecDatetime string `protobuf:"bytes,60,opt,name=broker_exec_datetime" json:"broker_exec_datetime"`
+	CreateDatetime     string `protobuf:"bytes,61,opt,name=create_datetime" json:"create_datetime"`
+	XXX_unrecognized   []byte `json:"-"`
 }
 
 func (m *Execution) Reset()      { *m = Execution{} }
 func (*Execution) ProtoMessage() {}
 
 func (m *Execution) GetExecutionId() int32 {
-	if m != nil && m.ExecutionId != nil {
-		return *m.ExecutionId
+	if m != nil {
+		return m.ExecutionId
 	}
 	return 0
 }
 
 func (m *Execution) GetOrderId() int32 {
-	if m != nil && m.OrderId != nil {
-		return *m.OrderId
+	if m != nil {
+		return m.OrderId
 	}
 	return 0
 }
 
 func (m *Execution) GetOrderKey() int32 {
-	if m != nil && m.OrderKey != nil {
-		return *m.OrderKey
+	if m != nil {
+		return m.OrderKey
 	}
 	return 0
 }
 
 func (m *Execution) GetClientOrderId() string {
-	if m != nil && m.ClientOrderId != nil {
-		return *m.ClientOrderId
+	if m != nil {
+		return m.ClientOrderId
 	}
 	return ""
 }
 
 func (m *Execution) GetBrokerOrderId() string {
-	if m != nil && m.BrokerOrderId != nil {
-		return *m.BrokerOrderId
+	if m != nil {
+		return m.BrokerOrderId
 	}
 	return ""
 }
 
 func (m *Execution) GetBrokerExecId() string {
-	if m != nil && m.BrokerExecId != nil {
-		return *m.BrokerExecId
+	if m != nil {
+		return m.BrokerExecId
 	}
 	return ""
 }
 
 func (m *Execution) GetPrevBrokerExecId() string {
-	if m != nil && m.PrevBrokerExecId != nil {
-		return *m.PrevBrokerExecId
+	if m != nil {
+		return m.PrevBrokerExecId
 	}
 	return ""
 }
 
 func (m *Execution) GetCancelReplaceByExececutionId() int32 {
-	if m != nil && m.CancelReplaceByExececutionId != nil {
-		return *m.CancelReplaceByExececutionId
+	if m != nil {
+		return m.CancelReplaceByExececutionId
 	}
 	return 0
 }
 
 func (m *Execution) GetOrderStatus() OrderStatus {
-	if m != nil && m.OrderStatus != nil {
-		return *m.OrderStatus
+	if m != nil {
+		return m.OrderStatus
 	}
 	return OrderStatus_NEW
 }
 
 func (m *Execution) GetExecType() Execution_ExecType {
-	if m != nil && m.ExecType != nil {
-		return *m.ExecType
+	if m != nil {
+		return m.ExecType
 	}
 	return Execution_NEW
 }
 
 func (m *Execution) GetQuantity() float64 {
-	if m != nil && m.Quantity != nil {
-		return *m.Quantity
+	if m != nil {
+		return m.Quantity
 	}
 	return 0
 }
 
 func (m *Execution) GetPrice() float64 {
-	if m != nil && m.Price != nil {
-		return *m.Price
+	if m != nil {
+		return m.Price
 	}
 	return 0
 }
 
 func (m *Execution) GetText() string {
-	if m != nil && m.Text != nil {
-		return *m.Text
+	if m != nil {
+		return m.Text
 	}
 	return ""
 }
 
 func (m *Execution) GetLastmkt() string {
-	if m != nil && m.Lastmkt != nil {
-		return *m.Lastmkt
+	if m != nil {
+		return m.Lastmkt
 	}
 	return ""
 }
 
 func (m *Execution) GetExecBroker() string {
-	if m != nil && m.ExecBroker != nil {
-		return *m.ExecBroker
+	if m != nil {
+		return m.ExecBroker
 	}
 	return ""
 }
 
 func (m *Execution) GetLastLiquidity() LastLiquidityInd {
-	if m != nil && m.LastLiquidity != nil {
-		return *m.LastLiquidity
+	if m != nil {
+		return m.LastLiquidity
 	}
-	return LastLiquidityInd_ADDED_LIQUIDITY
+	return LastLiquidityInd_UNKNOWN_LAST_LIQUIDITY_IND
 }
 
 func (m *Execution) GetCumQuantity() float64 {
-	if m != nil && m.CumQuantity != nil {
-		return *m.CumQuantity
+	if m != nil {
+		return m.CumQuantity
 	}
 	return 0
 }
 
 func (m *Execution) GetAvgPrice() float64 {
-	if m != nil && m.AvgPrice != nil {
-		return *m.AvgPrice
+	if m != nil {
+		return m.AvgPrice
 	}
 	return 0
 }
 
 func (m *Execution) GetCalcCumQuantity() float64 {
-	if m != nil && m.CalcCumQuantity != nil {
-		return *m.CalcCumQuantity
+	if m != nil {
+		return m.CalcCumQuantity
 	}
 	return 0
 }
 
 func (m *Execution) GetCalcAvgPrice() float64 {
-	if m != nil && m.CalcAvgPrice != nil {
-		return *m.CalcAvgPrice
+	if m != nil {
+		return m.CalcAvgPrice
 	}
 	return 0
 }
 
 func (m *Execution) GetBrokerExecDatetime() string {
-	if m != nil && m.BrokerExecDatetime != nil {
-		return *m.BrokerExecDatetime
+	if m != nil {
+		return m.BrokerExecDatetime
 	}
 	return ""
 }
 
 func (m *Execution) GetCreateDatetime() string {
-	if m != nil && m.CreateDatetime != nil {
-		return *m.CreateDatetime
+	if m != nil {
+		return m.CreateDatetime
 	}
 	return ""
 }
 
 type Allocation struct {
-	AllocationId     *int32   `protobuf:"varint,1,opt,name=allocation_id" json:"allocation_id,omitempty"`
-	OrderKey         *int32   `protobuf:"varint,2,opt,name=order_key" json:"order_key,omitempty"`
-	StrategyId       *int32   `protobuf:"varint,3,opt,name=strategy_id" json:"strategy_id,omitempty"`
-	Quantity         *float64 `protobuf:"fixed64,10,opt,name=quantity" json:"quantity,omitempty"`
-	Ratio            *float64 `protobuf:"fixed64,11,opt,name=ratio" json:"ratio,omitempty"`
-	XXX_unrecognized []byte   `json:"-"`
+	AllocationId     int32   `protobuf:"varint,1,opt,name=allocation_id" json:"allocation_id"`
+	OrderKey         int32   `protobuf:"varint,2,opt,name=order_key" json:"order_key"`
+	StrategyId       int32   `protobuf:"varint,3,opt,name=strategy_id" json:"strategy_id"`
+	Quantity         float64 `protobuf:"fixed64,10,opt,name=quantity" json:"quantity"`
+	Ratio            float64 `protobuf:"fixed64,11,opt,name=ratio" json:"ratio"`
+	XXX_unrecognized []byte  `json:"-"`
 }
 
 func (m *Allocation) Reset()      { *m = Allocation{} }
 func (*Allocation) ProtoMessage() {}
 
 func (m *Allocation) GetAllocationId() int32 {
-	if m != nil && m.AllocationId != nil {
-		return *m.AllocationId
+	if m != nil {
+		return m.AllocationId
 	}
 	return 0
 }
 
 func (m *Allocation) GetOrderKey() int32 {
-	if m != nil && m.OrderKey != nil {
-		return *m.OrderKey
+	if m != nil {
+		return m.OrderKey
 	}
 	return 0
 }
 
 func (m *Allocation) GetStrategyId() int32 {
-	if m != nil && m.StrategyId != nil {
-		return *m.StrategyId
+	if m != nil {
+		return m.StrategyId
 	}
 	return 0
 }
 
 func (m *Allocation) GetQuantity() float64 {
-	if m != nil && m.Quantity != nil {
-		return *m.Quantity
+	if m != nil {
+		return m.Quantity
 	}
 	return 0
 }
 
 func (m *Allocation) GetRatio() float64 {
-	if m != nil && m.Ratio != nil {
-		return *m.Ratio
+	if m != nil {
+		return m.Ratio
 	}
 	return 0
 }
@@ -1149,7 +1161,7 @@ func (m *NewOrderRequest) GetOrder() *Order {
 }
 
 type NewOrderResponse struct {
-	ErrorCode        *int32  `protobuf:"varint,1,opt,name=error_code" json:"error_code,omitempty"`
+	ErrorCode        int32   `protobuf:"varint,1,opt,name=error_code" json:"error_code"`
 	ErrorMessage     *string `protobuf:"bytes,2,opt,name=error_message" json:"error_message,omitempty"`
 	Order            *Order  `protobuf:"bytes,10,opt,name=order" json:"order,omitempty"`
 	XXX_unrecognized []byte  `json:"-"`
@@ -1159,8 +1171,8 @@ func (m *NewOrderResponse) Reset()      { *m = NewOrderResponse{} }
 func (*NewOrderResponse) ProtoMessage() {}
 
 func (m *NewOrderResponse) GetErrorCode() int32 {
-	if m != nil && m.ErrorCode != nil {
-		return *m.ErrorCode
+	if m != nil {
+		return m.ErrorCode
 	}
 	return 0
 }
@@ -1180,78 +1192,78 @@ func (m *NewOrderResponse) GetOrder() *Order {
 }
 
 type CancelOrderRequest struct {
-	ClientGuid       *string `protobuf:"bytes,1,req,name=client_guid" json:"client_guid,omitempty"`
-	OrderId          *int32  `protobuf:"varint,2,opt,name=order_id" json:"order_id,omitempty"`
-	OrderKey         *int32  `protobuf:"varint,3,req,name=order_key" json:"order_key,omitempty"`
-	Version          *int32  `protobuf:"varint,4,opt,name=version" json:"version,omitempty"`
-	Source           *string `protobuf:"bytes,50,opt,name=source" json:"source,omitempty"`
-	Trader           *string `protobuf:"bytes,51,opt,name=trader" json:"trader,omitempty"`
-	TraderId         *int32  `protobuf:"varint,52,req,name=trader_id" json:"trader_id,omitempty"`
-	Machine          *string `protobuf:"bytes,53,opt,name=machine" json:"machine,omitempty"`
-	XXX_unrecognized []byte  `json:"-"`
+	ClientGuid       string `protobuf:"bytes,1,req,name=client_guid" json:"client_guid"`
+	OrderId          int32  `protobuf:"varint,2,opt,name=order_id" json:"order_id"`
+	OrderKey         int32  `protobuf:"varint,3,req,name=order_key" json:"order_key"`
+	Version          int32  `protobuf:"varint,4,opt,name=version" json:"version"`
+	Source           string `protobuf:"bytes,50,opt,name=source" json:"source"`
+	Trader           string `protobuf:"bytes,51,opt,name=trader" json:"trader"`
+	TraderId         int32  `protobuf:"varint,52,req,name=trader_id" json:"trader_id"`
+	Machine          string `protobuf:"bytes,53,opt,name=machine" json:"machine"`
+	XXX_unrecognized []byte `json:"-"`
 }
 
 func (m *CancelOrderRequest) Reset()      { *m = CancelOrderRequest{} }
 func (*CancelOrderRequest) ProtoMessage() {}
 
 func (m *CancelOrderRequest) GetClientGuid() string {
-	if m != nil && m.ClientGuid != nil {
-		return *m.ClientGuid
+	if m != nil {
+		return m.ClientGuid
 	}
 	return ""
 }
 
 func (m *CancelOrderRequest) GetOrderId() int32 {
-	if m != nil && m.OrderId != nil {
-		return *m.OrderId
+	if m != nil {
+		return m.OrderId
 	}
 	return 0
 }
 
 func (m *CancelOrderRequest) GetOrderKey() int32 {
-	if m != nil && m.OrderKey != nil {
-		return *m.OrderKey
+	if m != nil {
+		return m.OrderKey
 	}
 	return 0
 }
 
 func (m *CancelOrderRequest) GetVersion() int32 {
-	if m != nil && m.Version != nil {
-		return *m.Version
+	if m != nil {
+		return m.Version
 	}
 	return 0
 }
 
 func (m *CancelOrderRequest) GetSource() string {
-	if m != nil && m.Source != nil {
-		return *m.Source
+	if m != nil {
+		return m.Source
 	}
 	return ""
 }
 
 func (m *CancelOrderRequest) GetTrader() string {
-	if m != nil && m.Trader != nil {
-		return *m.Trader
+	if m != nil {
+		return m.Trader
 	}
 	return ""
 }
 
 func (m *CancelOrderRequest) GetTraderId() int32 {
-	if m != nil && m.TraderId != nil {
-		return *m.TraderId
+	if m != nil {
+		return m.TraderId
 	}
 	return 0
 }
 
 func (m *CancelOrderRequest) GetMachine() string {
-	if m != nil && m.Machine != nil {
-		return *m.Machine
+	if m != nil {
+		return m.Machine
 	}
 	return ""
 }
 
 type CancelOrderResponse struct {
-	ErrorCode        *int32  `protobuf:"varint,1,opt,name=error_code" json:"error_code,omitempty"`
+	ErrorCode        int32   `protobuf:"varint,1,opt,name=error_code" json:"error_code"`
 	ErrorMessage     *string `protobuf:"bytes,2,opt,name=error_message" json:"error_message,omitempty"`
 	Order            *Order  `protobuf:"bytes,10,opt,name=order" json:"order,omitempty"`
 	XXX_unrecognized []byte  `json:"-"`
@@ -1261,8 +1273,8 @@ func (m *CancelOrderResponse) Reset()      { *m = CancelOrderResponse{} }
 func (*CancelOrderResponse) ProtoMessage() {}
 
 func (m *CancelOrderResponse) GetErrorCode() int32 {
-	if m != nil && m.ErrorCode != nil {
-		return *m.ErrorCode
+	if m != nil {
+		return m.ErrorCode
 	}
 	return 0
 }
@@ -1282,12 +1294,12 @@ func (m *CancelOrderResponse) GetOrder() *Order {
 }
 
 type ReplaceOrderRequest struct {
-	Order            *Order  `protobuf:"bytes,1,opt,name=order" json:"order,omitempty"`
-	Source           *string `protobuf:"bytes,50,opt,name=source" json:"source,omitempty"`
-	Trader           *string `protobuf:"bytes,51,opt,name=trader" json:"trader,omitempty"`
-	TraderId         *int32  `protobuf:"varint,52,req,name=trader_id" json:"trader_id,omitempty"`
-	Machine          *string `protobuf:"bytes,53,opt,name=machine" json:"machine,omitempty"`
-	XXX_unrecognized []byte  `json:"-"`
+	Order            *Order `protobuf:"bytes,1,opt,name=order" json:"order,omitempty"`
+	Source           string `protobuf:"bytes,50,opt,name=source" json:"source"`
+	Trader           string `protobuf:"bytes,51,opt,name=trader" json:"trader"`
+	TraderId         int32  `protobuf:"varint,52,req,name=trader_id" json:"trader_id"`
+	Machine          string `protobuf:"bytes,53,opt,name=machine" json:"machine"`
+	XXX_unrecognized []byte `json:"-"`
 }
 
 func (m *ReplaceOrderRequest) Reset()      { *m = ReplaceOrderRequest{} }
@@ -1301,35 +1313,35 @@ func (m *ReplaceOrderRequest) GetOrder() *Order {
 }
 
 func (m *ReplaceOrderRequest) GetSource() string {
-	if m != nil && m.Source != nil {
-		return *m.Source
+	if m != nil {
+		return m.Source
 	}
 	return ""
 }
 
 func (m *ReplaceOrderRequest) GetTrader() string {
-	if m != nil && m.Trader != nil {
-		return *m.Trader
+	if m != nil {
+		return m.Trader
 	}
 	return ""
 }
 
 func (m *ReplaceOrderRequest) GetTraderId() int32 {
-	if m != nil && m.TraderId != nil {
-		return *m.TraderId
+	if m != nil {
+		return m.TraderId
 	}
 	return 0
 }
 
 func (m *ReplaceOrderRequest) GetMachine() string {
-	if m != nil && m.Machine != nil {
-		return *m.Machine
+	if m != nil {
+		return m.Machine
 	}
 	return ""
 }
 
 type ReplaceOrderResponse struct {
-	ErrorCode        *int32  `protobuf:"varint,1,opt,name=error_code" json:"error_code,omitempty"`
+	ErrorCode        int32   `protobuf:"varint,1,opt,name=error_code" json:"error_code"`
 	ErrorMessage     *string `protobuf:"bytes,2,opt,name=error_message" json:"error_message,omitempty"`
 	Order            *Order  `protobuf:"bytes,10,opt,name=order" json:"order,omitempty"`
 	XXX_unrecognized []byte  `json:"-"`
@@ -1339,8 +1351,8 @@ func (m *ReplaceOrderResponse) Reset()      { *m = ReplaceOrderResponse{} }
 func (*ReplaceOrderResponse) ProtoMessage() {}
 
 func (m *ReplaceOrderResponse) GetErrorCode() int32 {
-	if m != nil && m.ErrorCode != nil {
-		return *m.ErrorCode
+	if m != nil {
+		return m.ErrorCode
 	}
 	return 0
 }
@@ -1409,98 +1421,87 @@ func (m *Order) Unmarshal(data []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			s := string(data[iNdEx:postIndex])
-			m.ClientGuid = &s
+			m.ClientGuid = string(data[iNdEx:postIndex])
 			iNdEx = postIndex
 			hasFields[0] |= uint64(0x00000001)
 		case 2:
 			if wireType != 0 {
 				return fmt.Errorf("proto: wrong wireType = %d for field OrderId", wireType)
 			}
-			var v int32
 			for shift := uint(0); ; shift += 7 {
 				if iNdEx >= l {
 					return io.ErrUnexpectedEOF
 				}
 				b := data[iNdEx]
 				iNdEx++
-				v |= (int32(b) & 0x7F) << shift
+				m.OrderId |= (int32(b) & 0x7F) << shift
 				if b < 0x80 {
 					break
 				}
 			}
-			m.OrderId = &v
 			hasFields[0] |= uint64(0x00000002)
 		case 3:
 			if wireType != 0 {
 				return fmt.Errorf("proto: wrong wireType = %d for field OrderKey", wireType)
 			}
-			var v int32
 			for shift := uint(0); ; shift += 7 {
 				if iNdEx >= l {
 					return io.ErrUnexpectedEOF
 				}
 				b := data[iNdEx]
 				iNdEx++
-				v |= (int32(b) & 0x7F) << shift
+				m.OrderKey |= (int32(b) & 0x7F) << shift
 				if b < 0x80 {
 					break
 				}
 			}
-			m.OrderKey = &v
 			hasFields[0] |= uint64(0x00000004)
 		case 4:
 			if wireType != 0 {
 				return fmt.Errorf("proto: wrong wireType = %d for field Version", wireType)
 			}
-			var v int32
 			for shift := uint(0); ; shift += 7 {
 				if iNdEx >= l {
 					return io.ErrUnexpectedEOF
 				}
 				b := data[iNdEx]
 				iNdEx++
-				v |= (int32(b) & 0x7F) << shift
+				m.Version |= (int32(b) & 0x7F) << shift
 				if b < 0x80 {
 					break
 				}
 			}
-			m.Version = &v
 			hasFields[0] |= uint64(0x00000008)
 		case 5:
 			if wireType != 0 {
 				return fmt.Errorf("proto: wrong wireType = %d for field Instruction", wireType)
 			}
-			var v Order_OrderInstruction
 			for shift := uint(0); ; shift += 7 {
 				if iNdEx >= l {
 					return io.ErrUnexpectedEOF
 				}
 				b := data[iNdEx]
 				iNdEx++
-				v |= (Order_OrderInstruction(b) & 0x7F) << shift
+				m.Instruction |= (Order_OrderInstruction(b) & 0x7F) << shift
 				if b < 0x80 {
 					break
 				}
 			}
-			m.Instruction = &v
 		case 6:
 			if wireType != 0 {
 				return fmt.Errorf("proto: wrong wireType = %d for field Side", wireType)
 			}
-			var v Side
 			for shift := uint(0); ; shift += 7 {
 				if iNdEx >= l {
 					return io.ErrUnexpectedEOF
 				}
 				b := data[iNdEx]
 				iNdEx++
-				v |= (Side(b) & 0x7F) << shift
+				m.Side |= (Side(b) & 0x7F) << shift
 				if b < 0x80 {
 					break
 				}
 			}
-			m.Side = &v
 			hasFields[0] |= uint64(0x00000010)
 		case 7:
 			if wireType != 1 {
@@ -1519,8 +1520,7 @@ func (m *Order) Unmarshal(data []byte) error {
 			v |= uint64(data[iNdEx-3]) << 40
 			v |= uint64(data[iNdEx-2]) << 48
 			v |= uint64(data[iNdEx-1]) << 56
-			v2 := float64(math.Float64frombits(v))
-			m.Quantity = &v2
+			m.Quantity = float64(math.Float64frombits(v))
 			hasFields[0] |= uint64(0x00000020)
 		case 8:
 			if wireType != 2 {
@@ -1542,45 +1542,40 @@ func (m *Order) Unmarshal(data []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			s := string(data[iNdEx:postIndex])
-			m.Symbol = &s
+			m.Symbol = string(data[iNdEx:postIndex])
 			iNdEx = postIndex
 			hasFields[0] |= uint64(0x00000040)
 		case 16:
 			if wireType != 0 {
 				return fmt.Errorf("proto: wrong wireType = %d for field OrderType", wireType)
 			}
-			var v OrderType
 			for shift := uint(0); ; shift += 7 {
 				if iNdEx >= l {
 					return io.ErrUnexpectedEOF
 				}
 				b := data[iNdEx]
 				iNdEx++
-				v |= (OrderType(b) & 0x7F) << shift
+				m.OrderType |= (OrderType(b) & 0x7F) << shift
 				if b < 0x80 {
 					break
 				}
 			}
-			m.OrderType = &v
 			hasFields[0] |= uint64(0x00000080)
 		case 17:
 			if wireType != 0 {
 				return fmt.Errorf("proto: wrong wireType = %d for field Timeinforce", wireType)
 			}
-			var v TimeInForce
 			for shift := uint(0); ; shift += 7 {
 				if iNdEx >= l {
 					return io.ErrUnexpectedEOF
 				}
 				b := data[iNdEx]
 				iNdEx++
-				v |= (TimeInForce(b) & 0x7F) << shift
+				m.Timeinforce |= (TimeInForce(b) & 0x7F) << shift
 				if b < 0x80 {
 					break
 				}
 			}
-			m.Timeinforce = &v
 			hasFields[0] |= uint64(0x00000100)
 		case 18:
 			if wireType != 1 {
@@ -1599,8 +1594,7 @@ func (m *Order) Unmarshal(data []byte) error {
 			v |= uint64(data[iNdEx-3]) << 40
 			v |= uint64(data[iNdEx-2]) << 48
 			v |= uint64(data[iNdEx-1]) << 56
-			v2 := float64(math.Float64frombits(v))
-			m.LimitPrice = &v2
+			m.LimitPrice = float64(math.Float64frombits(v))
 		case 19:
 			if wireType != 2 {
 				return fmt.Errorf("proto: wrong wireType = %d for field Exchange", wireType)
@@ -1621,8 +1615,7 @@ func (m *Order) Unmarshal(data []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			s := string(data[iNdEx:postIndex])
-			m.Exchange = &s
+			m.Exchange = string(data[iNdEx:postIndex])
 			iNdEx = postIndex
 		case 20:
 			if wireType != 2 {
@@ -1644,8 +1637,7 @@ func (m *Order) Unmarshal(data []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			s := string(data[iNdEx:postIndex])
-			m.Description = &s
+			m.Description = string(data[iNdEx:postIndex])
 			iNdEx = postIndex
 		case 21:
 			if wireType != 1 {
@@ -1664,8 +1656,7 @@ func (m *Order) Unmarshal(data []byte) error {
 			v |= uint64(data[iNdEx-3]) << 40
 			v |= uint64(data[iNdEx-2]) << 48
 			v |= uint64(data[iNdEx-1]) << 56
-			v2 := float64(math.Float64frombits(v))
-			m.FilledQuantity = &v2
+			m.FilledQuantity = float64(math.Float64frombits(v))
 		case 22:
 			if wireType != 1 {
 				return fmt.Errorf("proto: wrong wireType = %d for field FilledAvgPrice", wireType)
@@ -1683,42 +1674,37 @@ func (m *Order) Unmarshal(data []byte) error {
 			v |= uint64(data[iNdEx-3]) << 40
 			v |= uint64(data[iNdEx-2]) << 48
 			v |= uint64(data[iNdEx-1]) << 56
-			v2 := float64(math.Float64frombits(v))
-			m.FilledAvgPrice = &v2
+			m.FilledAvgPrice = float64(math.Float64frombits(v))
 		case 23:
 			if wireType != 0 {
 				return fmt.Errorf("proto: wrong wireType = %d for field OrderStatus", wireType)
 			}
-			var v OrderStatus
 			for shift := uint(0); ; shift += 7 {
 				if iNdEx >= l {
 					return io.ErrUnexpectedEOF
 				}
 				b := data[iNdEx]
 				iNdEx++
-				v |= (OrderStatus(b) & 0x7F) << shift
+				m.OrderStatus |= (OrderStatus(b) & 0x7F) << shift
 				if b < 0x80 {
 					break
 				}
 			}
-			m.OrderStatus = &v
 		case 30:
 			if wireType != 0 {
 				return fmt.Errorf("proto: wrong wireType = %d for field AccountId", wireType)
 			}
-			var v int32
 			for shift := uint(0); ; shift += 7 {
 				if iNdEx >= l {
 					return io.ErrUnexpectedEOF
 				}
 				b := data[iNdEx]
 				iNdEx++
-				v |= (int32(b) & 0x7F) << shift
+				m.AccountId |= (int32(b) & 0x7F) << shift
 				if b < 0x80 {
 					break
 				}
 			}
-			m.AccountId = &v
 			hasFields[0] |= uint64(0x00000200)
 		case 31:
 			if wireType != 2 {
@@ -1740,8 +1726,7 @@ func (m *Order) Unmarshal(data []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			s := string(data[iNdEx:postIndex])
-			m.BrokerUserid = &s
+			m.BrokerUserid = string(data[iNdEx:postIndex])
 			iNdEx = postIndex
 		case 32:
 			if wireType != 2 {
@@ -1763,8 +1748,7 @@ func (m *Order) Unmarshal(data []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			s := string(data[iNdEx:postIndex])
-			m.BrokerAccount = &s
+			m.BrokerAccount = string(data[iNdEx:postIndex])
 			iNdEx = postIndex
 		case 33:
 			if wireType != 2 {
@@ -1786,8 +1770,7 @@ func (m *Order) Unmarshal(data []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			s := string(data[iNdEx:postIndex])
-			m.MarketConnector = &s
+			m.MarketConnector = string(data[iNdEx:postIndex])
 			iNdEx = postIndex
 		case 40:
 			if wireType != 2 {
@@ -1809,26 +1792,23 @@ func (m *Order) Unmarshal(data []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			s := string(data[iNdEx:postIndex])
-			m.SettlCcy = &s
+			m.SettlCcy = string(data[iNdEx:postIndex])
 			iNdEx = postIndex
 		case 41:
 			if wireType != 0 {
 				return fmt.Errorf("proto: wrong wireType = %d for field HandleInst", wireType)
 			}
-			var v HandlInst
 			for shift := uint(0); ; shift += 7 {
 				if iNdEx >= l {
 					return io.ErrUnexpectedEOF
 				}
 				b := data[iNdEx]
 				iNdEx++
-				v |= (HandlInst(b) & 0x7F) << shift
+				m.HandleInst |= (HandlInst(b) & 0x7F) << shift
 				if b < 0x80 {
 					break
 				}
 			}
-			m.HandleInst = &v
 			hasFields[0] |= uint64(0x00000400)
 		case 42:
 			if wireType != 2 {
@@ -1850,8 +1830,7 @@ func (m *Order) Unmarshal(data []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			s := string(data[iNdEx:postIndex])
-			m.Algo = &s
+			m.Algo = string(data[iNdEx:postIndex])
 			iNdEx = postIndex
 		case 43:
 			if wireType != 0 {
@@ -1869,8 +1848,7 @@ func (m *Order) Unmarshal(data []byte) error {
 					break
 				}
 			}
-			b := bool(v != 0)
-			m.IsComplete = &b
+			m.IsComplete = bool(v != 0)
 		case 44:
 			if wireType != 0 {
 				return fmt.Errorf("proto: wrong wireType = %d for field IsBooked", wireType)
@@ -1887,8 +1865,7 @@ func (m *Order) Unmarshal(data []byte) error {
 					break
 				}
 			}
-			b := bool(v != 0)
-			m.IsBooked = &b
+			m.IsBooked = bool(v != 0)
 		case 45:
 			if wireType != 0 {
 				return fmt.Errorf("proto: wrong wireType = %d for field IsExpired", wireType)
@@ -1905,25 +1882,22 @@ func (m *Order) Unmarshal(data []byte) error {
 					break
 				}
 			}
-			b := bool(v != 0)
-			m.IsExpired = &b
+			m.IsExpired = bool(v != 0)
 		case 46:
 			if wireType != 0 {
 				return fmt.Errorf("proto: wrong wireType = %d for field TradeBookingId", wireType)
 			}
-			var v int32
 			for shift := uint(0); ; shift += 7 {
 				if iNdEx >= l {
 					return io.ErrUnexpectedEOF
 				}
 				b := data[iNdEx]
 				iNdEx++
-				v |= (int32(b) & 0x7F) << shift
+				m.TradeBookingId |= (int32(b) & 0x7F) << shift
 				if b < 0x80 {
 					break
 				}
 			}
-			m.TradeBookingId = &v
 		case 47:
 			if wireType != 2 {
 				return fmt.Errorf("proto: wrong wireType = %d for field OpenClose", wireType)
@@ -1944,8 +1918,7 @@ func (m *Order) Unmarshal(data []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			s := string(data[iNdEx:postIndex])
-			m.OpenClose = &s
+			m.OpenClose = string(data[iNdEx:postIndex])
 			iNdEx = postIndex
 		case 50:
 			if wireType != 2 {
@@ -1967,8 +1940,7 @@ func (m *Order) Unmarshal(data []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			s := string(data[iNdEx:postIndex])
-			m.Source = &s
+			m.Source = string(data[iNdEx:postIndex])
 			iNdEx = postIndex
 		case 51:
 			if wireType != 2 {
@@ -1990,26 +1962,23 @@ func (m *Order) Unmarshal(data []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			s := string(data[iNdEx:postIndex])
-			m.Trader = &s
+			m.Trader = string(data[iNdEx:postIndex])
 			iNdEx = postIndex
 		case 52:
 			if wireType != 0 {
 				return fmt.Errorf("proto: wrong wireType = %d for field TraderId", wireType)
 			}
-			var v int32
 			for shift := uint(0); ; shift += 7 {
 				if iNdEx >= l {
 					return io.ErrUnexpectedEOF
 				}
 				b := data[iNdEx]
 				iNdEx++
-				v |= (int32(b) & 0x7F) << shift
+				m.TraderId |= (int32(b) & 0x7F) << shift
 				if b < 0x80 {
 					break
 				}
 			}
-			m.TraderId = &v
 			hasFields[0] |= uint64(0x00000800)
 		case 53:
 			if wireType != 2 {
@@ -2031,8 +2000,7 @@ func (m *Order) Unmarshal(data []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			s := string(data[iNdEx:postIndex])
-			m.Machine = &s
+			m.Machine = string(data[iNdEx:postIndex])
 			iNdEx = postIndex
 		case 54:
 			if wireType != 2 {
@@ -2054,8 +2022,7 @@ func (m *Order) Unmarshal(data []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			s := string(data[iNdEx:postIndex])
-			m.Memo = &s
+			m.Memo = string(data[iNdEx:postIndex])
 			iNdEx = postIndex
 		case 60:
 			if wireType != 2 {
@@ -2077,8 +2044,7 @@ func (m *Order) Unmarshal(data []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			s := string(data[iNdEx:postIndex])
-			m.CreateDatetime = &s
+			m.CreateDatetime = string(data[iNdEx:postIndex])
 			iNdEx = postIndex
 		case 61:
 			if wireType != 2 {
@@ -2100,8 +2066,7 @@ func (m *Order) Unmarshal(data []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			s := string(data[iNdEx:postIndex])
-			m.SubmitDatetime = &s
+			m.SubmitDatetime = string(data[iNdEx:postIndex])
 			iNdEx = postIndex
 		case 70:
 			if wireType != 2 {
@@ -2123,7 +2088,7 @@ func (m *Order) Unmarshal(data []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.Executions = append(m.Executions, &Execution{})
+			m.Executions = append(m.Executions, Execution{})
 			if err := m.Executions[len(m.Executions)-1].Unmarshal(data[iNdEx:postIndex]); err != nil {
 				return err
 			}
@@ -2148,7 +2113,7 @@ func (m *Order) Unmarshal(data []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.Allocations = append(m.Allocations, &Allocation{})
+			m.Allocations = append(m.Allocations, Allocation{})
 			if err := m.Allocations[len(m.Allocations)-1].Unmarshal(data[iNdEx:postIndex]); err != nil {
 				return err
 			}
@@ -2237,55 +2202,49 @@ func (m *Execution) Unmarshal(data []byte) error {
 			if wireType != 0 {
 				return fmt.Errorf("proto: wrong wireType = %d for field ExecutionId", wireType)
 			}
-			var v int32
 			for shift := uint(0); ; shift += 7 {
 				if iNdEx >= l {
 					return io.ErrUnexpectedEOF
 				}
 				b := data[iNdEx]
 				iNdEx++
-				v |= (int32(b) & 0x7F) << shift
+				m.ExecutionId |= (int32(b) & 0x7F) << shift
 				if b < 0x80 {
 					break
 				}
 			}
-			m.ExecutionId = &v
 			hasFields[0] |= uint64(0x00000001)
 		case 2:
 			if wireType != 0 {
 				return fmt.Errorf("proto: wrong wireType = %d for field OrderId", wireType)
 			}
-			var v int32
 			for shift := uint(0); ; shift += 7 {
 				if iNdEx >= l {
 					return io.ErrUnexpectedEOF
 				}
 				b := data[iNdEx]
 				iNdEx++
-				v |= (int32(b) & 0x7F) << shift
+				m.OrderId |= (int32(b) & 0x7F) << shift
 				if b < 0x80 {
 					break
 				}
 			}
-			m.OrderId = &v
 			hasFields[0] |= uint64(0x00000002)
 		case 3:
 			if wireType != 0 {
 				return fmt.Errorf("proto: wrong wireType = %d for field OrderKey", wireType)
 			}
-			var v int32
 			for shift := uint(0); ; shift += 7 {
 				if iNdEx >= l {
 					return io.ErrUnexpectedEOF
 				}
 				b := data[iNdEx]
 				iNdEx++
-				v |= (int32(b) & 0x7F) << shift
+				m.OrderKey |= (int32(b) & 0x7F) << shift
 				if b < 0x80 {
 					break
 				}
 			}
-			m.OrderKey = &v
 		case 5:
 			if wireType != 2 {
 				return fmt.Errorf("proto: wrong wireType = %d for field ClientOrderId", wireType)
@@ -2306,8 +2265,7 @@ func (m *Execution) Unmarshal(data []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			s := string(data[iNdEx:postIndex])
-			m.ClientOrderId = &s
+			m.ClientOrderId = string(data[iNdEx:postIndex])
 			iNdEx = postIndex
 		case 6:
 			if wireType != 2 {
@@ -2329,8 +2287,7 @@ func (m *Execution) Unmarshal(data []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			s := string(data[iNdEx:postIndex])
-			m.BrokerOrderId = &s
+			m.BrokerOrderId = string(data[iNdEx:postIndex])
 			iNdEx = postIndex
 		case 7:
 			if wireType != 2 {
@@ -2352,8 +2309,7 @@ func (m *Execution) Unmarshal(data []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			s := string(data[iNdEx:postIndex])
-			m.BrokerExecId = &s
+			m.BrokerExecId = string(data[iNdEx:postIndex])
 			iNdEx = postIndex
 		case 8:
 			if wireType != 2 {
@@ -2375,60 +2331,53 @@ func (m *Execution) Unmarshal(data []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			s := string(data[iNdEx:postIndex])
-			m.PrevBrokerExecId = &s
+			m.PrevBrokerExecId = string(data[iNdEx:postIndex])
 			iNdEx = postIndex
 		case 9:
 			if wireType != 0 {
 				return fmt.Errorf("proto: wrong wireType = %d for field CancelReplaceByExececutionId", wireType)
 			}
-			var v int32
 			for shift := uint(0); ; shift += 7 {
 				if iNdEx >= l {
 					return io.ErrUnexpectedEOF
 				}
 				b := data[iNdEx]
 				iNdEx++
-				v |= (int32(b) & 0x7F) << shift
+				m.CancelReplaceByExececutionId |= (int32(b) & 0x7F) << shift
 				if b < 0x80 {
 					break
 				}
 			}
-			m.CancelReplaceByExececutionId = &v
 		case 10:
 			if wireType != 0 {
 				return fmt.Errorf("proto: wrong wireType = %d for field OrderStatus", wireType)
 			}
-			var v OrderStatus
 			for shift := uint(0); ; shift += 7 {
 				if iNdEx >= l {
 					return io.ErrUnexpectedEOF
 				}
 				b := data[iNdEx]
 				iNdEx++
-				v |= (OrderStatus(b) & 0x7F) << shift
+				m.OrderStatus |= (OrderStatus(b) & 0x7F) << shift
 				if b < 0x80 {
 					break
 				}
 			}
-			m.OrderStatus = &v
 		case 11:
 			if wireType != 0 {
 				return fmt.Errorf("proto: wrong wireType = %d for field ExecType", wireType)
 			}
-			var v Execution_ExecType
 			for shift := uint(0); ; shift += 7 {
 				if iNdEx >= l {
 					return io.ErrUnexpectedEOF
 				}
 				b := data[iNdEx]
 				iNdEx++
-				v |= (Execution_ExecType(b) & 0x7F) << shift
+				m.ExecType |= (Execution_ExecType(b) & 0x7F) << shift
 				if b < 0x80 {
 					break
 				}
 			}
-			m.ExecType = &v
 		case 20:
 			if wireType != 1 {
 				return fmt.Errorf("proto: wrong wireType = %d for field Quantity", wireType)
@@ -2446,8 +2395,7 @@ func (m *Execution) Unmarshal(data []byte) error {
 			v |= uint64(data[iNdEx-3]) << 40
 			v |= uint64(data[iNdEx-2]) << 48
 			v |= uint64(data[iNdEx-1]) << 56
-			v2 := float64(math.Float64frombits(v))
-			m.Quantity = &v2
+			m.Quantity = float64(math.Float64frombits(v))
 		case 21:
 			if wireType != 1 {
 				return fmt.Errorf("proto: wrong wireType = %d for field Price", wireType)
@@ -2465,8 +2413,7 @@ func (m *Execution) Unmarshal(data []byte) error {
 			v |= uint64(data[iNdEx-3]) << 40
 			v |= uint64(data[iNdEx-2]) << 48
 			v |= uint64(data[iNdEx-1]) << 56
-			v2 := float64(math.Float64frombits(v))
-			m.Price = &v2
+			m.Price = float64(math.Float64frombits(v))
 		case 30:
 			if wireType != 2 {
 				return fmt.Errorf("proto: wrong wireType = %d for field Text", wireType)
@@ -2487,8 +2434,7 @@ func (m *Execution) Unmarshal(data []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			s := string(data[iNdEx:postIndex])
-			m.Text = &s
+			m.Text = string(data[iNdEx:postIndex])
 			iNdEx = postIndex
 		case 31:
 			if wireType != 2 {
@@ -2510,8 +2456,7 @@ func (m *Execution) Unmarshal(data []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			s := string(data[iNdEx:postIndex])
-			m.Lastmkt = &s
+			m.Lastmkt = string(data[iNdEx:postIndex])
 			iNdEx = postIndex
 		case 32:
 			if wireType != 2 {
@@ -2533,26 +2478,23 @@ func (m *Execution) Unmarshal(data []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			s := string(data[iNdEx:postIndex])
-			m.ExecBroker = &s
+			m.ExecBroker = string(data[iNdEx:postIndex])
 			iNdEx = postIndex
 		case 33:
 			if wireType != 0 {
 				return fmt.Errorf("proto: wrong wireType = %d for field LastLiquidity", wireType)
 			}
-			var v LastLiquidityInd
 			for shift := uint(0); ; shift += 7 {
 				if iNdEx >= l {
 					return io.ErrUnexpectedEOF
 				}
 				b := data[iNdEx]
 				iNdEx++
-				v |= (LastLiquidityInd(b) & 0x7F) << shift
+				m.LastLiquidity |= (LastLiquidityInd(b) & 0x7F) << shift
 				if b < 0x80 {
 					break
 				}
 			}
-			m.LastLiquidity = &v
 		case 50:
 			if wireType != 1 {
 				return fmt.Errorf("proto: wrong wireType = %d for field CumQuantity", wireType)
@@ -2570,8 +2512,7 @@ func (m *Execution) Unmarshal(data []byte) error {
 			v |= uint64(data[iNdEx-3]) << 40
 			v |= uint64(data[iNdEx-2]) << 48
 			v |= uint64(data[iNdEx-1]) << 56
-			v2 := float64(math.Float64frombits(v))
-			m.CumQuantity = &v2
+			m.CumQuantity = float64(math.Float64frombits(v))
 		case 51:
 			if wireType != 1 {
 				return fmt.Errorf("proto: wrong wireType = %d for field AvgPrice", wireType)
@@ -2589,8 +2530,7 @@ func (m *Execution) Unmarshal(data []byte) error {
 			v |= uint64(data[iNdEx-3]) << 40
 			v |= uint64(data[iNdEx-2]) << 48
 			v |= uint64(data[iNdEx-1]) << 56
-			v2 := float64(math.Float64frombits(v))
-			m.AvgPrice = &v2
+			m.AvgPrice = float64(math.Float64frombits(v))
 		case 52:
 			if wireType != 1 {
 				return fmt.Errorf("proto: wrong wireType = %d for field CalcCumQuantity", wireType)
@@ -2608,8 +2548,7 @@ func (m *Execution) Unmarshal(data []byte) error {
 			v |= uint64(data[iNdEx-3]) << 40
 			v |= uint64(data[iNdEx-2]) << 48
 			v |= uint64(data[iNdEx-1]) << 56
-			v2 := float64(math.Float64frombits(v))
-			m.CalcCumQuantity = &v2
+			m.CalcCumQuantity = float64(math.Float64frombits(v))
 		case 53:
 			if wireType != 1 {
 				return fmt.Errorf("proto: wrong wireType = %d for field CalcAvgPrice", wireType)
@@ -2627,8 +2566,7 @@ func (m *Execution) Unmarshal(data []byte) error {
 			v |= uint64(data[iNdEx-3]) << 40
 			v |= uint64(data[iNdEx-2]) << 48
 			v |= uint64(data[iNdEx-1]) << 56
-			v2 := float64(math.Float64frombits(v))
-			m.CalcAvgPrice = &v2
+			m.CalcAvgPrice = float64(math.Float64frombits(v))
 		case 60:
 			if wireType != 2 {
 				return fmt.Errorf("proto: wrong wireType = %d for field BrokerExecDatetime", wireType)
@@ -2649,8 +2587,7 @@ func (m *Execution) Unmarshal(data []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			s := string(data[iNdEx:postIndex])
-			m.BrokerExecDatetime = &s
+			m.BrokerExecDatetime = string(data[iNdEx:postIndex])
 			iNdEx = postIndex
 		case 61:
 			if wireType != 2 {
@@ -2672,8 +2609,7 @@ func (m *Execution) Unmarshal(data []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			s := string(data[iNdEx:postIndex])
-			m.CreateDatetime = &s
+			m.CreateDatetime = string(data[iNdEx:postIndex])
 			iNdEx = postIndex
 		default:
 			var sizeOfWire int
@@ -2728,53 +2664,47 @@ func (m *Allocation) Unmarshal(data []byte) error {
 			if wireType != 0 {
 				return fmt.Errorf("proto: wrong wireType = %d for field AllocationId", wireType)
 			}
-			var v int32
 			for shift := uint(0); ; shift += 7 {
 				if iNdEx >= l {
 					return io.ErrUnexpectedEOF
 				}
 				b := data[iNdEx]
 				iNdEx++
-				v |= (int32(b) & 0x7F) << shift
+				m.AllocationId |= (int32(b) & 0x7F) << shift
 				if b < 0x80 {
 					break
 				}
 			}
-			m.AllocationId = &v
 		case 2:
 			if wireType != 0 {
 				return fmt.Errorf("proto: wrong wireType = %d for field OrderKey", wireType)
 			}
-			var v int32
 			for shift := uint(0); ; shift += 7 {
 				if iNdEx >= l {
 					return io.ErrUnexpectedEOF
 				}
 				b := data[iNdEx]
 				iNdEx++
-				v |= (int32(b) & 0x7F) << shift
+				m.OrderKey |= (int32(b) & 0x7F) << shift
 				if b < 0x80 {
 					break
 				}
 			}
-			m.OrderKey = &v
 		case 3:
 			if wireType != 0 {
 				return fmt.Errorf("proto: wrong wireType = %d for field StrategyId", wireType)
 			}
-			var v int32
 			for shift := uint(0); ; shift += 7 {
 				if iNdEx >= l {
 					return io.ErrUnexpectedEOF
 				}
 				b := data[iNdEx]
 				iNdEx++
-				v |= (int32(b) & 0x7F) << shift
+				m.StrategyId |= (int32(b) & 0x7F) << shift
 				if b < 0x80 {
 					break
 				}
 			}
-			m.StrategyId = &v
 		case 10:
 			if wireType != 1 {
 				return fmt.Errorf("proto: wrong wireType = %d for field Quantity", wireType)
@@ -2792,8 +2722,7 @@ func (m *Allocation) Unmarshal(data []byte) error {
 			v |= uint64(data[iNdEx-3]) << 40
 			v |= uint64(data[iNdEx-2]) << 48
 			v |= uint64(data[iNdEx-1]) << 56
-			v2 := float64(math.Float64frombits(v))
-			m.Quantity = &v2
+			m.Quantity = float64(math.Float64frombits(v))
 		case 11:
 			if wireType != 1 {
 				return fmt.Errorf("proto: wrong wireType = %d for field Ratio", wireType)
@@ -2811,8 +2740,7 @@ func (m *Allocation) Unmarshal(data []byte) error {
 			v |= uint64(data[iNdEx-3]) << 40
 			v |= uint64(data[iNdEx-2]) << 48
 			v |= uint64(data[iNdEx-1]) << 56
-			v2 := float64(math.Float64frombits(v))
-			m.Ratio = &v2
+			m.Ratio = float64(math.Float64frombits(v))
 		default:
 			var sizeOfWire int
 			for {
@@ -2930,19 +2858,17 @@ func (m *NewOrderResponse) Unmarshal(data []byte) error {
 			if wireType != 0 {
 				return fmt.Errorf("proto: wrong wireType = %d for field ErrorCode", wireType)
 			}
-			var v int32
 			for shift := uint(0); ; shift += 7 {
 				if iNdEx >= l {
 					return io.ErrUnexpectedEOF
 				}
 				b := data[iNdEx]
 				iNdEx++
-				v |= (int32(b) & 0x7F) << shift
+				m.ErrorCode |= (int32(b) & 0x7F) << shift
 				if b < 0x80 {
 					break
 				}
 			}
-			m.ErrorCode = &v
 		case 2:
 			if wireType != 2 {
 				return fmt.Errorf("proto: wrong wireType = %d for field ErrorMessage", wireType)
@@ -3057,62 +2983,55 @@ func (m *CancelOrderRequest) Unmarshal(data []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			s := string(data[iNdEx:postIndex])
-			m.ClientGuid = &s
+			m.ClientGuid = string(data[iNdEx:postIndex])
 			iNdEx = postIndex
 			hasFields[0] |= uint64(0x00000001)
 		case 2:
 			if wireType != 0 {
 				return fmt.Errorf("proto: wrong wireType = %d for field OrderId", wireType)
 			}
-			var v int32
 			for shift := uint(0); ; shift += 7 {
 				if iNdEx >= l {
 					return io.ErrUnexpectedEOF
 				}
 				b := data[iNdEx]
 				iNdEx++
-				v |= (int32(b) & 0x7F) << shift
+				m.OrderId |= (int32(b) & 0x7F) << shift
 				if b < 0x80 {
 					break
 				}
 			}
-			m.OrderId = &v
 		case 3:
 			if wireType != 0 {
 				return fmt.Errorf("proto: wrong wireType = %d for field OrderKey", wireType)
 			}
-			var v int32
 			for shift := uint(0); ; shift += 7 {
 				if iNdEx >= l {
 					return io.ErrUnexpectedEOF
 				}
 				b := data[iNdEx]
 				iNdEx++
-				v |= (int32(b) & 0x7F) << shift
+				m.OrderKey |= (int32(b) & 0x7F) << shift
 				if b < 0x80 {
 					break
 				}
 			}
-			m.OrderKey = &v
 			hasFields[0] |= uint64(0x00000002)
 		case 4:
 			if wireType != 0 {
 				return fmt.Errorf("proto: wrong wireType = %d for field Version", wireType)
 			}
-			var v int32
 			for shift := uint(0); ; shift += 7 {
 				if iNdEx >= l {
 					return io.ErrUnexpectedEOF
 				}
 				b := data[iNdEx]
 				iNdEx++
-				v |= (int32(b) & 0x7F) << shift
+				m.Version |= (int32(b) & 0x7F) << shift
 				if b < 0x80 {
 					break
 				}
 			}
-			m.Version = &v
 		case 50:
 			if wireType != 2 {
 				return fmt.Errorf("proto: wrong wireType = %d for field Source", wireType)
@@ -3133,8 +3052,7 @@ func (m *CancelOrderRequest) Unmarshal(data []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			s := string(data[iNdEx:postIndex])
-			m.Source = &s
+			m.Source = string(data[iNdEx:postIndex])
 			iNdEx = postIndex
 		case 51:
 			if wireType != 2 {
@@ -3156,26 +3074,23 @@ func (m *CancelOrderRequest) Unmarshal(data []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			s := string(data[iNdEx:postIndex])
-			m.Trader = &s
+			m.Trader = string(data[iNdEx:postIndex])
 			iNdEx = postIndex
 		case 52:
 			if wireType != 0 {
 				return fmt.Errorf("proto: wrong wireType = %d for field TraderId", wireType)
 			}
-			var v int32
 			for shift := uint(0); ; shift += 7 {
 				if iNdEx >= l {
 					return io.ErrUnexpectedEOF
 				}
 				b := data[iNdEx]
 				iNdEx++
-				v |= (int32(b) & 0x7F) << shift
+				m.TraderId |= (int32(b) & 0x7F) << shift
 				if b < 0x80 {
 					break
 				}
 			}
-			m.TraderId = &v
 			hasFields[0] |= uint64(0x00000004)
 		case 53:
 			if wireType != 2 {
@@ -3197,8 +3112,7 @@ func (m *CancelOrderRequest) Unmarshal(data []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			s := string(data[iNdEx:postIndex])
-			m.Machine = &s
+			m.Machine = string(data[iNdEx:postIndex])
 			iNdEx = postIndex
 		default:
 			var sizeOfWire int
@@ -3256,19 +3170,17 @@ func (m *CancelOrderResponse) Unmarshal(data []byte) error {
 			if wireType != 0 {
 				return fmt.Errorf("proto: wrong wireType = %d for field ErrorCode", wireType)
 			}
-			var v int32
 			for shift := uint(0); ; shift += 7 {
 				if iNdEx >= l {
 					return io.ErrUnexpectedEOF
 				}
 				b := data[iNdEx]
 				iNdEx++
-				v |= (int32(b) & 0x7F) << shift
+				m.ErrorCode |= (int32(b) & 0x7F) << shift
 				if b < 0x80 {
 					break
 				}
 			}
-			m.ErrorCode = &v
 		case 2:
 			if wireType != 2 {
 				return fmt.Errorf("proto: wrong wireType = %d for field ErrorMessage", wireType)
@@ -3410,8 +3322,7 @@ func (m *ReplaceOrderRequest) Unmarshal(data []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			s := string(data[iNdEx:postIndex])
-			m.Source = &s
+			m.Source = string(data[iNdEx:postIndex])
 			iNdEx = postIndex
 		case 51:
 			if wireType != 2 {
@@ -3433,26 +3344,23 @@ func (m *ReplaceOrderRequest) Unmarshal(data []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			s := string(data[iNdEx:postIndex])
-			m.Trader = &s
+			m.Trader = string(data[iNdEx:postIndex])
 			iNdEx = postIndex
 		case 52:
 			if wireType != 0 {
 				return fmt.Errorf("proto: wrong wireType = %d for field TraderId", wireType)
 			}
-			var v int32
 			for shift := uint(0); ; shift += 7 {
 				if iNdEx >= l {
 					return io.ErrUnexpectedEOF
 				}
 				b := data[iNdEx]
 				iNdEx++
-				v |= (int32(b) & 0x7F) << shift
+				m.TraderId |= (int32(b) & 0x7F) << shift
 				if b < 0x80 {
 					break
 				}
 			}
-			m.TraderId = &v
 			hasFields[0] |= uint64(0x00000001)
 		case 53:
 			if wireType != 2 {
@@ -3474,8 +3382,7 @@ func (m *ReplaceOrderRequest) Unmarshal(data []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			s := string(data[iNdEx:postIndex])
-			m.Machine = &s
+			m.Machine = string(data[iNdEx:postIndex])
 			iNdEx = postIndex
 		default:
 			var sizeOfWire int
@@ -3527,19 +3434,17 @@ func (m *ReplaceOrderResponse) Unmarshal(data []byte) error {
 			if wireType != 0 {
 				return fmt.Errorf("proto: wrong wireType = %d for field ErrorCode", wireType)
 			}
-			var v int32
 			for shift := uint(0); ; shift += 7 {
 				if iNdEx >= l {
 					return io.ErrUnexpectedEOF
 				}
 				b := data[iNdEx]
 				iNdEx++
-				v |= (int32(b) & 0x7F) << shift
+				m.ErrorCode |= (int32(b) & 0x7F) << shift
 				if b < 0x80 {
 					break
 				}
 			}
-			m.ErrorCode = &v
 		case 2:
 			if wireType != 2 {
 				return fmt.Errorf("proto: wrong wireType = %d for field ErrorMessage", wireType)
@@ -3703,43 +3608,43 @@ func (this *Order) String() string {
 		return "nil"
 	}
 	s := strings.Join([]string{`&Order{`,
-		`ClientGuid:` + valueToStringOrder(this.ClientGuid) + `,`,
-		`OrderId:` + valueToStringOrder(this.OrderId) + `,`,
-		`OrderKey:` + valueToStringOrder(this.OrderKey) + `,`,
-		`Version:` + valueToStringOrder(this.Version) + `,`,
-		`Instruction:` + valueToStringOrder(this.Instruction) + `,`,
-		`Side:` + valueToStringOrder(this.Side) + `,`,
-		`Quantity:` + valueToStringOrder(this.Quantity) + `,`,
-		`Symbol:` + valueToStringOrder(this.Symbol) + `,`,
-		`OrderType:` + valueToStringOrder(this.OrderType) + `,`,
-		`Timeinforce:` + valueToStringOrder(this.Timeinforce) + `,`,
-		`LimitPrice:` + valueToStringOrder(this.LimitPrice) + `,`,
-		`Exchange:` + valueToStringOrder(this.Exchange) + `,`,
-		`Description:` + valueToStringOrder(this.Description) + `,`,
-		`FilledQuantity:` + valueToStringOrder(this.FilledQuantity) + `,`,
-		`FilledAvgPrice:` + valueToStringOrder(this.FilledAvgPrice) + `,`,
-		`OrderStatus:` + valueToStringOrder(this.OrderStatus) + `,`,
-		`AccountId:` + valueToStringOrder(this.AccountId) + `,`,
-		`BrokerUserid:` + valueToStringOrder(this.BrokerUserid) + `,`,
-		`BrokerAccount:` + valueToStringOrder(this.BrokerAccount) + `,`,
-		`MarketConnector:` + valueToStringOrder(this.MarketConnector) + `,`,
-		`SettlCcy:` + valueToStringOrder(this.SettlCcy) + `,`,
-		`HandleInst:` + valueToStringOrder(this.HandleInst) + `,`,
-		`Algo:` + valueToStringOrder(this.Algo) + `,`,
-		`IsComplete:` + valueToStringOrder(this.IsComplete) + `,`,
-		`IsBooked:` + valueToStringOrder(this.IsBooked) + `,`,
-		`IsExpired:` + valueToStringOrder(this.IsExpired) + `,`,
-		`TradeBookingId:` + valueToStringOrder(this.TradeBookingId) + `,`,
-		`OpenClose:` + valueToStringOrder(this.OpenClose) + `,`,
-		`Source:` + valueToStringOrder(this.Source) + `,`,
-		`Trader:` + valueToStringOrder(this.Trader) + `,`,
-		`TraderId:` + valueToStringOrder(this.TraderId) + `,`,
-		`Machine:` + valueToStringOrder(this.Machine) + `,`,
-		`Memo:` + valueToStringOrder(this.Memo) + `,`,
-		`CreateDatetime:` + valueToStringOrder(this.CreateDatetime) + `,`,
-		`SubmitDatetime:` + valueToStringOrder(this.SubmitDatetime) + `,`,
-		`Executions:` + strings.Replace(fmt.Sprintf("%v", this.Executions), "Execution", "Execution", 1) + `,`,
-		`Allocations:` + strings.Replace(fmt.Sprintf("%v", this.Allocations), "Allocation", "Allocation", 1) + `,`,
+		`ClientGuid:` + fmt.Sprintf("%v", this.ClientGuid) + `,`,
+		`OrderId:` + fmt.Sprintf("%v", this.OrderId) + `,`,
+		`OrderKey:` + fmt.Sprintf("%v", this.OrderKey) + `,`,
+		`Version:` + fmt.Sprintf("%v", this.Version) + `,`,
+		`Instruction:` + fmt.Sprintf("%v", this.Instruction) + `,`,
+		`Side:` + fmt.Sprintf("%v", this.Side) + `,`,
+		`Quantity:` + fmt.Sprintf("%v", this.Quantity) + `,`,
+		`Symbol:` + fmt.Sprintf("%v", this.Symbol) + `,`,
+		`OrderType:` + fmt.Sprintf("%v", this.OrderType) + `,`,
+		`Timeinforce:` + fmt.Sprintf("%v", this.Timeinforce) + `,`,
+		`LimitPrice:` + fmt.Sprintf("%v", this.LimitPrice) + `,`,
+		`Exchange:` + fmt.Sprintf("%v", this.Exchange) + `,`,
+		`Description:` + fmt.Sprintf("%v", this.Description) + `,`,
+		`FilledQuantity:` + fmt.Sprintf("%v", this.FilledQuantity) + `,`,
+		`FilledAvgPrice:` + fmt.Sprintf("%v", this.FilledAvgPrice) + `,`,
+		`OrderStatus:` + fmt.Sprintf("%v", this.OrderStatus) + `,`,
+		`AccountId:` + fmt.Sprintf("%v", this.AccountId) + `,`,
+		`BrokerUserid:` + fmt.Sprintf("%v", this.BrokerUserid) + `,`,
+		`BrokerAccount:` + fmt.Sprintf("%v", this.BrokerAccount) + `,`,
+		`MarketConnector:` + fmt.Sprintf("%v", this.MarketConnector) + `,`,
+		`SettlCcy:` + fmt.Sprintf("%v", this.SettlCcy) + `,`,
+		`HandleInst:` + fmt.Sprintf("%v", this.HandleInst) + `,`,
+		`Algo:` + fmt.Sprintf("%v", this.Algo) + `,`,
+		`IsComplete:` + fmt.Sprintf("%v", this.IsComplete) + `,`,
+		`IsBooked:` + fmt.Sprintf("%v", this.IsBooked) + `,`,
+		`IsExpired:` + fmt.Sprintf("%v", this.IsExpired) + `,`,
+		`TradeBookingId:` + fmt.Sprintf("%v", this.TradeBookingId) + `,`,
+		`OpenClose:` + fmt.Sprintf("%v", this.OpenClose) + `,`,
+		`Source:` + fmt.Sprintf("%v", this.Source) + `,`,
+		`Trader:` + fmt.Sprintf("%v", this.Trader) + `,`,
+		`TraderId:` + fmt.Sprintf("%v", this.TraderId) + `,`,
+		`Machine:` + fmt.Sprintf("%v", this.Machine) + `,`,
+		`Memo:` + fmt.Sprintf("%v", this.Memo) + `,`,
+		`CreateDatetime:` + fmt.Sprintf("%v", this.CreateDatetime) + `,`,
+		`SubmitDatetime:` + fmt.Sprintf("%v", this.SubmitDatetime) + `,`,
+		`Executions:` + strings.Replace(strings.Replace(fmt.Sprintf("%v", this.Executions), "Execution", "Execution", 1), `&`, ``, 1) + `,`,
+		`Allocations:` + strings.Replace(strings.Replace(fmt.Sprintf("%v", this.Allocations), "Allocation", "Allocation", 1), `&`, ``, 1) + `,`,
 		`XXX_unrecognized:` + fmt.Sprintf("%v", this.XXX_unrecognized) + `,`,
 		`}`,
 	}, "")
@@ -3750,28 +3655,28 @@ func (this *Execution) String() string {
 		return "nil"
 	}
 	s := strings.Join([]string{`&Execution{`,
-		`ExecutionId:` + valueToStringOrder(this.ExecutionId) + `,`,
-		`OrderId:` + valueToStringOrder(this.OrderId) + `,`,
-		`OrderKey:` + valueToStringOrder(this.OrderKey) + `,`,
-		`ClientOrderId:` + valueToStringOrder(this.ClientOrderId) + `,`,
-		`BrokerOrderId:` + valueToStringOrder(this.BrokerOrderId) + `,`,
-		`BrokerExecId:` + valueToStringOrder(this.BrokerExecId) + `,`,
-		`PrevBrokerExecId:` + valueToStringOrder(this.PrevBrokerExecId) + `,`,
-		`CancelReplaceByExececutionId:` + valueToStringOrder(this.CancelReplaceByExececutionId) + `,`,
-		`OrderStatus:` + valueToStringOrder(this.OrderStatus) + `,`,
-		`ExecType:` + valueToStringOrder(this.ExecType) + `,`,
-		`Quantity:` + valueToStringOrder(this.Quantity) + `,`,
-		`Price:` + valueToStringOrder(this.Price) + `,`,
-		`Text:` + valueToStringOrder(this.Text) + `,`,
-		`Lastmkt:` + valueToStringOrder(this.Lastmkt) + `,`,
-		`ExecBroker:` + valueToStringOrder(this.ExecBroker) + `,`,
-		`LastLiquidity:` + valueToStringOrder(this.LastLiquidity) + `,`,
-		`CumQuantity:` + valueToStringOrder(this.CumQuantity) + `,`,
-		`AvgPrice:` + valueToStringOrder(this.AvgPrice) + `,`,
-		`CalcCumQuantity:` + valueToStringOrder(this.CalcCumQuantity) + `,`,
-		`CalcAvgPrice:` + valueToStringOrder(this.CalcAvgPrice) + `,`,
-		`BrokerExecDatetime:` + valueToStringOrder(this.BrokerExecDatetime) + `,`,
-		`CreateDatetime:` + valueToStringOrder(this.CreateDatetime) + `,`,
+		`ExecutionId:` + fmt.Sprintf("%v", this.ExecutionId) + `,`,
+		`OrderId:` + fmt.Sprintf("%v", this.OrderId) + `,`,
+		`OrderKey:` + fmt.Sprintf("%v", this.OrderKey) + `,`,
+		`ClientOrderId:` + fmt.Sprintf("%v", this.ClientOrderId) + `,`,
+		`BrokerOrderId:` + fmt.Sprintf("%v", this.BrokerOrderId) + `,`,
+		`BrokerExecId:` + fmt.Sprintf("%v", this.BrokerExecId) + `,`,
+		`PrevBrokerExecId:` + fmt.Sprintf("%v", this.PrevBrokerExecId) + `,`,
+		`CancelReplaceByExececutionId:` + fmt.Sprintf("%v", this.CancelReplaceByExececutionId) + `,`,
+		`OrderStatus:` + fmt.Sprintf("%v", this.OrderStatus) + `,`,
+		`ExecType:` + fmt.Sprintf("%v", this.ExecType) + `,`,
+		`Quantity:` + fmt.Sprintf("%v", this.Quantity) + `,`,
+		`Price:` + fmt.Sprintf("%v", this.Price) + `,`,
+		`Text:` + fmt.Sprintf("%v", this.Text) + `,`,
+		`Lastmkt:` + fmt.Sprintf("%v", this.Lastmkt) + `,`,
+		`ExecBroker:` + fmt.Sprintf("%v", this.ExecBroker) + `,`,
+		`LastLiquidity:` + fmt.Sprintf("%v", this.LastLiquidity) + `,`,
+		`CumQuantity:` + fmt.Sprintf("%v", this.CumQuantity) + `,`,
+		`AvgPrice:` + fmt.Sprintf("%v", this.AvgPrice) + `,`,
+		`CalcCumQuantity:` + fmt.Sprintf("%v", this.CalcCumQuantity) + `,`,
+		`CalcAvgPrice:` + fmt.Sprintf("%v", this.CalcAvgPrice) + `,`,
+		`BrokerExecDatetime:` + fmt.Sprintf("%v", this.BrokerExecDatetime) + `,`,
+		`CreateDatetime:` + fmt.Sprintf("%v", this.CreateDatetime) + `,`,
 		`XXX_unrecognized:` + fmt.Sprintf("%v", this.XXX_unrecognized) + `,`,
 		`}`,
 	}, "")
@@ -3782,11 +3687,11 @@ func (this *Allocation) String() string {
 		return "nil"
 	}
 	s := strings.Join([]string{`&Allocation{`,
-		`AllocationId:` + valueToStringOrder(this.AllocationId) + `,`,
-		`OrderKey:` + valueToStringOrder(this.OrderKey) + `,`,
-		`StrategyId:` + valueToStringOrder(this.StrategyId) + `,`,
-		`Quantity:` + valueToStringOrder(this.Quantity) + `,`,
-		`Ratio:` + valueToStringOrder(this.Ratio) + `,`,
+		`AllocationId:` + fmt.Sprintf("%v", this.AllocationId) + `,`,
+		`OrderKey:` + fmt.Sprintf("%v", this.OrderKey) + `,`,
+		`StrategyId:` + fmt.Sprintf("%v", this.StrategyId) + `,`,
+		`Quantity:` + fmt.Sprintf("%v", this.Quantity) + `,`,
+		`Ratio:` + fmt.Sprintf("%v", this.Ratio) + `,`,
 		`XXX_unrecognized:` + fmt.Sprintf("%v", this.XXX_unrecognized) + `,`,
 		`}`,
 	}, "")
@@ -3808,7 +3713,7 @@ func (this *NewOrderResponse) String() string {
 		return "nil"
 	}
 	s := strings.Join([]string{`&NewOrderResponse{`,
-		`ErrorCode:` + valueToStringOrder(this.ErrorCode) + `,`,
+		`ErrorCode:` + fmt.Sprintf("%v", this.ErrorCode) + `,`,
 		`ErrorMessage:` + valueToStringOrder(this.ErrorMessage) + `,`,
 		`Order:` + strings.Replace(fmt.Sprintf("%v", this.Order), "Order", "Order", 1) + `,`,
 		`XXX_unrecognized:` + fmt.Sprintf("%v", this.XXX_unrecognized) + `,`,
@@ -3821,14 +3726,14 @@ func (this *CancelOrderRequest) String() string {
 		return "nil"
 	}
 	s := strings.Join([]string{`&CancelOrderRequest{`,
-		`ClientGuid:` + valueToStringOrder(this.ClientGuid) + `,`,
-		`OrderId:` + valueToStringOrder(this.OrderId) + `,`,
-		`OrderKey:` + valueToStringOrder(this.OrderKey) + `,`,
-		`Version:` + valueToStringOrder(this.Version) + `,`,
-		`Source:` + valueToStringOrder(this.Source) + `,`,
-		`Trader:` + valueToStringOrder(this.Trader) + `,`,
-		`TraderId:` + valueToStringOrder(this.TraderId) + `,`,
-		`Machine:` + valueToStringOrder(this.Machine) + `,`,
+		`ClientGuid:` + fmt.Sprintf("%v", this.ClientGuid) + `,`,
+		`OrderId:` + fmt.Sprintf("%v", this.OrderId) + `,`,
+		`OrderKey:` + fmt.Sprintf("%v", this.OrderKey) + `,`,
+		`Version:` + fmt.Sprintf("%v", this.Version) + `,`,
+		`Source:` + fmt.Sprintf("%v", this.Source) + `,`,
+		`Trader:` + fmt.Sprintf("%v", this.Trader) + `,`,
+		`TraderId:` + fmt.Sprintf("%v", this.TraderId) + `,`,
+		`Machine:` + fmt.Sprintf("%v", this.Machine) + `,`,
 		`XXX_unrecognized:` + fmt.Sprintf("%v", this.XXX_unrecognized) + `,`,
 		`}`,
 	}, "")
@@ -3839,7 +3744,7 @@ func (this *CancelOrderResponse) String() string {
 		return "nil"
 	}
 	s := strings.Join([]string{`&CancelOrderResponse{`,
-		`ErrorCode:` + valueToStringOrder(this.ErrorCode) + `,`,
+		`ErrorCode:` + fmt.Sprintf("%v", this.ErrorCode) + `,`,
 		`ErrorMessage:` + valueToStringOrder(this.ErrorMessage) + `,`,
 		`Order:` + strings.Replace(fmt.Sprintf("%v", this.Order), "Order", "Order", 1) + `,`,
 		`XXX_unrecognized:` + fmt.Sprintf("%v", this.XXX_unrecognized) + `,`,
@@ -3853,10 +3758,10 @@ func (this *ReplaceOrderRequest) String() string {
 	}
 	s := strings.Join([]string{`&ReplaceOrderRequest{`,
 		`Order:` + strings.Replace(fmt.Sprintf("%v", this.Order), "Order", "Order", 1) + `,`,
-		`Source:` + valueToStringOrder(this.Source) + `,`,
-		`Trader:` + valueToStringOrder(this.Trader) + `,`,
-		`TraderId:` + valueToStringOrder(this.TraderId) + `,`,
-		`Machine:` + valueToStringOrder(this.Machine) + `,`,
+		`Source:` + fmt.Sprintf("%v", this.Source) + `,`,
+		`Trader:` + fmt.Sprintf("%v", this.Trader) + `,`,
+		`TraderId:` + fmt.Sprintf("%v", this.TraderId) + `,`,
+		`Machine:` + fmt.Sprintf("%v", this.Machine) + `,`,
 		`XXX_unrecognized:` + fmt.Sprintf("%v", this.XXX_unrecognized) + `,`,
 		`}`,
 	}, "")
@@ -3867,7 +3772,7 @@ func (this *ReplaceOrderResponse) String() string {
 		return "nil"
 	}
 	s := strings.Join([]string{`&ReplaceOrderResponse{`,
-		`ErrorCode:` + valueToStringOrder(this.ErrorCode) + `,`,
+		`ErrorCode:` + fmt.Sprintf("%v", this.ErrorCode) + `,`,
 		`ErrorMessage:` + valueToStringOrder(this.ErrorMessage) + `,`,
 		`Order:` + strings.Replace(fmt.Sprintf("%v", this.Order), "Order", "Order", 1) + `,`,
 		`XXX_unrecognized:` + fmt.Sprintf("%v", this.XXX_unrecognized) + `,`,
@@ -3886,127 +3791,57 @@ func valueToStringOrder(v interface{}) string {
 func (m *Order) Size() (n int) {
 	var l int
 	_ = l
-	if m.ClientGuid != nil {
-		l = len(*m.ClientGuid)
-		n += 1 + l + sovOrder(uint64(l))
-	}
-	if m.OrderId != nil {
-		n += 1 + sovOrder(uint64(*m.OrderId))
-	}
-	if m.OrderKey != nil {
-		n += 1 + sovOrder(uint64(*m.OrderKey))
-	}
-	if m.Version != nil {
-		n += 1 + sovOrder(uint64(*m.Version))
-	}
-	if m.Instruction != nil {
-		n += 1 + sovOrder(uint64(*m.Instruction))
-	}
-	if m.Side != nil {
-		n += 1 + sovOrder(uint64(*m.Side))
-	}
-	if m.Quantity != nil {
-		n += 9
-	}
-	if m.Symbol != nil {
-		l = len(*m.Symbol)
-		n += 1 + l + sovOrder(uint64(l))
-	}
-	if m.OrderType != nil {
-		n += 2 + sovOrder(uint64(*m.OrderType))
-	}
-	if m.Timeinforce != nil {
-		n += 2 + sovOrder(uint64(*m.Timeinforce))
-	}
-	if m.LimitPrice != nil {
-		n += 10
-	}
-	if m.Exchange != nil {
-		l = len(*m.Exchange)
-		n += 2 + l + sovOrder(uint64(l))
-	}
-	if m.Description != nil {
-		l = len(*m.Description)
-		n += 2 + l + sovOrder(uint64(l))
-	}
-	if m.FilledQuantity != nil {
-		n += 10
-	}
-	if m.FilledAvgPrice != nil {
-		n += 10
-	}
-	if m.OrderStatus != nil {
-		n += 2 + sovOrder(uint64(*m.OrderStatus))
-	}
-	if m.AccountId != nil {
-		n += 2 + sovOrder(uint64(*m.AccountId))
-	}
-	if m.BrokerUserid != nil {
-		l = len(*m.BrokerUserid)
-		n += 2 + l + sovOrder(uint64(l))
-	}
-	if m.BrokerAccount != nil {
-		l = len(*m.BrokerAccount)
-		n += 2 + l + sovOrder(uint64(l))
-	}
-	if m.MarketConnector != nil {
-		l = len(*m.MarketConnector)
-		n += 2 + l + sovOrder(uint64(l))
-	}
-	if m.SettlCcy != nil {
-		l = len(*m.SettlCcy)
-		n += 2 + l + sovOrder(uint64(l))
-	}
-	if m.HandleInst != nil {
-		n += 2 + sovOrder(uint64(*m.HandleInst))
-	}
-	if m.Algo != nil {
-		l = len(*m.Algo)
-		n += 2 + l + sovOrder(uint64(l))
-	}
-	if m.IsComplete != nil {
-		n += 3
-	}
-	if m.IsBooked != nil {
-		n += 3
-	}
-	if m.IsExpired != nil {
-		n += 3
-	}
-	if m.TradeBookingId != nil {
-		n += 2 + sovOrder(uint64(*m.TradeBookingId))
-	}
-	if m.OpenClose != nil {
-		l = len(*m.OpenClose)
-		n += 2 + l + sovOrder(uint64(l))
-	}
-	if m.Source != nil {
-		l = len(*m.Source)
-		n += 2 + l + sovOrder(uint64(l))
-	}
-	if m.Trader != nil {
-		l = len(*m.Trader)
-		n += 2 + l + sovOrder(uint64(l))
-	}
-	if m.TraderId != nil {
-		n += 2 + sovOrder(uint64(*m.TraderId))
-	}
-	if m.Machine != nil {
-		l = len(*m.Machine)
-		n += 2 + l + sovOrder(uint64(l))
-	}
-	if m.Memo != nil {
-		l = len(*m.Memo)
-		n += 2 + l + sovOrder(uint64(l))
-	}
-	if m.CreateDatetime != nil {
-		l = len(*m.CreateDatetime)
-		n += 2 + l + sovOrder(uint64(l))
-	}
-	if m.SubmitDatetime != nil {
-		l = len(*m.SubmitDatetime)
-		n += 2 + l + sovOrder(uint64(l))
-	}
+	l = len(m.ClientGuid)
+	n += 1 + l + sovOrder(uint64(l))
+	n += 1 + sovOrder(uint64(m.OrderId))
+	n += 1 + sovOrder(uint64(m.OrderKey))
+	n += 1 + sovOrder(uint64(m.Version))
+	n += 1 + sovOrder(uint64(m.Instruction))
+	n += 1 + sovOrder(uint64(m.Side))
+	n += 9
+	l = len(m.Symbol)
+	n += 1 + l + sovOrder(uint64(l))
+	n += 2 + sovOrder(uint64(m.OrderType))
+	n += 2 + sovOrder(uint64(m.Timeinforce))
+	n += 10
+	l = len(m.Exchange)
+	n += 2 + l + sovOrder(uint64(l))
+	l = len(m.Description)
+	n += 2 + l + sovOrder(uint64(l))
+	n += 10
+	n += 10
+	n += 2 + sovOrder(uint64(m.OrderStatus))
+	n += 2 + sovOrder(uint64(m.AccountId))
+	l = len(m.BrokerUserid)
+	n += 2 + l + sovOrder(uint64(l))
+	l = len(m.BrokerAccount)
+	n += 2 + l + sovOrder(uint64(l))
+	l = len(m.MarketConnector)
+	n += 2 + l + sovOrder(uint64(l))
+	l = len(m.SettlCcy)
+	n += 2 + l + sovOrder(uint64(l))
+	n += 2 + sovOrder(uint64(m.HandleInst))
+	l = len(m.Algo)
+	n += 2 + l + sovOrder(uint64(l))
+	n += 3
+	n += 3
+	n += 3
+	n += 2 + sovOrder(uint64(m.TradeBookingId))
+	l = len(m.OpenClose)
+	n += 2 + l + sovOrder(uint64(l))
+	l = len(m.Source)
+	n += 2 + l + sovOrder(uint64(l))
+	l = len(m.Trader)
+	n += 2 + l + sovOrder(uint64(l))
+	n += 2 + sovOrder(uint64(m.TraderId))
+	l = len(m.Machine)
+	n += 2 + l + sovOrder(uint64(l))
+	l = len(m.Memo)
+	n += 2 + l + sovOrder(uint64(l))
+	l = len(m.CreateDatetime)
+	n += 2 + l + sovOrder(uint64(l))
+	l = len(m.SubmitDatetime)
+	n += 2 + l + sovOrder(uint64(l))
 	if len(m.Executions) > 0 {
 		for _, e := range m.Executions {
 			l = e.Size()
@@ -4028,81 +3863,37 @@ func (m *Order) Size() (n int) {
 func (m *Execution) Size() (n int) {
 	var l int
 	_ = l
-	if m.ExecutionId != nil {
-		n += 1 + sovOrder(uint64(*m.ExecutionId))
-	}
-	if m.OrderId != nil {
-		n += 1 + sovOrder(uint64(*m.OrderId))
-	}
-	if m.OrderKey != nil {
-		n += 1 + sovOrder(uint64(*m.OrderKey))
-	}
-	if m.ClientOrderId != nil {
-		l = len(*m.ClientOrderId)
-		n += 1 + l + sovOrder(uint64(l))
-	}
-	if m.BrokerOrderId != nil {
-		l = len(*m.BrokerOrderId)
-		n += 1 + l + sovOrder(uint64(l))
-	}
-	if m.BrokerExecId != nil {
-		l = len(*m.BrokerExecId)
-		n += 1 + l + sovOrder(uint64(l))
-	}
-	if m.PrevBrokerExecId != nil {
-		l = len(*m.PrevBrokerExecId)
-		n += 1 + l + sovOrder(uint64(l))
-	}
-	if m.CancelReplaceByExececutionId != nil {
-		n += 1 + sovOrder(uint64(*m.CancelReplaceByExececutionId))
-	}
-	if m.OrderStatus != nil {
-		n += 1 + sovOrder(uint64(*m.OrderStatus))
-	}
-	if m.ExecType != nil {
-		n += 1 + sovOrder(uint64(*m.ExecType))
-	}
-	if m.Quantity != nil {
-		n += 10
-	}
-	if m.Price != nil {
-		n += 10
-	}
-	if m.Text != nil {
-		l = len(*m.Text)
-		n += 2 + l + sovOrder(uint64(l))
-	}
-	if m.Lastmkt != nil {
-		l = len(*m.Lastmkt)
-		n += 2 + l + sovOrder(uint64(l))
-	}
-	if m.ExecBroker != nil {
-		l = len(*m.ExecBroker)
-		n += 2 + l + sovOrder(uint64(l))
-	}
-	if m.LastLiquidity != nil {
-		n += 2 + sovOrder(uint64(*m.LastLiquidity))
-	}
-	if m.CumQuantity != nil {
-		n += 10
-	}
-	if m.AvgPrice != nil {
-		n += 10
-	}
-	if m.CalcCumQuantity != nil {
-		n += 10
-	}
-	if m.CalcAvgPrice != nil {
-		n += 10
-	}
-	if m.BrokerExecDatetime != nil {
-		l = len(*m.BrokerExecDatetime)
-		n += 2 + l + sovOrder(uint64(l))
-	}
-	if m.CreateDatetime != nil {
-		l = len(*m.CreateDatetime)
-		n += 2 + l + sovOrder(uint64(l))
-	}
+	n += 1 + sovOrder(uint64(m.ExecutionId))
+	n += 1 + sovOrder(uint64(m.OrderId))
+	n += 1 + sovOrder(uint64(m.OrderKey))
+	l = len(m.ClientOrderId)
+	n += 1 + l + sovOrder(uint64(l))
+	l = len(m.BrokerOrderId)
+	n += 1 + l + sovOrder(uint64(l))
+	l = len(m.BrokerExecId)
+	n += 1 + l + sovOrder(uint64(l))
+	l = len(m.PrevBrokerExecId)
+	n += 1 + l + sovOrder(uint64(l))
+	n += 1 + sovOrder(uint64(m.CancelReplaceByExececutionId))
+	n += 1 + sovOrder(uint64(m.OrderStatus))
+	n += 1 + sovOrder(uint64(m.ExecType))
+	n += 10
+	n += 10
+	l = len(m.Text)
+	n += 2 + l + sovOrder(uint64(l))
+	l = len(m.Lastmkt)
+	n += 2 + l + sovOrder(uint64(l))
+	l = len(m.ExecBroker)
+	n += 2 + l + sovOrder(uint64(l))
+	n += 2 + sovOrder(uint64(m.LastLiquidity))
+	n += 10
+	n += 10
+	n += 10
+	n += 10
+	l = len(m.BrokerExecDatetime)
+	n += 2 + l + sovOrder(uint64(l))
+	l = len(m.CreateDatetime)
+	n += 2 + l + sovOrder(uint64(l))
 	if m.XXX_unrecognized != nil {
 		n += len(m.XXX_unrecognized)
 	}
@@ -4112,21 +3903,11 @@ func (m *Execution) Size() (n int) {
 func (m *Allocation) Size() (n int) {
 	var l int
 	_ = l
-	if m.AllocationId != nil {
-		n += 1 + sovOrder(uint64(*m.AllocationId))
-	}
-	if m.OrderKey != nil {
-		n += 1 + sovOrder(uint64(*m.OrderKey))
-	}
-	if m.StrategyId != nil {
-		n += 1 + sovOrder(uint64(*m.StrategyId))
-	}
-	if m.Quantity != nil {
-		n += 9
-	}
-	if m.Ratio != nil {
-		n += 9
-	}
+	n += 1 + sovOrder(uint64(m.AllocationId))
+	n += 1 + sovOrder(uint64(m.OrderKey))
+	n += 1 + sovOrder(uint64(m.StrategyId))
+	n += 9
+	n += 9
 	if m.XXX_unrecognized != nil {
 		n += len(m.XXX_unrecognized)
 	}
@@ -4149,9 +3930,7 @@ func (m *NewOrderRequest) Size() (n int) {
 func (m *NewOrderResponse) Size() (n int) {
 	var l int
 	_ = l
-	if m.ErrorCode != nil {
-		n += 1 + sovOrder(uint64(*m.ErrorCode))
-	}
+	n += 1 + sovOrder(uint64(m.ErrorCode))
 	if m.ErrorMessage != nil {
 		l = len(*m.ErrorMessage)
 		n += 1 + l + sovOrder(uint64(l))
@@ -4169,34 +3948,18 @@ func (m *NewOrderResponse) Size() (n int) {
 func (m *CancelOrderRequest) Size() (n int) {
 	var l int
 	_ = l
-	if m.ClientGuid != nil {
-		l = len(*m.ClientGuid)
-		n += 1 + l + sovOrder(uint64(l))
-	}
-	if m.OrderId != nil {
-		n += 1 + sovOrder(uint64(*m.OrderId))
-	}
-	if m.OrderKey != nil {
-		n += 1 + sovOrder(uint64(*m.OrderKey))
-	}
-	if m.Version != nil {
-		n += 1 + sovOrder(uint64(*m.Version))
-	}
-	if m.Source != nil {
-		l = len(*m.Source)
-		n += 2 + l + sovOrder(uint64(l))
-	}
-	if m.Trader != nil {
-		l = len(*m.Trader)
-		n += 2 + l + sovOrder(uint64(l))
-	}
-	if m.TraderId != nil {
-		n += 2 + sovOrder(uint64(*m.TraderId))
-	}
-	if m.Machine != nil {
-		l = len(*m.Machine)
-		n += 2 + l + sovOrder(uint64(l))
-	}
+	l = len(m.ClientGuid)
+	n += 1 + l + sovOrder(uint64(l))
+	n += 1 + sovOrder(uint64(m.OrderId))
+	n += 1 + sovOrder(uint64(m.OrderKey))
+	n += 1 + sovOrder(uint64(m.Version))
+	l = len(m.Source)
+	n += 2 + l + sovOrder(uint64(l))
+	l = len(m.Trader)
+	n += 2 + l + sovOrder(uint64(l))
+	n += 2 + sovOrder(uint64(m.TraderId))
+	l = len(m.Machine)
+	n += 2 + l + sovOrder(uint64(l))
 	if m.XXX_unrecognized != nil {
 		n += len(m.XXX_unrecognized)
 	}
@@ -4206,9 +3969,7 @@ func (m *CancelOrderRequest) Size() (n int) {
 func (m *CancelOrderResponse) Size() (n int) {
 	var l int
 	_ = l
-	if m.ErrorCode != nil {
-		n += 1 + sovOrder(uint64(*m.ErrorCode))
-	}
+	n += 1 + sovOrder(uint64(m.ErrorCode))
 	if m.ErrorMessage != nil {
 		l = len(*m.ErrorMessage)
 		n += 1 + l + sovOrder(uint64(l))
@@ -4230,21 +3991,13 @@ func (m *ReplaceOrderRequest) Size() (n int) {
 		l = m.Order.Size()
 		n += 1 + l + sovOrder(uint64(l))
 	}
-	if m.Source != nil {
-		l = len(*m.Source)
-		n += 2 + l + sovOrder(uint64(l))
-	}
-	if m.Trader != nil {
-		l = len(*m.Trader)
-		n += 2 + l + sovOrder(uint64(l))
-	}
-	if m.TraderId != nil {
-		n += 2 + sovOrder(uint64(*m.TraderId))
-	}
-	if m.Machine != nil {
-		l = len(*m.Machine)
-		n += 2 + l + sovOrder(uint64(l))
-	}
+	l = len(m.Source)
+	n += 2 + l + sovOrder(uint64(l))
+	l = len(m.Trader)
+	n += 2 + l + sovOrder(uint64(l))
+	n += 2 + sovOrder(uint64(m.TraderId))
+	l = len(m.Machine)
+	n += 2 + l + sovOrder(uint64(l))
 	if m.XXX_unrecognized != nil {
 		n += len(m.XXX_unrecognized)
 	}
@@ -4254,9 +4007,7 @@ func (m *ReplaceOrderRequest) Size() (n int) {
 func (m *ReplaceOrderResponse) Size() (n int) {
 	var l int
 	_ = l
-	if m.ErrorCode != nil {
-		n += 1 + sovOrder(uint64(*m.ErrorCode))
-	}
+	n += 1 + sovOrder(uint64(m.ErrorCode))
 	if m.ErrorMessage != nil {
 		l = len(*m.ErrorMessage)
 		n += 1 + l + sovOrder(uint64(l))
@@ -4286,164 +4037,85 @@ func sozOrder(x uint64) (n int) {
 }
 func NewPopulatedOrder(r randyOrder, easy bool) *Order {
 	this := &Order{}
-	v1 := randStringOrder(r)
-	this.ClientGuid = &v1
-	v2 := int32(r.Int31())
+	this.ClientGuid = randStringOrder(r)
+	this.OrderId = int32(r.Int31())
 	if r.Intn(2) == 0 {
-		v2 *= -1
+		this.OrderId *= -1
 	}
-	this.OrderId = &v2
-	v3 := int32(r.Int31())
+	this.OrderKey = int32(r.Int31())
 	if r.Intn(2) == 0 {
-		v3 *= -1
+		this.OrderKey *= -1
 	}
-	this.OrderKey = &v3
-	v4 := int32(r.Int31())
+	this.Version = int32(r.Int31())
 	if r.Intn(2) == 0 {
-		v4 *= -1
+		this.Version *= -1
 	}
-	this.Version = &v4
-	if r.Intn(10) != 0 {
-		v5 := Order_OrderInstruction([]int32{0, 1, 2}[r.Intn(3)])
-		this.Instruction = &v5
-	}
-	v6 := Side([]int32{1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16}[r.Intn(16)])
-	this.Side = &v6
-	v7 := float64(r.Float64())
+	this.Instruction = Order_OrderInstruction([]int32{0, 1, 2}[r.Intn(3)])
+	this.Side = Side([]int32{0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16}[r.Intn(17)])
+	this.Quantity = float64(r.Float64())
 	if r.Intn(2) == 0 {
-		v7 *= -1
+		this.Quantity *= -1
 	}
-	this.Quantity = &v7
-	v8 := randStringOrder(r)
-	this.Symbol = &v8
-	v9 := OrderType([]int32{1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23}[r.Intn(23)])
-	this.OrderType = &v9
-	v10 := TimeInForce([]int32{0, 1, 2, 3, 4, 5, 6, 7}[r.Intn(8)])
-	this.Timeinforce = &v10
-	if r.Intn(10) != 0 {
-		v11 := float64(r.Float64())
-		if r.Intn(2) == 0 {
-			v11 *= -1
-		}
-		this.LimitPrice = &v11
-	}
-	if r.Intn(10) != 0 {
-		v12 := randStringOrder(r)
-		this.Exchange = &v12
-	}
-	if r.Intn(10) != 0 {
-		v13 := randStringOrder(r)
-		this.Description = &v13
-	}
-	if r.Intn(10) != 0 {
-		v14 := float64(r.Float64())
-		if r.Intn(2) == 0 {
-			v14 *= -1
-		}
-		this.FilledQuantity = &v14
-	}
-	if r.Intn(10) != 0 {
-		v15 := float64(r.Float64())
-		if r.Intn(2) == 0 {
-			v15 *= -1
-		}
-		this.FilledAvgPrice = &v15
-	}
-	if r.Intn(10) != 0 {
-		v16 := OrderStatus([]int32{0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 100, 101, 102, 103, 110, 111, 112, 113, 120, 121, 122, 123, 125, 126, 130, 131, 132, 133, 134, 135}[r.Intn(35)])
-		this.OrderStatus = &v16
-	}
-	v17 := int32(r.Int31())
+	this.Symbol = randStringOrder(r)
+	this.OrderType = OrderType([]int32{0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23}[r.Intn(24)])
+	this.Timeinforce = TimeInForce([]int32{0, 1, 2, 3, 4, 5, 6, 7}[r.Intn(8)])
+	this.LimitPrice = float64(r.Float64())
 	if r.Intn(2) == 0 {
-		v17 *= -1
+		this.LimitPrice *= -1
 	}
-	this.AccountId = &v17
-	if r.Intn(10) != 0 {
-		v18 := randStringOrder(r)
-		this.BrokerUserid = &v18
-	}
-	if r.Intn(10) != 0 {
-		v19 := randStringOrder(r)
-		this.BrokerAccount = &v19
-	}
-	if r.Intn(10) != 0 {
-		v20 := randStringOrder(r)
-		this.MarketConnector = &v20
-	}
-	if r.Intn(10) != 0 {
-		v21 := randStringOrder(r)
-		this.SettlCcy = &v21
-	}
-	v22 := HandlInst([]int32{1, 2, 3}[r.Intn(3)])
-	this.HandleInst = &v22
-	if r.Intn(10) != 0 {
-		v23 := randStringOrder(r)
-		this.Algo = &v23
-	}
-	if r.Intn(10) != 0 {
-		v24 := bool(bool(r.Intn(2) == 0))
-		this.IsComplete = &v24
-	}
-	if r.Intn(10) != 0 {
-		v25 := bool(bool(r.Intn(2) == 0))
-		this.IsBooked = &v25
-	}
-	if r.Intn(10) != 0 {
-		v26 := bool(bool(r.Intn(2) == 0))
-		this.IsExpired = &v26
-	}
-	if r.Intn(10) != 0 {
-		v27 := int32(r.Int31())
-		if r.Intn(2) == 0 {
-			v27 *= -1
-		}
-		this.TradeBookingId = &v27
-	}
-	if r.Intn(10) != 0 {
-		v28 := randStringOrder(r)
-		this.OpenClose = &v28
-	}
-	if r.Intn(10) != 0 {
-		v29 := randStringOrder(r)
-		this.Source = &v29
-	}
-	if r.Intn(10) != 0 {
-		v30 := randStringOrder(r)
-		this.Trader = &v30
-	}
-	v31 := int32(r.Int31())
+	this.Exchange = randStringOrder(r)
+	this.Description = randStringOrder(r)
+	this.FilledQuantity = float64(r.Float64())
 	if r.Intn(2) == 0 {
-		v31 *= -1
+		this.FilledQuantity *= -1
 	}
-	this.TraderId = &v31
-	if r.Intn(10) != 0 {
-		v32 := randStringOrder(r)
-		this.Machine = &v32
+	this.FilledAvgPrice = float64(r.Float64())
+	if r.Intn(2) == 0 {
+		this.FilledAvgPrice *= -1
 	}
-	if r.Intn(10) != 0 {
-		v33 := randStringOrder(r)
-		this.Memo = &v33
+	this.OrderStatus = OrderStatus([]int32{0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 100, 101, 102, 103, 110, 111, 112, 113, 120, 121, 122, 123, 125, 126, 130, 131, 132, 133, 134, 135}[r.Intn(35)])
+	this.AccountId = int32(r.Int31())
+	if r.Intn(2) == 0 {
+		this.AccountId *= -1
 	}
-	if r.Intn(10) != 0 {
-		v34 := randStringOrder(r)
-		this.CreateDatetime = &v34
+	this.BrokerUserid = randStringOrder(r)
+	this.BrokerAccount = randStringOrder(r)
+	this.MarketConnector = randStringOrder(r)
+	this.SettlCcy = randStringOrder(r)
+	this.HandleInst = HandlInst([]int32{0, 1, 2, 3}[r.Intn(4)])
+	this.Algo = randStringOrder(r)
+	this.IsComplete = bool(bool(r.Intn(2) == 0))
+	this.IsBooked = bool(bool(r.Intn(2) == 0))
+	this.IsExpired = bool(bool(r.Intn(2) == 0))
+	this.TradeBookingId = int32(r.Int31())
+	if r.Intn(2) == 0 {
+		this.TradeBookingId *= -1
 	}
-	if r.Intn(10) != 0 {
-		v35 := randStringOrder(r)
-		this.SubmitDatetime = &v35
+	this.OpenClose = randStringOrder(r)
+	this.Source = randStringOrder(r)
+	this.Trader = randStringOrder(r)
+	this.TraderId = int32(r.Int31())
+	if r.Intn(2) == 0 {
+		this.TraderId *= -1
 	}
+	this.Machine = randStringOrder(r)
+	this.Memo = randStringOrder(r)
+	this.CreateDatetime = randStringOrder(r)
+	this.SubmitDatetime = randStringOrder(r)
 	if r.Intn(10) != 0 {
-		v36 := r.Intn(10)
-		this.Executions = make([]*Execution, v36)
-		for i := 0; i < v36; i++ {
-			this.Executions[i] = NewPopulatedExecution(r, easy)
+		v1 := r.Intn(10)
+		this.Executions = make([]Execution, v1)
+		for i := 0; i < v1; i++ {
+			v2 := NewPopulatedExecution(r, easy)
+			this.Executions[i] = *v2
 		}
 	}
 	if r.Intn(10) != 0 {
-		v37 := r.Intn(10)
-		this.Allocations = make([]*Allocation, v37)
-		for i := 0; i < v37; i++ {
-			this.Allocations[i] = NewPopulatedAllocation(r, easy)
+		v3 := r.Intn(10)
+		this.Allocations = make([]Allocation, v3)
+		for i := 0; i < v3; i++ {
+			v4 := NewPopulatedAllocation(r, easy)
+			this.Allocations[i] = *v4
 		}
 	}
 	if !easy && r.Intn(10) != 0 {
@@ -4454,120 +4126,58 @@ func NewPopulatedOrder(r randyOrder, easy bool) *Order {
 
 func NewPopulatedExecution(r randyOrder, easy bool) *Execution {
 	this := &Execution{}
-	v38 := int32(r.Int31())
+	this.ExecutionId = int32(r.Int31())
 	if r.Intn(2) == 0 {
-		v38 *= -1
+		this.ExecutionId *= -1
 	}
-	this.ExecutionId = &v38
-	v39 := int32(r.Int31())
+	this.OrderId = int32(r.Int31())
 	if r.Intn(2) == 0 {
-		v39 *= -1
+		this.OrderId *= -1
 	}
-	this.OrderId = &v39
-	if r.Intn(10) != 0 {
-		v40 := int32(r.Int31())
-		if r.Intn(2) == 0 {
-			v40 *= -1
-		}
-		this.OrderKey = &v40
+	this.OrderKey = int32(r.Int31())
+	if r.Intn(2) == 0 {
+		this.OrderKey *= -1
 	}
-	if r.Intn(10) != 0 {
-		v41 := randStringOrder(r)
-		this.ClientOrderId = &v41
+	this.ClientOrderId = randStringOrder(r)
+	this.BrokerOrderId = randStringOrder(r)
+	this.BrokerExecId = randStringOrder(r)
+	this.PrevBrokerExecId = randStringOrder(r)
+	this.CancelReplaceByExececutionId = int32(r.Int31())
+	if r.Intn(2) == 0 {
+		this.CancelReplaceByExececutionId *= -1
 	}
-	if r.Intn(10) != 0 {
-		v42 := randStringOrder(r)
-		this.BrokerOrderId = &v42
+	this.OrderStatus = OrderStatus([]int32{0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 100, 101, 102, 103, 110, 111, 112, 113, 120, 121, 122, 123, 125, 126, 130, 131, 132, 133, 134, 135}[r.Intn(35)])
+	this.ExecType = Execution_ExecType([]int32{0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18}[r.Intn(19)])
+	this.Quantity = float64(r.Float64())
+	if r.Intn(2) == 0 {
+		this.Quantity *= -1
 	}
-	if r.Intn(10) != 0 {
-		v43 := randStringOrder(r)
-		this.BrokerExecId = &v43
+	this.Price = float64(r.Float64())
+	if r.Intn(2) == 0 {
+		this.Price *= -1
 	}
-	if r.Intn(10) != 0 {
-		v44 := randStringOrder(r)
-		this.PrevBrokerExecId = &v44
+	this.Text = randStringOrder(r)
+	this.Lastmkt = randStringOrder(r)
+	this.ExecBroker = randStringOrder(r)
+	this.LastLiquidity = LastLiquidityInd([]int32{0, 1, 2, 3, 4}[r.Intn(5)])
+	this.CumQuantity = float64(r.Float64())
+	if r.Intn(2) == 0 {
+		this.CumQuantity *= -1
 	}
-	if r.Intn(10) != 0 {
-		v45 := int32(r.Int31())
-		if r.Intn(2) == 0 {
-			v45 *= -1
-		}
-		this.CancelReplaceByExececutionId = &v45
+	this.AvgPrice = float64(r.Float64())
+	if r.Intn(2) == 0 {
+		this.AvgPrice *= -1
 	}
-	if r.Intn(10) != 0 {
-		v46 := OrderStatus([]int32{0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 100, 101, 102, 103, 110, 111, 112, 113, 120, 121, 122, 123, 125, 126, 130, 131, 132, 133, 134, 135}[r.Intn(35)])
-		this.OrderStatus = &v46
+	this.CalcCumQuantity = float64(r.Float64())
+	if r.Intn(2) == 0 {
+		this.CalcCumQuantity *= -1
 	}
-	if r.Intn(10) != 0 {
-		v47 := Execution_ExecType([]int32{0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18}[r.Intn(19)])
-		this.ExecType = &v47
+	this.CalcAvgPrice = float64(r.Float64())
+	if r.Intn(2) == 0 {
+		this.CalcAvgPrice *= -1
 	}
-	if r.Intn(10) != 0 {
-		v48 := float64(r.Float64())
-		if r.Intn(2) == 0 {
-			v48 *= -1
-		}
-		this.Quantity = &v48
-	}
-	if r.Intn(10) != 0 {
-		v49 := float64(r.Float64())
-		if r.Intn(2) == 0 {
-			v49 *= -1
-		}
-		this.Price = &v49
-	}
-	if r.Intn(10) != 0 {
-		v50 := randStringOrder(r)
-		this.Text = &v50
-	}
-	if r.Intn(10) != 0 {
-		v51 := randStringOrder(r)
-		this.Lastmkt = &v51
-	}
-	if r.Intn(10) != 0 {
-		v52 := randStringOrder(r)
-		this.ExecBroker = &v52
-	}
-	if r.Intn(10) != 0 {
-		v53 := LastLiquidityInd([]int32{1, 2, 3, 4}[r.Intn(4)])
-		this.LastLiquidity = &v53
-	}
-	if r.Intn(10) != 0 {
-		v54 := float64(r.Float64())
-		if r.Intn(2) == 0 {
-			v54 *= -1
-		}
-		this.CumQuantity = &v54
-	}
-	if r.Intn(10) != 0 {
-		v55 := float64(r.Float64())
-		if r.Intn(2) == 0 {
-			v55 *= -1
-		}
-		this.AvgPrice = &v55
-	}
-	if r.Intn(10) != 0 {
-		v56 := float64(r.Float64())
-		if r.Intn(2) == 0 {
-			v56 *= -1
-		}
-		this.CalcCumQuantity = &v56
-	}
-	if r.Intn(10) != 0 {
-		v57 := float64(r.Float64())
-		if r.Intn(2) == 0 {
-			v57 *= -1
-		}
-		this.CalcAvgPrice = &v57
-	}
-	if r.Intn(10) != 0 {
-		v58 := randStringOrder(r)
-		this.BrokerExecDatetime = &v58
-	}
-	if r.Intn(10) != 0 {
-		v59 := randStringOrder(r)
-		this.CreateDatetime = &v59
-	}
+	this.BrokerExecDatetime = randStringOrder(r)
+	this.CreateDatetime = randStringOrder(r)
 	if !easy && r.Intn(10) != 0 {
 		this.XXX_unrecognized = randUnrecognizedOrder(r, 62)
 	}
@@ -4576,40 +4186,25 @@ func NewPopulatedExecution(r randyOrder, easy bool) *Execution {
 
 func NewPopulatedAllocation(r randyOrder, easy bool) *Allocation {
 	this := &Allocation{}
-	if r.Intn(10) != 0 {
-		v60 := int32(r.Int31())
-		if r.Intn(2) == 0 {
-			v60 *= -1
-		}
-		this.AllocationId = &v60
+	this.AllocationId = int32(r.Int31())
+	if r.Intn(2) == 0 {
+		this.AllocationId *= -1
 	}
-	if r.Intn(10) != 0 {
-		v61 := int32(r.Int31())
-		if r.Intn(2) == 0 {
-			v61 *= -1
-		}
-		this.OrderKey = &v61
+	this.OrderKey = int32(r.Int31())
+	if r.Intn(2) == 0 {
+		this.OrderKey *= -1
 	}
-	if r.Intn(10) != 0 {
-		v62 := int32(r.Int31())
-		if r.Intn(2) == 0 {
-			v62 *= -1
-		}
-		this.StrategyId = &v62
+	this.StrategyId = int32(r.Int31())
+	if r.Intn(2) == 0 {
+		this.StrategyId *= -1
 	}
-	if r.Intn(10) != 0 {
-		v63 := float64(r.Float64())
-		if r.Intn(2) == 0 {
-			v63 *= -1
-		}
-		this.Quantity = &v63
+	this.Quantity = float64(r.Float64())
+	if r.Intn(2) == 0 {
+		this.Quantity *= -1
 	}
-	if r.Intn(10) != 0 {
-		v64 := float64(r.Float64())
-		if r.Intn(2) == 0 {
-			v64 *= -1
-		}
-		this.Ratio = &v64
+	this.Ratio = float64(r.Float64())
+	if r.Intn(2) == 0 {
+		this.Ratio *= -1
 	}
 	if !easy && r.Intn(10) != 0 {
 		this.XXX_unrecognized = randUnrecognizedOrder(r, 12)
@@ -4630,16 +4225,13 @@ func NewPopulatedNewOrderRequest(r randyOrder, easy bool) *NewOrderRequest {
 
 func NewPopulatedNewOrderResponse(r randyOrder, easy bool) *NewOrderResponse {
 	this := &NewOrderResponse{}
-	if r.Intn(10) != 0 {
-		v65 := int32(r.Int31())
-		if r.Intn(2) == 0 {
-			v65 *= -1
-		}
-		this.ErrorCode = &v65
+	this.ErrorCode = int32(r.Int31())
+	if r.Intn(2) == 0 {
+		this.ErrorCode *= -1
 	}
 	if r.Intn(10) != 0 {
-		v66 := randStringOrder(r)
-		this.ErrorMessage = &v66
+		v5 := randStringOrder(r)
+		this.ErrorMessage = &v5
 	}
 	if r.Intn(10) != 0 {
 		this.Order = NewPopulatedOrder(r, easy)
@@ -4652,44 +4244,26 @@ func NewPopulatedNewOrderResponse(r randyOrder, easy bool) *NewOrderResponse {
 
 func NewPopulatedCancelOrderRequest(r randyOrder, easy bool) *CancelOrderRequest {
 	this := &CancelOrderRequest{}
-	v67 := randStringOrder(r)
-	this.ClientGuid = &v67
-	if r.Intn(10) != 0 {
-		v68 := int32(r.Int31())
-		if r.Intn(2) == 0 {
-			v68 *= -1
-		}
-		this.OrderId = &v68
-	}
-	v69 := int32(r.Int31())
+	this.ClientGuid = randStringOrder(r)
+	this.OrderId = int32(r.Int31())
 	if r.Intn(2) == 0 {
-		v69 *= -1
+		this.OrderId *= -1
 	}
-	this.OrderKey = &v69
-	if r.Intn(10) != 0 {
-		v70 := int32(r.Int31())
-		if r.Intn(2) == 0 {
-			v70 *= -1
-		}
-		this.Version = &v70
-	}
-	if r.Intn(10) != 0 {
-		v71 := randStringOrder(r)
-		this.Source = &v71
-	}
-	if r.Intn(10) != 0 {
-		v72 := randStringOrder(r)
-		this.Trader = &v72
-	}
-	v73 := int32(r.Int31())
+	this.OrderKey = int32(r.Int31())
 	if r.Intn(2) == 0 {
-		v73 *= -1
+		this.OrderKey *= -1
 	}
-	this.TraderId = &v73
-	if r.Intn(10) != 0 {
-		v74 := randStringOrder(r)
-		this.Machine = &v74
+	this.Version = int32(r.Int31())
+	if r.Intn(2) == 0 {
+		this.Version *= -1
 	}
+	this.Source = randStringOrder(r)
+	this.Trader = randStringOrder(r)
+	this.TraderId = int32(r.Int31())
+	if r.Intn(2) == 0 {
+		this.TraderId *= -1
+	}
+	this.Machine = randStringOrder(r)
 	if !easy && r.Intn(10) != 0 {
 		this.XXX_unrecognized = randUnrecognizedOrder(r, 54)
 	}
@@ -4698,16 +4272,13 @@ func NewPopulatedCancelOrderRequest(r randyOrder, easy bool) *CancelOrderRequest
 
 func NewPopulatedCancelOrderResponse(r randyOrder, easy bool) *CancelOrderResponse {
 	this := &CancelOrderResponse{}
-	if r.Intn(10) != 0 {
-		v75 := int32(r.Int31())
-		if r.Intn(2) == 0 {
-			v75 *= -1
-		}
-		this.ErrorCode = &v75
+	this.ErrorCode = int32(r.Int31())
+	if r.Intn(2) == 0 {
+		this.ErrorCode *= -1
 	}
 	if r.Intn(10) != 0 {
-		v76 := randStringOrder(r)
-		this.ErrorMessage = &v76
+		v6 := randStringOrder(r)
+		this.ErrorMessage = &v6
 	}
 	if r.Intn(10) != 0 {
 		this.Order = NewPopulatedOrder(r, easy)
@@ -4723,23 +4294,13 @@ func NewPopulatedReplaceOrderRequest(r randyOrder, easy bool) *ReplaceOrderReque
 	if r.Intn(10) != 0 {
 		this.Order = NewPopulatedOrder(r, easy)
 	}
-	if r.Intn(10) != 0 {
-		v77 := randStringOrder(r)
-		this.Source = &v77
-	}
-	if r.Intn(10) != 0 {
-		v78 := randStringOrder(r)
-		this.Trader = &v78
-	}
-	v79 := int32(r.Int31())
+	this.Source = randStringOrder(r)
+	this.Trader = randStringOrder(r)
+	this.TraderId = int32(r.Int31())
 	if r.Intn(2) == 0 {
-		v79 *= -1
+		this.TraderId *= -1
 	}
-	this.TraderId = &v79
-	if r.Intn(10) != 0 {
-		v80 := randStringOrder(r)
-		this.Machine = &v80
-	}
+	this.Machine = randStringOrder(r)
 	if !easy && r.Intn(10) != 0 {
 		this.XXX_unrecognized = randUnrecognizedOrder(r, 54)
 	}
@@ -4748,16 +4309,13 @@ func NewPopulatedReplaceOrderRequest(r randyOrder, easy bool) *ReplaceOrderReque
 
 func NewPopulatedReplaceOrderResponse(r randyOrder, easy bool) *ReplaceOrderResponse {
 	this := &ReplaceOrderResponse{}
-	if r.Intn(10) != 0 {
-		v81 := int32(r.Int31())
-		if r.Intn(2) == 0 {
-			v81 *= -1
-		}
-		this.ErrorCode = &v81
+	this.ErrorCode = int32(r.Int31())
+	if r.Intn(2) == 0 {
+		this.ErrorCode *= -1
 	}
 	if r.Intn(10) != 0 {
-		v82 := randStringOrder(r)
-		this.ErrorMessage = &v82
+		v7 := randStringOrder(r)
+		this.ErrorMessage = &v7
 	}
 	if r.Intn(10) != 0 {
 		this.Order = NewPopulatedOrder(r, easy)
@@ -4787,9 +4345,9 @@ func randUTF8RuneOrder(r randyOrder) rune {
 	return rune(ru + 61)
 }
 func randStringOrder(r randyOrder) string {
-	v83 := r.Intn(100)
-	tmps := make([]rune, v83)
-	for i := 0; i < v83; i++ {
+	v8 := r.Intn(100)
+	tmps := make([]rune, v8)
+	for i := 0; i < v8; i++ {
 		tmps[i] = randUTF8RuneOrder(r)
 	}
 	return string(tmps)
@@ -4811,11 +4369,11 @@ func randFieldOrder(data []byte, r randyOrder, fieldNumber int, wire int) []byte
 	switch wire {
 	case 0:
 		data = encodeVarintPopulateOrder(data, uint64(key))
-		v84 := r.Int63()
+		v9 := r.Int63()
 		if r.Intn(2) == 0 {
-			v84 *= -1
+			v9 *= -1
 		}
-		data = encodeVarintPopulateOrder(data, uint64(v84))
+		data = encodeVarintPopulateOrder(data, uint64(v9))
 	case 1:
 		data = encodeVarintPopulateOrder(data, uint64(key))
 		data = append(data, byte(r.Intn(256)), byte(r.Intn(256)), byte(r.Intn(256)), byte(r.Intn(256)), byte(r.Intn(256)), byte(r.Intn(256)), byte(r.Intn(256)), byte(r.Intn(256)))
@@ -4855,290 +4413,196 @@ func (m *Order) MarshalTo(data []byte) (n int, err error) {
 	_ = i
 	var l int
 	_ = l
-	if m.ClientGuid == nil {
-		return 0, github_com_gogo_protobuf_proto.NewRequiredNotSetError("client_guid")
+	data[i] = 0xa
+	i++
+	i = encodeVarintOrder(data, i, uint64(len(m.ClientGuid)))
+	i += copy(data[i:], m.ClientGuid)
+	data[i] = 0x10
+	i++
+	i = encodeVarintOrder(data, i, uint64(m.OrderId))
+	data[i] = 0x18
+	i++
+	i = encodeVarintOrder(data, i, uint64(m.OrderKey))
+	data[i] = 0x20
+	i++
+	i = encodeVarintOrder(data, i, uint64(m.Version))
+	data[i] = 0x28
+	i++
+	i = encodeVarintOrder(data, i, uint64(m.Instruction))
+	data[i] = 0x30
+	i++
+	i = encodeVarintOrder(data, i, uint64(m.Side))
+	data[i] = 0x39
+	i++
+	i = encodeFixed64Order(data, i, uint64(math.Float64bits(m.Quantity)))
+	data[i] = 0x42
+	i++
+	i = encodeVarintOrder(data, i, uint64(len(m.Symbol)))
+	i += copy(data[i:], m.Symbol)
+	data[i] = 0x80
+	i++
+	data[i] = 0x1
+	i++
+	i = encodeVarintOrder(data, i, uint64(m.OrderType))
+	data[i] = 0x88
+	i++
+	data[i] = 0x1
+	i++
+	i = encodeVarintOrder(data, i, uint64(m.Timeinforce))
+	data[i] = 0x91
+	i++
+	data[i] = 0x1
+	i++
+	i = encodeFixed64Order(data, i, uint64(math.Float64bits(m.LimitPrice)))
+	data[i] = 0x9a
+	i++
+	data[i] = 0x1
+	i++
+	i = encodeVarintOrder(data, i, uint64(len(m.Exchange)))
+	i += copy(data[i:], m.Exchange)
+	data[i] = 0xa2
+	i++
+	data[i] = 0x1
+	i++
+	i = encodeVarintOrder(data, i, uint64(len(m.Description)))
+	i += copy(data[i:], m.Description)
+	data[i] = 0xa9
+	i++
+	data[i] = 0x1
+	i++
+	i = encodeFixed64Order(data, i, uint64(math.Float64bits(m.FilledQuantity)))
+	data[i] = 0xb1
+	i++
+	data[i] = 0x1
+	i++
+	i = encodeFixed64Order(data, i, uint64(math.Float64bits(m.FilledAvgPrice)))
+	data[i] = 0xb8
+	i++
+	data[i] = 0x1
+	i++
+	i = encodeVarintOrder(data, i, uint64(m.OrderStatus))
+	data[i] = 0xf0
+	i++
+	data[i] = 0x1
+	i++
+	i = encodeVarintOrder(data, i, uint64(m.AccountId))
+	data[i] = 0xfa
+	i++
+	data[i] = 0x1
+	i++
+	i = encodeVarintOrder(data, i, uint64(len(m.BrokerUserid)))
+	i += copy(data[i:], m.BrokerUserid)
+	data[i] = 0x82
+	i++
+	data[i] = 0x2
+	i++
+	i = encodeVarintOrder(data, i, uint64(len(m.BrokerAccount)))
+	i += copy(data[i:], m.BrokerAccount)
+	data[i] = 0x8a
+	i++
+	data[i] = 0x2
+	i++
+	i = encodeVarintOrder(data, i, uint64(len(m.MarketConnector)))
+	i += copy(data[i:], m.MarketConnector)
+	data[i] = 0xc2
+	i++
+	data[i] = 0x2
+	i++
+	i = encodeVarintOrder(data, i, uint64(len(m.SettlCcy)))
+	i += copy(data[i:], m.SettlCcy)
+	data[i] = 0xc8
+	i++
+	data[i] = 0x2
+	i++
+	i = encodeVarintOrder(data, i, uint64(m.HandleInst))
+	data[i] = 0xd2
+	i++
+	data[i] = 0x2
+	i++
+	i = encodeVarintOrder(data, i, uint64(len(m.Algo)))
+	i += copy(data[i:], m.Algo)
+	data[i] = 0xd8
+	i++
+	data[i] = 0x2
+	i++
+	if m.IsComplete {
+		data[i] = 1
 	} else {
-		data[i] = 0xa
-		i++
-		i = encodeVarintOrder(data, i, uint64(len(*m.ClientGuid)))
-		i += copy(data[i:], *m.ClientGuid)
+		data[i] = 0
 	}
-	if m.OrderId == nil {
-		return 0, github_com_gogo_protobuf_proto.NewRequiredNotSetError("order_id")
+	i++
+	data[i] = 0xe0
+	i++
+	data[i] = 0x2
+	i++
+	if m.IsBooked {
+		data[i] = 1
 	} else {
-		data[i] = 0x10
-		i++
-		i = encodeVarintOrder(data, i, uint64(*m.OrderId))
+		data[i] = 0
 	}
-	if m.OrderKey == nil {
-		return 0, github_com_gogo_protobuf_proto.NewRequiredNotSetError("order_key")
+	i++
+	data[i] = 0xe8
+	i++
+	data[i] = 0x2
+	i++
+	if m.IsExpired {
+		data[i] = 1
 	} else {
-		data[i] = 0x18
-		i++
-		i = encodeVarintOrder(data, i, uint64(*m.OrderKey))
+		data[i] = 0
 	}
-	if m.Version == nil {
-		return 0, github_com_gogo_protobuf_proto.NewRequiredNotSetError("version")
-	} else {
-		data[i] = 0x20
-		i++
-		i = encodeVarintOrder(data, i, uint64(*m.Version))
-	}
-	if m.Instruction != nil {
-		data[i] = 0x28
-		i++
-		i = encodeVarintOrder(data, i, uint64(*m.Instruction))
-	}
-	if m.Side == nil {
-		return 0, github_com_gogo_protobuf_proto.NewRequiredNotSetError("side")
-	} else {
-		data[i] = 0x30
-		i++
-		i = encodeVarintOrder(data, i, uint64(*m.Side))
-	}
-	if m.Quantity == nil {
-		return 0, github_com_gogo_protobuf_proto.NewRequiredNotSetError("quantity")
-	} else {
-		data[i] = 0x39
-		i++
-		i = encodeFixed64Order(data, i, uint64(math.Float64bits(*m.Quantity)))
-	}
-	if m.Symbol == nil {
-		return 0, github_com_gogo_protobuf_proto.NewRequiredNotSetError("symbol")
-	} else {
-		data[i] = 0x42
-		i++
-		i = encodeVarintOrder(data, i, uint64(len(*m.Symbol)))
-		i += copy(data[i:], *m.Symbol)
-	}
-	if m.OrderType == nil {
-		return 0, github_com_gogo_protobuf_proto.NewRequiredNotSetError("order_type")
-	} else {
-		data[i] = 0x80
-		i++
-		data[i] = 0x1
-		i++
-		i = encodeVarintOrder(data, i, uint64(*m.OrderType))
-	}
-	if m.Timeinforce == nil {
-		return 0, github_com_gogo_protobuf_proto.NewRequiredNotSetError("timeinforce")
-	} else {
-		data[i] = 0x88
-		i++
-		data[i] = 0x1
-		i++
-		i = encodeVarintOrder(data, i, uint64(*m.Timeinforce))
-	}
-	if m.LimitPrice != nil {
-		data[i] = 0x91
-		i++
-		data[i] = 0x1
-		i++
-		i = encodeFixed64Order(data, i, uint64(math.Float64bits(*m.LimitPrice)))
-	}
-	if m.Exchange != nil {
-		data[i] = 0x9a
-		i++
-		data[i] = 0x1
-		i++
-		i = encodeVarintOrder(data, i, uint64(len(*m.Exchange)))
-		i += copy(data[i:], *m.Exchange)
-	}
-	if m.Description != nil {
-		data[i] = 0xa2
-		i++
-		data[i] = 0x1
-		i++
-		i = encodeVarintOrder(data, i, uint64(len(*m.Description)))
-		i += copy(data[i:], *m.Description)
-	}
-	if m.FilledQuantity != nil {
-		data[i] = 0xa9
-		i++
-		data[i] = 0x1
-		i++
-		i = encodeFixed64Order(data, i, uint64(math.Float64bits(*m.FilledQuantity)))
-	}
-	if m.FilledAvgPrice != nil {
-		data[i] = 0xb1
-		i++
-		data[i] = 0x1
-		i++
-		i = encodeFixed64Order(data, i, uint64(math.Float64bits(*m.FilledAvgPrice)))
-	}
-	if m.OrderStatus != nil {
-		data[i] = 0xb8
-		i++
-		data[i] = 0x1
-		i++
-		i = encodeVarintOrder(data, i, uint64(*m.OrderStatus))
-	}
-	if m.AccountId == nil {
-		return 0, github_com_gogo_protobuf_proto.NewRequiredNotSetError("account_id")
-	} else {
-		data[i] = 0xf0
-		i++
-		data[i] = 0x1
-		i++
-		i = encodeVarintOrder(data, i, uint64(*m.AccountId))
-	}
-	if m.BrokerUserid != nil {
-		data[i] = 0xfa
-		i++
-		data[i] = 0x1
-		i++
-		i = encodeVarintOrder(data, i, uint64(len(*m.BrokerUserid)))
-		i += copy(data[i:], *m.BrokerUserid)
-	}
-	if m.BrokerAccount != nil {
-		data[i] = 0x82
-		i++
-		data[i] = 0x2
-		i++
-		i = encodeVarintOrder(data, i, uint64(len(*m.BrokerAccount)))
-		i += copy(data[i:], *m.BrokerAccount)
-	}
-	if m.MarketConnector != nil {
-		data[i] = 0x8a
-		i++
-		data[i] = 0x2
-		i++
-		i = encodeVarintOrder(data, i, uint64(len(*m.MarketConnector)))
-		i += copy(data[i:], *m.MarketConnector)
-	}
-	if m.SettlCcy != nil {
-		data[i] = 0xc2
-		i++
-		data[i] = 0x2
-		i++
-		i = encodeVarintOrder(data, i, uint64(len(*m.SettlCcy)))
-		i += copy(data[i:], *m.SettlCcy)
-	}
-	if m.HandleInst == nil {
-		return 0, github_com_gogo_protobuf_proto.NewRequiredNotSetError("handle_inst")
-	} else {
-		data[i] = 0xc8
-		i++
-		data[i] = 0x2
-		i++
-		i = encodeVarintOrder(data, i, uint64(*m.HandleInst))
-	}
-	if m.Algo != nil {
-		data[i] = 0xd2
-		i++
-		data[i] = 0x2
-		i++
-		i = encodeVarintOrder(data, i, uint64(len(*m.Algo)))
-		i += copy(data[i:], *m.Algo)
-	}
-	if m.IsComplete != nil {
-		data[i] = 0xd8
-		i++
-		data[i] = 0x2
-		i++
-		if *m.IsComplete {
-			data[i] = 1
-		} else {
-			data[i] = 0
-		}
-		i++
-	}
-	if m.IsBooked != nil {
-		data[i] = 0xe0
-		i++
-		data[i] = 0x2
-		i++
-		if *m.IsBooked {
-			data[i] = 1
-		} else {
-			data[i] = 0
-		}
-		i++
-	}
-	if m.IsExpired != nil {
-		data[i] = 0xe8
-		i++
-		data[i] = 0x2
-		i++
-		if *m.IsExpired {
-			data[i] = 1
-		} else {
-			data[i] = 0
-		}
-		i++
-	}
-	if m.TradeBookingId != nil {
-		data[i] = 0xf0
-		i++
-		data[i] = 0x2
-		i++
-		i = encodeVarintOrder(data, i, uint64(*m.TradeBookingId))
-	}
-	if m.OpenClose != nil {
-		data[i] = 0xfa
-		i++
-		data[i] = 0x2
-		i++
-		i = encodeVarintOrder(data, i, uint64(len(*m.OpenClose)))
-		i += copy(data[i:], *m.OpenClose)
-	}
-	if m.Source != nil {
-		data[i] = 0x92
-		i++
-		data[i] = 0x3
-		i++
-		i = encodeVarintOrder(data, i, uint64(len(*m.Source)))
-		i += copy(data[i:], *m.Source)
-	}
-	if m.Trader != nil {
-		data[i] = 0x9a
-		i++
-		data[i] = 0x3
-		i++
-		i = encodeVarintOrder(data, i, uint64(len(*m.Trader)))
-		i += copy(data[i:], *m.Trader)
-	}
-	if m.TraderId == nil {
-		return 0, github_com_gogo_protobuf_proto.NewRequiredNotSetError("trader_id")
-	} else {
-		data[i] = 0xa0
-		i++
-		data[i] = 0x3
-		i++
-		i = encodeVarintOrder(data, i, uint64(*m.TraderId))
-	}
-	if m.Machine != nil {
-		data[i] = 0xaa
-		i++
-		data[i] = 0x3
-		i++
-		i = encodeVarintOrder(data, i, uint64(len(*m.Machine)))
-		i += copy(data[i:], *m.Machine)
-	}
-	if m.Memo != nil {
-		data[i] = 0xb2
-		i++
-		data[i] = 0x3
-		i++
-		i = encodeVarintOrder(data, i, uint64(len(*m.Memo)))
-		i += copy(data[i:], *m.Memo)
-	}
-	if m.CreateDatetime != nil {
-		data[i] = 0xe2
-		i++
-		data[i] = 0x3
-		i++
-		i = encodeVarintOrder(data, i, uint64(len(*m.CreateDatetime)))
-		i += copy(data[i:], *m.CreateDatetime)
-	}
-	if m.SubmitDatetime != nil {
-		data[i] = 0xea
-		i++
-		data[i] = 0x3
-		i++
-		i = encodeVarintOrder(data, i, uint64(len(*m.SubmitDatetime)))
-		i += copy(data[i:], *m.SubmitDatetime)
-	}
+	i++
+	data[i] = 0xf0
+	i++
+	data[i] = 0x2
+	i++
+	i = encodeVarintOrder(data, i, uint64(m.TradeBookingId))
+	data[i] = 0xfa
+	i++
+	data[i] = 0x2
+	i++
+	i = encodeVarintOrder(data, i, uint64(len(m.OpenClose)))
+	i += copy(data[i:], m.OpenClose)
+	data[i] = 0x92
+	i++
+	data[i] = 0x3
+	i++
+	i = encodeVarintOrder(data, i, uint64(len(m.Source)))
+	i += copy(data[i:], m.Source)
+	data[i] = 0x9a
+	i++
+	data[i] = 0x3
+	i++
+	i = encodeVarintOrder(data, i, uint64(len(m.Trader)))
+	i += copy(data[i:], m.Trader)
+	data[i] = 0xa0
+	i++
+	data[i] = 0x3
+	i++
+	i = encodeVarintOrder(data, i, uint64(m.TraderId))
+	data[i] = 0xaa
+	i++
+	data[i] = 0x3
+	i++
+	i = encodeVarintOrder(data, i, uint64(len(m.Machine)))
+	i += copy(data[i:], m.Machine)
+	data[i] = 0xb2
+	i++
+	data[i] = 0x3
+	i++
+	i = encodeVarintOrder(data, i, uint64(len(m.Memo)))
+	i += copy(data[i:], m.Memo)
+	data[i] = 0xe2
+	i++
+	data[i] = 0x3
+	i++
+	i = encodeVarintOrder(data, i, uint64(len(m.CreateDatetime)))
+	i += copy(data[i:], m.CreateDatetime)
+	data[i] = 0xea
+	i++
+	data[i] = 0x3
+	i++
+	i = encodeVarintOrder(data, i, uint64(len(m.SubmitDatetime)))
+	i += copy(data[i:], m.SubmitDatetime)
 	if len(m.Executions) > 0 {
 		for _, msg := range m.Executions {
 			data[i] = 0xb2
@@ -5188,153 +4652,105 @@ func (m *Execution) MarshalTo(data []byte) (n int, err error) {
 	_ = i
 	var l int
 	_ = l
-	if m.ExecutionId == nil {
-		return 0, github_com_gogo_protobuf_proto.NewRequiredNotSetError("execution_id")
-	} else {
-		data[i] = 0x8
-		i++
-		i = encodeVarintOrder(data, i, uint64(*m.ExecutionId))
-	}
-	if m.OrderId == nil {
-		return 0, github_com_gogo_protobuf_proto.NewRequiredNotSetError("order_id")
-	} else {
-		data[i] = 0x10
-		i++
-		i = encodeVarintOrder(data, i, uint64(*m.OrderId))
-	}
-	if m.OrderKey != nil {
-		data[i] = 0x18
-		i++
-		i = encodeVarintOrder(data, i, uint64(*m.OrderKey))
-	}
-	if m.ClientOrderId != nil {
-		data[i] = 0x2a
-		i++
-		i = encodeVarintOrder(data, i, uint64(len(*m.ClientOrderId)))
-		i += copy(data[i:], *m.ClientOrderId)
-	}
-	if m.BrokerOrderId != nil {
-		data[i] = 0x32
-		i++
-		i = encodeVarintOrder(data, i, uint64(len(*m.BrokerOrderId)))
-		i += copy(data[i:], *m.BrokerOrderId)
-	}
-	if m.BrokerExecId != nil {
-		data[i] = 0x3a
-		i++
-		i = encodeVarintOrder(data, i, uint64(len(*m.BrokerExecId)))
-		i += copy(data[i:], *m.BrokerExecId)
-	}
-	if m.PrevBrokerExecId != nil {
-		data[i] = 0x42
-		i++
-		i = encodeVarintOrder(data, i, uint64(len(*m.PrevBrokerExecId)))
-		i += copy(data[i:], *m.PrevBrokerExecId)
-	}
-	if m.CancelReplaceByExececutionId != nil {
-		data[i] = 0x48
-		i++
-		i = encodeVarintOrder(data, i, uint64(*m.CancelReplaceByExececutionId))
-	}
-	if m.OrderStatus != nil {
-		data[i] = 0x50
-		i++
-		i = encodeVarintOrder(data, i, uint64(*m.OrderStatus))
-	}
-	if m.ExecType != nil {
-		data[i] = 0x58
-		i++
-		i = encodeVarintOrder(data, i, uint64(*m.ExecType))
-	}
-	if m.Quantity != nil {
-		data[i] = 0xa1
-		i++
-		data[i] = 0x1
-		i++
-		i = encodeFixed64Order(data, i, uint64(math.Float64bits(*m.Quantity)))
-	}
-	if m.Price != nil {
-		data[i] = 0xa9
-		i++
-		data[i] = 0x1
-		i++
-		i = encodeFixed64Order(data, i, uint64(math.Float64bits(*m.Price)))
-	}
-	if m.Text != nil {
-		data[i] = 0xf2
-		i++
-		data[i] = 0x1
-		i++
-		i = encodeVarintOrder(data, i, uint64(len(*m.Text)))
-		i += copy(data[i:], *m.Text)
-	}
-	if m.Lastmkt != nil {
-		data[i] = 0xfa
-		i++
-		data[i] = 0x1
-		i++
-		i = encodeVarintOrder(data, i, uint64(len(*m.Lastmkt)))
-		i += copy(data[i:], *m.Lastmkt)
-	}
-	if m.ExecBroker != nil {
-		data[i] = 0x82
-		i++
-		data[i] = 0x2
-		i++
-		i = encodeVarintOrder(data, i, uint64(len(*m.ExecBroker)))
-		i += copy(data[i:], *m.ExecBroker)
-	}
-	if m.LastLiquidity != nil {
-		data[i] = 0x88
-		i++
-		data[i] = 0x2
-		i++
-		i = encodeVarintOrder(data, i, uint64(*m.LastLiquidity))
-	}
-	if m.CumQuantity != nil {
-		data[i] = 0x91
-		i++
-		data[i] = 0x3
-		i++
-		i = encodeFixed64Order(data, i, uint64(math.Float64bits(*m.CumQuantity)))
-	}
-	if m.AvgPrice != nil {
-		data[i] = 0x99
-		i++
-		data[i] = 0x3
-		i++
-		i = encodeFixed64Order(data, i, uint64(math.Float64bits(*m.AvgPrice)))
-	}
-	if m.CalcCumQuantity != nil {
-		data[i] = 0xa1
-		i++
-		data[i] = 0x3
-		i++
-		i = encodeFixed64Order(data, i, uint64(math.Float64bits(*m.CalcCumQuantity)))
-	}
-	if m.CalcAvgPrice != nil {
-		data[i] = 0xa9
-		i++
-		data[i] = 0x3
-		i++
-		i = encodeFixed64Order(data, i, uint64(math.Float64bits(*m.CalcAvgPrice)))
-	}
-	if m.BrokerExecDatetime != nil {
-		data[i] = 0xe2
-		i++
-		data[i] = 0x3
-		i++
-		i = encodeVarintOrder(data, i, uint64(len(*m.BrokerExecDatetime)))
-		i += copy(data[i:], *m.BrokerExecDatetime)
-	}
-	if m.CreateDatetime != nil {
-		data[i] = 0xea
-		i++
-		data[i] = 0x3
-		i++
-		i = encodeVarintOrder(data, i, uint64(len(*m.CreateDatetime)))
-		i += copy(data[i:], *m.CreateDatetime)
-	}
+	data[i] = 0x8
+	i++
+	i = encodeVarintOrder(data, i, uint64(m.ExecutionId))
+	data[i] = 0x10
+	i++
+	i = encodeVarintOrder(data, i, uint64(m.OrderId))
+	data[i] = 0x18
+	i++
+	i = encodeVarintOrder(data, i, uint64(m.OrderKey))
+	data[i] = 0x2a
+	i++
+	i = encodeVarintOrder(data, i, uint64(len(m.ClientOrderId)))
+	i += copy(data[i:], m.ClientOrderId)
+	data[i] = 0x32
+	i++
+	i = encodeVarintOrder(data, i, uint64(len(m.BrokerOrderId)))
+	i += copy(data[i:], m.BrokerOrderId)
+	data[i] = 0x3a
+	i++
+	i = encodeVarintOrder(data, i, uint64(len(m.BrokerExecId)))
+	i += copy(data[i:], m.BrokerExecId)
+	data[i] = 0x42
+	i++
+	i = encodeVarintOrder(data, i, uint64(len(m.PrevBrokerExecId)))
+	i += copy(data[i:], m.PrevBrokerExecId)
+	data[i] = 0x48
+	i++
+	i = encodeVarintOrder(data, i, uint64(m.CancelReplaceByExececutionId))
+	data[i] = 0x50
+	i++
+	i = encodeVarintOrder(data, i, uint64(m.OrderStatus))
+	data[i] = 0x58
+	i++
+	i = encodeVarintOrder(data, i, uint64(m.ExecType))
+	data[i] = 0xa1
+	i++
+	data[i] = 0x1
+	i++
+	i = encodeFixed64Order(data, i, uint64(math.Float64bits(m.Quantity)))
+	data[i] = 0xa9
+	i++
+	data[i] = 0x1
+	i++
+	i = encodeFixed64Order(data, i, uint64(math.Float64bits(m.Price)))
+	data[i] = 0xf2
+	i++
+	data[i] = 0x1
+	i++
+	i = encodeVarintOrder(data, i, uint64(len(m.Text)))
+	i += copy(data[i:], m.Text)
+	data[i] = 0xfa
+	i++
+	data[i] = 0x1
+	i++
+	i = encodeVarintOrder(data, i, uint64(len(m.Lastmkt)))
+	i += copy(data[i:], m.Lastmkt)
+	data[i] = 0x82
+	i++
+	data[i] = 0x2
+	i++
+	i = encodeVarintOrder(data, i, uint64(len(m.ExecBroker)))
+	i += copy(data[i:], m.ExecBroker)
+	data[i] = 0x88
+	i++
+	data[i] = 0x2
+	i++
+	i = encodeVarintOrder(data, i, uint64(m.LastLiquidity))
+	data[i] = 0x91
+	i++
+	data[i] = 0x3
+	i++
+	i = encodeFixed64Order(data, i, uint64(math.Float64bits(m.CumQuantity)))
+	data[i] = 0x99
+	i++
+	data[i] = 0x3
+	i++
+	i = encodeFixed64Order(data, i, uint64(math.Float64bits(m.AvgPrice)))
+	data[i] = 0xa1
+	i++
+	data[i] = 0x3
+	i++
+	i = encodeFixed64Order(data, i, uint64(math.Float64bits(m.CalcCumQuantity)))
+	data[i] = 0xa9
+	i++
+	data[i] = 0x3
+	i++
+	i = encodeFixed64Order(data, i, uint64(math.Float64bits(m.CalcAvgPrice)))
+	data[i] = 0xe2
+	i++
+	data[i] = 0x3
+	i++
+	i = encodeVarintOrder(data, i, uint64(len(m.BrokerExecDatetime)))
+	i += copy(data[i:], m.BrokerExecDatetime)
+	data[i] = 0xea
+	i++
+	data[i] = 0x3
+	i++
+	i = encodeVarintOrder(data, i, uint64(len(m.CreateDatetime)))
+	i += copy(data[i:], m.CreateDatetime)
 	if m.XXX_unrecognized != nil {
 		i += copy(data[i:], m.XXX_unrecognized)
 	}
@@ -5356,31 +4772,21 @@ func (m *Allocation) MarshalTo(data []byte) (n int, err error) {
 	_ = i
 	var l int
 	_ = l
-	if m.AllocationId != nil {
-		data[i] = 0x8
-		i++
-		i = encodeVarintOrder(data, i, uint64(*m.AllocationId))
-	}
-	if m.OrderKey != nil {
-		data[i] = 0x10
-		i++
-		i = encodeVarintOrder(data, i, uint64(*m.OrderKey))
-	}
-	if m.StrategyId != nil {
-		data[i] = 0x18
-		i++
-		i = encodeVarintOrder(data, i, uint64(*m.StrategyId))
-	}
-	if m.Quantity != nil {
-		data[i] = 0x51
-		i++
-		i = encodeFixed64Order(data, i, uint64(math.Float64bits(*m.Quantity)))
-	}
-	if m.Ratio != nil {
-		data[i] = 0x59
-		i++
-		i = encodeFixed64Order(data, i, uint64(math.Float64bits(*m.Ratio)))
-	}
+	data[i] = 0x8
+	i++
+	i = encodeVarintOrder(data, i, uint64(m.AllocationId))
+	data[i] = 0x10
+	i++
+	i = encodeVarintOrder(data, i, uint64(m.OrderKey))
+	data[i] = 0x18
+	i++
+	i = encodeVarintOrder(data, i, uint64(m.StrategyId))
+	data[i] = 0x51
+	i++
+	i = encodeFixed64Order(data, i, uint64(math.Float64bits(m.Quantity)))
+	data[i] = 0x59
+	i++
+	i = encodeFixed64Order(data, i, uint64(math.Float64bits(m.Ratio)))
 	if m.XXX_unrecognized != nil {
 		i += copy(data[i:], m.XXX_unrecognized)
 	}
@@ -5433,11 +4839,9 @@ func (m *NewOrderResponse) MarshalTo(data []byte) (n int, err error) {
 	_ = i
 	var l int
 	_ = l
-	if m.ErrorCode != nil {
-		data[i] = 0x8
-		i++
-		i = encodeVarintOrder(data, i, uint64(*m.ErrorCode))
-	}
+	data[i] = 0x8
+	i++
+	i = encodeVarintOrder(data, i, uint64(m.ErrorCode))
 	if m.ErrorMessage != nil {
 		data[i] = 0x12
 		i++
@@ -5475,64 +4879,42 @@ func (m *CancelOrderRequest) MarshalTo(data []byte) (n int, err error) {
 	_ = i
 	var l int
 	_ = l
-	if m.ClientGuid == nil {
-		return 0, github_com_gogo_protobuf_proto.NewRequiredNotSetError("client_guid")
-	} else {
-		data[i] = 0xa
-		i++
-		i = encodeVarintOrder(data, i, uint64(len(*m.ClientGuid)))
-		i += copy(data[i:], *m.ClientGuid)
-	}
-	if m.OrderId != nil {
-		data[i] = 0x10
-		i++
-		i = encodeVarintOrder(data, i, uint64(*m.OrderId))
-	}
-	if m.OrderKey == nil {
-		return 0, github_com_gogo_protobuf_proto.NewRequiredNotSetError("order_key")
-	} else {
-		data[i] = 0x18
-		i++
-		i = encodeVarintOrder(data, i, uint64(*m.OrderKey))
-	}
-	if m.Version != nil {
-		data[i] = 0x20
-		i++
-		i = encodeVarintOrder(data, i, uint64(*m.Version))
-	}
-	if m.Source != nil {
-		data[i] = 0x92
-		i++
-		data[i] = 0x3
-		i++
-		i = encodeVarintOrder(data, i, uint64(len(*m.Source)))
-		i += copy(data[i:], *m.Source)
-	}
-	if m.Trader != nil {
-		data[i] = 0x9a
-		i++
-		data[i] = 0x3
-		i++
-		i = encodeVarintOrder(data, i, uint64(len(*m.Trader)))
-		i += copy(data[i:], *m.Trader)
-	}
-	if m.TraderId == nil {
-		return 0, github_com_gogo_protobuf_proto.NewRequiredNotSetError("trader_id")
-	} else {
-		data[i] = 0xa0
-		i++
-		data[i] = 0x3
-		i++
-		i = encodeVarintOrder(data, i, uint64(*m.TraderId))
-	}
-	if m.Machine != nil {
-		data[i] = 0xaa
-		i++
-		data[i] = 0x3
-		i++
-		i = encodeVarintOrder(data, i, uint64(len(*m.Machine)))
-		i += copy(data[i:], *m.Machine)
-	}
+	data[i] = 0xa
+	i++
+	i = encodeVarintOrder(data, i, uint64(len(m.ClientGuid)))
+	i += copy(data[i:], m.ClientGuid)
+	data[i] = 0x10
+	i++
+	i = encodeVarintOrder(data, i, uint64(m.OrderId))
+	data[i] = 0x18
+	i++
+	i = encodeVarintOrder(data, i, uint64(m.OrderKey))
+	data[i] = 0x20
+	i++
+	i = encodeVarintOrder(data, i, uint64(m.Version))
+	data[i] = 0x92
+	i++
+	data[i] = 0x3
+	i++
+	i = encodeVarintOrder(data, i, uint64(len(m.Source)))
+	i += copy(data[i:], m.Source)
+	data[i] = 0x9a
+	i++
+	data[i] = 0x3
+	i++
+	i = encodeVarintOrder(data, i, uint64(len(m.Trader)))
+	i += copy(data[i:], m.Trader)
+	data[i] = 0xa0
+	i++
+	data[i] = 0x3
+	i++
+	i = encodeVarintOrder(data, i, uint64(m.TraderId))
+	data[i] = 0xaa
+	i++
+	data[i] = 0x3
+	i++
+	i = encodeVarintOrder(data, i, uint64(len(m.Machine)))
+	i += copy(data[i:], m.Machine)
 	if m.XXX_unrecognized != nil {
 		i += copy(data[i:], m.XXX_unrecognized)
 	}
@@ -5554,11 +4936,9 @@ func (m *CancelOrderResponse) MarshalTo(data []byte) (n int, err error) {
 	_ = i
 	var l int
 	_ = l
-	if m.ErrorCode != nil {
-		data[i] = 0x8
-		i++
-		i = encodeVarintOrder(data, i, uint64(*m.ErrorCode))
-	}
+	data[i] = 0x8
+	i++
+	i = encodeVarintOrder(data, i, uint64(m.ErrorCode))
 	if m.ErrorMessage != nil {
 		data[i] = 0x12
 		i++
@@ -5606,39 +4986,29 @@ func (m *ReplaceOrderRequest) MarshalTo(data []byte) (n int, err error) {
 		}
 		i += n4
 	}
-	if m.Source != nil {
-		data[i] = 0x92
-		i++
-		data[i] = 0x3
-		i++
-		i = encodeVarintOrder(data, i, uint64(len(*m.Source)))
-		i += copy(data[i:], *m.Source)
-	}
-	if m.Trader != nil {
-		data[i] = 0x9a
-		i++
-		data[i] = 0x3
-		i++
-		i = encodeVarintOrder(data, i, uint64(len(*m.Trader)))
-		i += copy(data[i:], *m.Trader)
-	}
-	if m.TraderId == nil {
-		return 0, github_com_gogo_protobuf_proto.NewRequiredNotSetError("trader_id")
-	} else {
-		data[i] = 0xa0
-		i++
-		data[i] = 0x3
-		i++
-		i = encodeVarintOrder(data, i, uint64(*m.TraderId))
-	}
-	if m.Machine != nil {
-		data[i] = 0xaa
-		i++
-		data[i] = 0x3
-		i++
-		i = encodeVarintOrder(data, i, uint64(len(*m.Machine)))
-		i += copy(data[i:], *m.Machine)
-	}
+	data[i] = 0x92
+	i++
+	data[i] = 0x3
+	i++
+	i = encodeVarintOrder(data, i, uint64(len(m.Source)))
+	i += copy(data[i:], m.Source)
+	data[i] = 0x9a
+	i++
+	data[i] = 0x3
+	i++
+	i = encodeVarintOrder(data, i, uint64(len(m.Trader)))
+	i += copy(data[i:], m.Trader)
+	data[i] = 0xa0
+	i++
+	data[i] = 0x3
+	i++
+	i = encodeVarintOrder(data, i, uint64(m.TraderId))
+	data[i] = 0xaa
+	i++
+	data[i] = 0x3
+	i++
+	i = encodeVarintOrder(data, i, uint64(len(m.Machine)))
+	i += copy(data[i:], m.Machine)
 	if m.XXX_unrecognized != nil {
 		i += copy(data[i:], m.XXX_unrecognized)
 	}
@@ -5660,11 +5030,9 @@ func (m *ReplaceOrderResponse) MarshalTo(data []byte) (n int, err error) {
 	_ = i
 	var l int
 	_ = l
-	if m.ErrorCode != nil {
-		data[i] = 0x8
-		i++
-		i = encodeVarintOrder(data, i, uint64(*m.ErrorCode))
-	}
+	data[i] = 0x8
+	i++
+	i = encodeVarintOrder(data, i, uint64(m.ErrorCode))
 	if m.ErrorMessage != nil {
 		data[i] = 0x12
 		i++
@@ -5719,43 +5087,43 @@ func (this *Order) GoString() string {
 		return "nil"
 	}
 	s := strings.Join([]string{`&order.Order{` +
-		`ClientGuid:` + valueToGoStringOrder(this.ClientGuid, "string"),
-		`OrderId:` + valueToGoStringOrder(this.OrderId, "int32"),
-		`OrderKey:` + valueToGoStringOrder(this.OrderKey, "int32"),
-		`Version:` + valueToGoStringOrder(this.Version, "int32"),
-		`Instruction:` + valueToGoStringOrder(this.Instruction, "order.Order_OrderInstruction"),
-		`Side:` + valueToGoStringOrder(this.Side, "order.Side"),
-		`Quantity:` + valueToGoStringOrder(this.Quantity, "float64"),
-		`Symbol:` + valueToGoStringOrder(this.Symbol, "string"),
-		`OrderType:` + valueToGoStringOrder(this.OrderType, "order.OrderType"),
-		`Timeinforce:` + valueToGoStringOrder(this.Timeinforce, "order.TimeInForce"),
-		`LimitPrice:` + valueToGoStringOrder(this.LimitPrice, "float64"),
-		`Exchange:` + valueToGoStringOrder(this.Exchange, "string"),
-		`Description:` + valueToGoStringOrder(this.Description, "string"),
-		`FilledQuantity:` + valueToGoStringOrder(this.FilledQuantity, "float64"),
-		`FilledAvgPrice:` + valueToGoStringOrder(this.FilledAvgPrice, "float64"),
-		`OrderStatus:` + valueToGoStringOrder(this.OrderStatus, "order.OrderStatus"),
-		`AccountId:` + valueToGoStringOrder(this.AccountId, "int32"),
-		`BrokerUserid:` + valueToGoStringOrder(this.BrokerUserid, "string"),
-		`BrokerAccount:` + valueToGoStringOrder(this.BrokerAccount, "string"),
-		`MarketConnector:` + valueToGoStringOrder(this.MarketConnector, "string"),
-		`SettlCcy:` + valueToGoStringOrder(this.SettlCcy, "string"),
-		`HandleInst:` + valueToGoStringOrder(this.HandleInst, "order.HandlInst"),
-		`Algo:` + valueToGoStringOrder(this.Algo, "string"),
-		`IsComplete:` + valueToGoStringOrder(this.IsComplete, "bool"),
-		`IsBooked:` + valueToGoStringOrder(this.IsBooked, "bool"),
-		`IsExpired:` + valueToGoStringOrder(this.IsExpired, "bool"),
-		`TradeBookingId:` + valueToGoStringOrder(this.TradeBookingId, "int32"),
-		`OpenClose:` + valueToGoStringOrder(this.OpenClose, "string"),
-		`Source:` + valueToGoStringOrder(this.Source, "string"),
-		`Trader:` + valueToGoStringOrder(this.Trader, "string"),
-		`TraderId:` + valueToGoStringOrder(this.TraderId, "int32"),
-		`Machine:` + valueToGoStringOrder(this.Machine, "string"),
-		`Memo:` + valueToGoStringOrder(this.Memo, "string"),
-		`CreateDatetime:` + valueToGoStringOrder(this.CreateDatetime, "string"),
-		`SubmitDatetime:` + valueToGoStringOrder(this.SubmitDatetime, "string"),
-		`Executions:` + fmt.Sprintf("%#v", this.Executions),
-		`Allocations:` + fmt.Sprintf("%#v", this.Allocations),
+		`ClientGuid:` + fmt.Sprintf("%#v", this.ClientGuid),
+		`OrderId:` + fmt.Sprintf("%#v", this.OrderId),
+		`OrderKey:` + fmt.Sprintf("%#v", this.OrderKey),
+		`Version:` + fmt.Sprintf("%#v", this.Version),
+		`Instruction:` + fmt.Sprintf("%#v", this.Instruction),
+		`Side:` + fmt.Sprintf("%#v", this.Side),
+		`Quantity:` + fmt.Sprintf("%#v", this.Quantity),
+		`Symbol:` + fmt.Sprintf("%#v", this.Symbol),
+		`OrderType:` + fmt.Sprintf("%#v", this.OrderType),
+		`Timeinforce:` + fmt.Sprintf("%#v", this.Timeinforce),
+		`LimitPrice:` + fmt.Sprintf("%#v", this.LimitPrice),
+		`Exchange:` + fmt.Sprintf("%#v", this.Exchange),
+		`Description:` + fmt.Sprintf("%#v", this.Description),
+		`FilledQuantity:` + fmt.Sprintf("%#v", this.FilledQuantity),
+		`FilledAvgPrice:` + fmt.Sprintf("%#v", this.FilledAvgPrice),
+		`OrderStatus:` + fmt.Sprintf("%#v", this.OrderStatus),
+		`AccountId:` + fmt.Sprintf("%#v", this.AccountId),
+		`BrokerUserid:` + fmt.Sprintf("%#v", this.BrokerUserid),
+		`BrokerAccount:` + fmt.Sprintf("%#v", this.BrokerAccount),
+		`MarketConnector:` + fmt.Sprintf("%#v", this.MarketConnector),
+		`SettlCcy:` + fmt.Sprintf("%#v", this.SettlCcy),
+		`HandleInst:` + fmt.Sprintf("%#v", this.HandleInst),
+		`Algo:` + fmt.Sprintf("%#v", this.Algo),
+		`IsComplete:` + fmt.Sprintf("%#v", this.IsComplete),
+		`IsBooked:` + fmt.Sprintf("%#v", this.IsBooked),
+		`IsExpired:` + fmt.Sprintf("%#v", this.IsExpired),
+		`TradeBookingId:` + fmt.Sprintf("%#v", this.TradeBookingId),
+		`OpenClose:` + fmt.Sprintf("%#v", this.OpenClose),
+		`Source:` + fmt.Sprintf("%#v", this.Source),
+		`Trader:` + fmt.Sprintf("%#v", this.Trader),
+		`TraderId:` + fmt.Sprintf("%#v", this.TraderId),
+		`Machine:` + fmt.Sprintf("%#v", this.Machine),
+		`Memo:` + fmt.Sprintf("%#v", this.Memo),
+		`CreateDatetime:` + fmt.Sprintf("%#v", this.CreateDatetime),
+		`SubmitDatetime:` + fmt.Sprintf("%#v", this.SubmitDatetime),
+		`Executions:` + strings.Replace(fmt.Sprintf("%#v", this.Executions), `&`, ``, 1),
+		`Allocations:` + strings.Replace(fmt.Sprintf("%#v", this.Allocations), `&`, ``, 1),
 		`XXX_unrecognized:` + fmt.Sprintf("%#v", this.XXX_unrecognized) + `}`}, ", ")
 	return s
 }
@@ -5764,28 +5132,28 @@ func (this *Execution) GoString() string {
 		return "nil"
 	}
 	s := strings.Join([]string{`&order.Execution{` +
-		`ExecutionId:` + valueToGoStringOrder(this.ExecutionId, "int32"),
-		`OrderId:` + valueToGoStringOrder(this.OrderId, "int32"),
-		`OrderKey:` + valueToGoStringOrder(this.OrderKey, "int32"),
-		`ClientOrderId:` + valueToGoStringOrder(this.ClientOrderId, "string"),
-		`BrokerOrderId:` + valueToGoStringOrder(this.BrokerOrderId, "string"),
-		`BrokerExecId:` + valueToGoStringOrder(this.BrokerExecId, "string"),
-		`PrevBrokerExecId:` + valueToGoStringOrder(this.PrevBrokerExecId, "string"),
-		`CancelReplaceByExececutionId:` + valueToGoStringOrder(this.CancelReplaceByExececutionId, "int32"),
-		`OrderStatus:` + valueToGoStringOrder(this.OrderStatus, "order.OrderStatus"),
-		`ExecType:` + valueToGoStringOrder(this.ExecType, "order.Execution_ExecType"),
-		`Quantity:` + valueToGoStringOrder(this.Quantity, "float64"),
-		`Price:` + valueToGoStringOrder(this.Price, "float64"),
-		`Text:` + valueToGoStringOrder(this.Text, "string"),
-		`Lastmkt:` + valueToGoStringOrder(this.Lastmkt, "string"),
-		`ExecBroker:` + valueToGoStringOrder(this.ExecBroker, "string"),
-		`LastLiquidity:` + valueToGoStringOrder(this.LastLiquidity, "order.LastLiquidityInd"),
-		`CumQuantity:` + valueToGoStringOrder(this.CumQuantity, "float64"),
-		`AvgPrice:` + valueToGoStringOrder(this.AvgPrice, "float64"),
-		`CalcCumQuantity:` + valueToGoStringOrder(this.CalcCumQuantity, "float64"),
-		`CalcAvgPrice:` + valueToGoStringOrder(this.CalcAvgPrice, "float64"),
-		`BrokerExecDatetime:` + valueToGoStringOrder(this.BrokerExecDatetime, "string"),
-		`CreateDatetime:` + valueToGoStringOrder(this.CreateDatetime, "string"),
+		`ExecutionId:` + fmt.Sprintf("%#v", this.ExecutionId),
+		`OrderId:` + fmt.Sprintf("%#v", this.OrderId),
+		`OrderKey:` + fmt.Sprintf("%#v", this.OrderKey),
+		`ClientOrderId:` + fmt.Sprintf("%#v", this.ClientOrderId),
+		`BrokerOrderId:` + fmt.Sprintf("%#v", this.BrokerOrderId),
+		`BrokerExecId:` + fmt.Sprintf("%#v", this.BrokerExecId),
+		`PrevBrokerExecId:` + fmt.Sprintf("%#v", this.PrevBrokerExecId),
+		`CancelReplaceByExececutionId:` + fmt.Sprintf("%#v", this.CancelReplaceByExececutionId),
+		`OrderStatus:` + fmt.Sprintf("%#v", this.OrderStatus),
+		`ExecType:` + fmt.Sprintf("%#v", this.ExecType),
+		`Quantity:` + fmt.Sprintf("%#v", this.Quantity),
+		`Price:` + fmt.Sprintf("%#v", this.Price),
+		`Text:` + fmt.Sprintf("%#v", this.Text),
+		`Lastmkt:` + fmt.Sprintf("%#v", this.Lastmkt),
+		`ExecBroker:` + fmt.Sprintf("%#v", this.ExecBroker),
+		`LastLiquidity:` + fmt.Sprintf("%#v", this.LastLiquidity),
+		`CumQuantity:` + fmt.Sprintf("%#v", this.CumQuantity),
+		`AvgPrice:` + fmt.Sprintf("%#v", this.AvgPrice),
+		`CalcCumQuantity:` + fmt.Sprintf("%#v", this.CalcCumQuantity),
+		`CalcAvgPrice:` + fmt.Sprintf("%#v", this.CalcAvgPrice),
+		`BrokerExecDatetime:` + fmt.Sprintf("%#v", this.BrokerExecDatetime),
+		`CreateDatetime:` + fmt.Sprintf("%#v", this.CreateDatetime),
 		`XXX_unrecognized:` + fmt.Sprintf("%#v", this.XXX_unrecognized) + `}`}, ", ")
 	return s
 }
@@ -5794,11 +5162,11 @@ func (this *Allocation) GoString() string {
 		return "nil"
 	}
 	s := strings.Join([]string{`&order.Allocation{` +
-		`AllocationId:` + valueToGoStringOrder(this.AllocationId, "int32"),
-		`OrderKey:` + valueToGoStringOrder(this.OrderKey, "int32"),
-		`StrategyId:` + valueToGoStringOrder(this.StrategyId, "int32"),
-		`Quantity:` + valueToGoStringOrder(this.Quantity, "float64"),
-		`Ratio:` + valueToGoStringOrder(this.Ratio, "float64"),
+		`AllocationId:` + fmt.Sprintf("%#v", this.AllocationId),
+		`OrderKey:` + fmt.Sprintf("%#v", this.OrderKey),
+		`StrategyId:` + fmt.Sprintf("%#v", this.StrategyId),
+		`Quantity:` + fmt.Sprintf("%#v", this.Quantity),
+		`Ratio:` + fmt.Sprintf("%#v", this.Ratio),
 		`XXX_unrecognized:` + fmt.Sprintf("%#v", this.XXX_unrecognized) + `}`}, ", ")
 	return s
 }
@@ -5816,7 +5184,7 @@ func (this *NewOrderResponse) GoString() string {
 		return "nil"
 	}
 	s := strings.Join([]string{`&order.NewOrderResponse{` +
-		`ErrorCode:` + valueToGoStringOrder(this.ErrorCode, "int32"),
+		`ErrorCode:` + fmt.Sprintf("%#v", this.ErrorCode),
 		`ErrorMessage:` + valueToGoStringOrder(this.ErrorMessage, "string"),
 		`Order:` + fmt.Sprintf("%#v", this.Order),
 		`XXX_unrecognized:` + fmt.Sprintf("%#v", this.XXX_unrecognized) + `}`}, ", ")
@@ -5827,14 +5195,14 @@ func (this *CancelOrderRequest) GoString() string {
 		return "nil"
 	}
 	s := strings.Join([]string{`&order.CancelOrderRequest{` +
-		`ClientGuid:` + valueToGoStringOrder(this.ClientGuid, "string"),
-		`OrderId:` + valueToGoStringOrder(this.OrderId, "int32"),
-		`OrderKey:` + valueToGoStringOrder(this.OrderKey, "int32"),
-		`Version:` + valueToGoStringOrder(this.Version, "int32"),
-		`Source:` + valueToGoStringOrder(this.Source, "string"),
-		`Trader:` + valueToGoStringOrder(this.Trader, "string"),
-		`TraderId:` + valueToGoStringOrder(this.TraderId, "int32"),
-		`Machine:` + valueToGoStringOrder(this.Machine, "string"),
+		`ClientGuid:` + fmt.Sprintf("%#v", this.ClientGuid),
+		`OrderId:` + fmt.Sprintf("%#v", this.OrderId),
+		`OrderKey:` + fmt.Sprintf("%#v", this.OrderKey),
+		`Version:` + fmt.Sprintf("%#v", this.Version),
+		`Source:` + fmt.Sprintf("%#v", this.Source),
+		`Trader:` + fmt.Sprintf("%#v", this.Trader),
+		`TraderId:` + fmt.Sprintf("%#v", this.TraderId),
+		`Machine:` + fmt.Sprintf("%#v", this.Machine),
 		`XXX_unrecognized:` + fmt.Sprintf("%#v", this.XXX_unrecognized) + `}`}, ", ")
 	return s
 }
@@ -5843,7 +5211,7 @@ func (this *CancelOrderResponse) GoString() string {
 		return "nil"
 	}
 	s := strings.Join([]string{`&order.CancelOrderResponse{` +
-		`ErrorCode:` + valueToGoStringOrder(this.ErrorCode, "int32"),
+		`ErrorCode:` + fmt.Sprintf("%#v", this.ErrorCode),
 		`ErrorMessage:` + valueToGoStringOrder(this.ErrorMessage, "string"),
 		`Order:` + fmt.Sprintf("%#v", this.Order),
 		`XXX_unrecognized:` + fmt.Sprintf("%#v", this.XXX_unrecognized) + `}`}, ", ")
@@ -5855,10 +5223,10 @@ func (this *ReplaceOrderRequest) GoString() string {
 	}
 	s := strings.Join([]string{`&order.ReplaceOrderRequest{` +
 		`Order:` + fmt.Sprintf("%#v", this.Order),
-		`Source:` + valueToGoStringOrder(this.Source, "string"),
-		`Trader:` + valueToGoStringOrder(this.Trader, "string"),
-		`TraderId:` + valueToGoStringOrder(this.TraderId, "int32"),
-		`Machine:` + valueToGoStringOrder(this.Machine, "string"),
+		`Source:` + fmt.Sprintf("%#v", this.Source),
+		`Trader:` + fmt.Sprintf("%#v", this.Trader),
+		`TraderId:` + fmt.Sprintf("%#v", this.TraderId),
+		`Machine:` + fmt.Sprintf("%#v", this.Machine),
 		`XXX_unrecognized:` + fmt.Sprintf("%#v", this.XXX_unrecognized) + `}`}, ", ")
 	return s
 }
@@ -5867,7 +5235,7 @@ func (this *ReplaceOrderResponse) GoString() string {
 		return "nil"
 	}
 	s := strings.Join([]string{`&order.ReplaceOrderResponse{` +
-		`ErrorCode:` + valueToGoStringOrder(this.ErrorCode, "int32"),
+		`ErrorCode:` + fmt.Sprintf("%#v", this.ErrorCode),
 		`ErrorMessage:` + valueToGoStringOrder(this.ErrorMessage, "string"),
 		`Order:` + fmt.Sprintf("%#v", this.Order),
 		`XXX_unrecognized:` + fmt.Sprintf("%#v", this.XXX_unrecognized) + `}`}, ", ")
@@ -5918,326 +5286,116 @@ func (this *Order) VerboseEqual(that interface{}) error {
 	} else if this == nil {
 		return fmt.Errorf("that is type *Orderbut is not nil && this == nil")
 	}
-	if this.ClientGuid != nil && that1.ClientGuid != nil {
-		if *this.ClientGuid != *that1.ClientGuid {
-			return fmt.Errorf("ClientGuid this(%v) Not Equal that(%v)", *this.ClientGuid, *that1.ClientGuid)
-		}
-	} else if this.ClientGuid != nil {
-		return fmt.Errorf("this.ClientGuid == nil && that.ClientGuid != nil")
-	} else if that1.ClientGuid != nil {
+	if this.ClientGuid != that1.ClientGuid {
 		return fmt.Errorf("ClientGuid this(%v) Not Equal that(%v)", this.ClientGuid, that1.ClientGuid)
 	}
-	if this.OrderId != nil && that1.OrderId != nil {
-		if *this.OrderId != *that1.OrderId {
-			return fmt.Errorf("OrderId this(%v) Not Equal that(%v)", *this.OrderId, *that1.OrderId)
-		}
-	} else if this.OrderId != nil {
-		return fmt.Errorf("this.OrderId == nil && that.OrderId != nil")
-	} else if that1.OrderId != nil {
+	if this.OrderId != that1.OrderId {
 		return fmt.Errorf("OrderId this(%v) Not Equal that(%v)", this.OrderId, that1.OrderId)
 	}
-	if this.OrderKey != nil && that1.OrderKey != nil {
-		if *this.OrderKey != *that1.OrderKey {
-			return fmt.Errorf("OrderKey this(%v) Not Equal that(%v)", *this.OrderKey, *that1.OrderKey)
-		}
-	} else if this.OrderKey != nil {
-		return fmt.Errorf("this.OrderKey == nil && that.OrderKey != nil")
-	} else if that1.OrderKey != nil {
+	if this.OrderKey != that1.OrderKey {
 		return fmt.Errorf("OrderKey this(%v) Not Equal that(%v)", this.OrderKey, that1.OrderKey)
 	}
-	if this.Version != nil && that1.Version != nil {
-		if *this.Version != *that1.Version {
-			return fmt.Errorf("Version this(%v) Not Equal that(%v)", *this.Version, *that1.Version)
-		}
-	} else if this.Version != nil {
-		return fmt.Errorf("this.Version == nil && that.Version != nil")
-	} else if that1.Version != nil {
+	if this.Version != that1.Version {
 		return fmt.Errorf("Version this(%v) Not Equal that(%v)", this.Version, that1.Version)
 	}
-	if this.Instruction != nil && that1.Instruction != nil {
-		if *this.Instruction != *that1.Instruction {
-			return fmt.Errorf("Instruction this(%v) Not Equal that(%v)", *this.Instruction, *that1.Instruction)
-		}
-	} else if this.Instruction != nil {
-		return fmt.Errorf("this.Instruction == nil && that.Instruction != nil")
-	} else if that1.Instruction != nil {
+	if this.Instruction != that1.Instruction {
 		return fmt.Errorf("Instruction this(%v) Not Equal that(%v)", this.Instruction, that1.Instruction)
 	}
-	if this.Side != nil && that1.Side != nil {
-		if *this.Side != *that1.Side {
-			return fmt.Errorf("Side this(%v) Not Equal that(%v)", *this.Side, *that1.Side)
-		}
-	} else if this.Side != nil {
-		return fmt.Errorf("this.Side == nil && that.Side != nil")
-	} else if that1.Side != nil {
+	if this.Side != that1.Side {
 		return fmt.Errorf("Side this(%v) Not Equal that(%v)", this.Side, that1.Side)
 	}
-	if this.Quantity != nil && that1.Quantity != nil {
-		if *this.Quantity != *that1.Quantity {
-			return fmt.Errorf("Quantity this(%v) Not Equal that(%v)", *this.Quantity, *that1.Quantity)
-		}
-	} else if this.Quantity != nil {
-		return fmt.Errorf("this.Quantity == nil && that.Quantity != nil")
-	} else if that1.Quantity != nil {
+	if this.Quantity != that1.Quantity {
 		return fmt.Errorf("Quantity this(%v) Not Equal that(%v)", this.Quantity, that1.Quantity)
 	}
-	if this.Symbol != nil && that1.Symbol != nil {
-		if *this.Symbol != *that1.Symbol {
-			return fmt.Errorf("Symbol this(%v) Not Equal that(%v)", *this.Symbol, *that1.Symbol)
-		}
-	} else if this.Symbol != nil {
-		return fmt.Errorf("this.Symbol == nil && that.Symbol != nil")
-	} else if that1.Symbol != nil {
+	if this.Symbol != that1.Symbol {
 		return fmt.Errorf("Symbol this(%v) Not Equal that(%v)", this.Symbol, that1.Symbol)
 	}
-	if this.OrderType != nil && that1.OrderType != nil {
-		if *this.OrderType != *that1.OrderType {
-			return fmt.Errorf("OrderType this(%v) Not Equal that(%v)", *this.OrderType, *that1.OrderType)
-		}
-	} else if this.OrderType != nil {
-		return fmt.Errorf("this.OrderType == nil && that.OrderType != nil")
-	} else if that1.OrderType != nil {
+	if this.OrderType != that1.OrderType {
 		return fmt.Errorf("OrderType this(%v) Not Equal that(%v)", this.OrderType, that1.OrderType)
 	}
-	if this.Timeinforce != nil && that1.Timeinforce != nil {
-		if *this.Timeinforce != *that1.Timeinforce {
-			return fmt.Errorf("Timeinforce this(%v) Not Equal that(%v)", *this.Timeinforce, *that1.Timeinforce)
-		}
-	} else if this.Timeinforce != nil {
-		return fmt.Errorf("this.Timeinforce == nil && that.Timeinforce != nil")
-	} else if that1.Timeinforce != nil {
+	if this.Timeinforce != that1.Timeinforce {
 		return fmt.Errorf("Timeinforce this(%v) Not Equal that(%v)", this.Timeinforce, that1.Timeinforce)
 	}
-	if this.LimitPrice != nil && that1.LimitPrice != nil {
-		if *this.LimitPrice != *that1.LimitPrice {
-			return fmt.Errorf("LimitPrice this(%v) Not Equal that(%v)", *this.LimitPrice, *that1.LimitPrice)
-		}
-	} else if this.LimitPrice != nil {
-		return fmt.Errorf("this.LimitPrice == nil && that.LimitPrice != nil")
-	} else if that1.LimitPrice != nil {
+	if this.LimitPrice != that1.LimitPrice {
 		return fmt.Errorf("LimitPrice this(%v) Not Equal that(%v)", this.LimitPrice, that1.LimitPrice)
 	}
-	if this.Exchange != nil && that1.Exchange != nil {
-		if *this.Exchange != *that1.Exchange {
-			return fmt.Errorf("Exchange this(%v) Not Equal that(%v)", *this.Exchange, *that1.Exchange)
-		}
-	} else if this.Exchange != nil {
-		return fmt.Errorf("this.Exchange == nil && that.Exchange != nil")
-	} else if that1.Exchange != nil {
+	if this.Exchange != that1.Exchange {
 		return fmt.Errorf("Exchange this(%v) Not Equal that(%v)", this.Exchange, that1.Exchange)
 	}
-	if this.Description != nil && that1.Description != nil {
-		if *this.Description != *that1.Description {
-			return fmt.Errorf("Description this(%v) Not Equal that(%v)", *this.Description, *that1.Description)
-		}
-	} else if this.Description != nil {
-		return fmt.Errorf("this.Description == nil && that.Description != nil")
-	} else if that1.Description != nil {
+	if this.Description != that1.Description {
 		return fmt.Errorf("Description this(%v) Not Equal that(%v)", this.Description, that1.Description)
 	}
-	if this.FilledQuantity != nil && that1.FilledQuantity != nil {
-		if *this.FilledQuantity != *that1.FilledQuantity {
-			return fmt.Errorf("FilledQuantity this(%v) Not Equal that(%v)", *this.FilledQuantity, *that1.FilledQuantity)
-		}
-	} else if this.FilledQuantity != nil {
-		return fmt.Errorf("this.FilledQuantity == nil && that.FilledQuantity != nil")
-	} else if that1.FilledQuantity != nil {
+	if this.FilledQuantity != that1.FilledQuantity {
 		return fmt.Errorf("FilledQuantity this(%v) Not Equal that(%v)", this.FilledQuantity, that1.FilledQuantity)
 	}
-	if this.FilledAvgPrice != nil && that1.FilledAvgPrice != nil {
-		if *this.FilledAvgPrice != *that1.FilledAvgPrice {
-			return fmt.Errorf("FilledAvgPrice this(%v) Not Equal that(%v)", *this.FilledAvgPrice, *that1.FilledAvgPrice)
-		}
-	} else if this.FilledAvgPrice != nil {
-		return fmt.Errorf("this.FilledAvgPrice == nil && that.FilledAvgPrice != nil")
-	} else if that1.FilledAvgPrice != nil {
+	if this.FilledAvgPrice != that1.FilledAvgPrice {
 		return fmt.Errorf("FilledAvgPrice this(%v) Not Equal that(%v)", this.FilledAvgPrice, that1.FilledAvgPrice)
 	}
-	if this.OrderStatus != nil && that1.OrderStatus != nil {
-		if *this.OrderStatus != *that1.OrderStatus {
-			return fmt.Errorf("OrderStatus this(%v) Not Equal that(%v)", *this.OrderStatus, *that1.OrderStatus)
-		}
-	} else if this.OrderStatus != nil {
-		return fmt.Errorf("this.OrderStatus == nil && that.OrderStatus != nil")
-	} else if that1.OrderStatus != nil {
+	if this.OrderStatus != that1.OrderStatus {
 		return fmt.Errorf("OrderStatus this(%v) Not Equal that(%v)", this.OrderStatus, that1.OrderStatus)
 	}
-	if this.AccountId != nil && that1.AccountId != nil {
-		if *this.AccountId != *that1.AccountId {
-			return fmt.Errorf("AccountId this(%v) Not Equal that(%v)", *this.AccountId, *that1.AccountId)
-		}
-	} else if this.AccountId != nil {
-		return fmt.Errorf("this.AccountId == nil && that.AccountId != nil")
-	} else if that1.AccountId != nil {
+	if this.AccountId != that1.AccountId {
 		return fmt.Errorf("AccountId this(%v) Not Equal that(%v)", this.AccountId, that1.AccountId)
 	}
-	if this.BrokerUserid != nil && that1.BrokerUserid != nil {
-		if *this.BrokerUserid != *that1.BrokerUserid {
-			return fmt.Errorf("BrokerUserid this(%v) Not Equal that(%v)", *this.BrokerUserid, *that1.BrokerUserid)
-		}
-	} else if this.BrokerUserid != nil {
-		return fmt.Errorf("this.BrokerUserid == nil && that.BrokerUserid != nil")
-	} else if that1.BrokerUserid != nil {
+	if this.BrokerUserid != that1.BrokerUserid {
 		return fmt.Errorf("BrokerUserid this(%v) Not Equal that(%v)", this.BrokerUserid, that1.BrokerUserid)
 	}
-	if this.BrokerAccount != nil && that1.BrokerAccount != nil {
-		if *this.BrokerAccount != *that1.BrokerAccount {
-			return fmt.Errorf("BrokerAccount this(%v) Not Equal that(%v)", *this.BrokerAccount, *that1.BrokerAccount)
-		}
-	} else if this.BrokerAccount != nil {
-		return fmt.Errorf("this.BrokerAccount == nil && that.BrokerAccount != nil")
-	} else if that1.BrokerAccount != nil {
+	if this.BrokerAccount != that1.BrokerAccount {
 		return fmt.Errorf("BrokerAccount this(%v) Not Equal that(%v)", this.BrokerAccount, that1.BrokerAccount)
 	}
-	if this.MarketConnector != nil && that1.MarketConnector != nil {
-		if *this.MarketConnector != *that1.MarketConnector {
-			return fmt.Errorf("MarketConnector this(%v) Not Equal that(%v)", *this.MarketConnector, *that1.MarketConnector)
-		}
-	} else if this.MarketConnector != nil {
-		return fmt.Errorf("this.MarketConnector == nil && that.MarketConnector != nil")
-	} else if that1.MarketConnector != nil {
+	if this.MarketConnector != that1.MarketConnector {
 		return fmt.Errorf("MarketConnector this(%v) Not Equal that(%v)", this.MarketConnector, that1.MarketConnector)
 	}
-	if this.SettlCcy != nil && that1.SettlCcy != nil {
-		if *this.SettlCcy != *that1.SettlCcy {
-			return fmt.Errorf("SettlCcy this(%v) Not Equal that(%v)", *this.SettlCcy, *that1.SettlCcy)
-		}
-	} else if this.SettlCcy != nil {
-		return fmt.Errorf("this.SettlCcy == nil && that.SettlCcy != nil")
-	} else if that1.SettlCcy != nil {
+	if this.SettlCcy != that1.SettlCcy {
 		return fmt.Errorf("SettlCcy this(%v) Not Equal that(%v)", this.SettlCcy, that1.SettlCcy)
 	}
-	if this.HandleInst != nil && that1.HandleInst != nil {
-		if *this.HandleInst != *that1.HandleInst {
-			return fmt.Errorf("HandleInst this(%v) Not Equal that(%v)", *this.HandleInst, *that1.HandleInst)
-		}
-	} else if this.HandleInst != nil {
-		return fmt.Errorf("this.HandleInst == nil && that.HandleInst != nil")
-	} else if that1.HandleInst != nil {
+	if this.HandleInst != that1.HandleInst {
 		return fmt.Errorf("HandleInst this(%v) Not Equal that(%v)", this.HandleInst, that1.HandleInst)
 	}
-	if this.Algo != nil && that1.Algo != nil {
-		if *this.Algo != *that1.Algo {
-			return fmt.Errorf("Algo this(%v) Not Equal that(%v)", *this.Algo, *that1.Algo)
-		}
-	} else if this.Algo != nil {
-		return fmt.Errorf("this.Algo == nil && that.Algo != nil")
-	} else if that1.Algo != nil {
+	if this.Algo != that1.Algo {
 		return fmt.Errorf("Algo this(%v) Not Equal that(%v)", this.Algo, that1.Algo)
 	}
-	if this.IsComplete != nil && that1.IsComplete != nil {
-		if *this.IsComplete != *that1.IsComplete {
-			return fmt.Errorf("IsComplete this(%v) Not Equal that(%v)", *this.IsComplete, *that1.IsComplete)
-		}
-	} else if this.IsComplete != nil {
-		return fmt.Errorf("this.IsComplete == nil && that.IsComplete != nil")
-	} else if that1.IsComplete != nil {
+	if this.IsComplete != that1.IsComplete {
 		return fmt.Errorf("IsComplete this(%v) Not Equal that(%v)", this.IsComplete, that1.IsComplete)
 	}
-	if this.IsBooked != nil && that1.IsBooked != nil {
-		if *this.IsBooked != *that1.IsBooked {
-			return fmt.Errorf("IsBooked this(%v) Not Equal that(%v)", *this.IsBooked, *that1.IsBooked)
-		}
-	} else if this.IsBooked != nil {
-		return fmt.Errorf("this.IsBooked == nil && that.IsBooked != nil")
-	} else if that1.IsBooked != nil {
+	if this.IsBooked != that1.IsBooked {
 		return fmt.Errorf("IsBooked this(%v) Not Equal that(%v)", this.IsBooked, that1.IsBooked)
 	}
-	if this.IsExpired != nil && that1.IsExpired != nil {
-		if *this.IsExpired != *that1.IsExpired {
-			return fmt.Errorf("IsExpired this(%v) Not Equal that(%v)", *this.IsExpired, *that1.IsExpired)
-		}
-	} else if this.IsExpired != nil {
-		return fmt.Errorf("this.IsExpired == nil && that.IsExpired != nil")
-	} else if that1.IsExpired != nil {
+	if this.IsExpired != that1.IsExpired {
 		return fmt.Errorf("IsExpired this(%v) Not Equal that(%v)", this.IsExpired, that1.IsExpired)
 	}
-	if this.TradeBookingId != nil && that1.TradeBookingId != nil {
-		if *this.TradeBookingId != *that1.TradeBookingId {
-			return fmt.Errorf("TradeBookingId this(%v) Not Equal that(%v)", *this.TradeBookingId, *that1.TradeBookingId)
-		}
-	} else if this.TradeBookingId != nil {
-		return fmt.Errorf("this.TradeBookingId == nil && that.TradeBookingId != nil")
-	} else if that1.TradeBookingId != nil {
+	if this.TradeBookingId != that1.TradeBookingId {
 		return fmt.Errorf("TradeBookingId this(%v) Not Equal that(%v)", this.TradeBookingId, that1.TradeBookingId)
 	}
-	if this.OpenClose != nil && that1.OpenClose != nil {
-		if *this.OpenClose != *that1.OpenClose {
-			return fmt.Errorf("OpenClose this(%v) Not Equal that(%v)", *this.OpenClose, *that1.OpenClose)
-		}
-	} else if this.OpenClose != nil {
-		return fmt.Errorf("this.OpenClose == nil && that.OpenClose != nil")
-	} else if that1.OpenClose != nil {
+	if this.OpenClose != that1.OpenClose {
 		return fmt.Errorf("OpenClose this(%v) Not Equal that(%v)", this.OpenClose, that1.OpenClose)
 	}
-	if this.Source != nil && that1.Source != nil {
-		if *this.Source != *that1.Source {
-			return fmt.Errorf("Source this(%v) Not Equal that(%v)", *this.Source, *that1.Source)
-		}
-	} else if this.Source != nil {
-		return fmt.Errorf("this.Source == nil && that.Source != nil")
-	} else if that1.Source != nil {
+	if this.Source != that1.Source {
 		return fmt.Errorf("Source this(%v) Not Equal that(%v)", this.Source, that1.Source)
 	}
-	if this.Trader != nil && that1.Trader != nil {
-		if *this.Trader != *that1.Trader {
-			return fmt.Errorf("Trader this(%v) Not Equal that(%v)", *this.Trader, *that1.Trader)
-		}
-	} else if this.Trader != nil {
-		return fmt.Errorf("this.Trader == nil && that.Trader != nil")
-	} else if that1.Trader != nil {
+	if this.Trader != that1.Trader {
 		return fmt.Errorf("Trader this(%v) Not Equal that(%v)", this.Trader, that1.Trader)
 	}
-	if this.TraderId != nil && that1.TraderId != nil {
-		if *this.TraderId != *that1.TraderId {
-			return fmt.Errorf("TraderId this(%v) Not Equal that(%v)", *this.TraderId, *that1.TraderId)
-		}
-	} else if this.TraderId != nil {
-		return fmt.Errorf("this.TraderId == nil && that.TraderId != nil")
-	} else if that1.TraderId != nil {
+	if this.TraderId != that1.TraderId {
 		return fmt.Errorf("TraderId this(%v) Not Equal that(%v)", this.TraderId, that1.TraderId)
 	}
-	if this.Machine != nil && that1.Machine != nil {
-		if *this.Machine != *that1.Machine {
-			return fmt.Errorf("Machine this(%v) Not Equal that(%v)", *this.Machine, *that1.Machine)
-		}
-	} else if this.Machine != nil {
-		return fmt.Errorf("this.Machine == nil && that.Machine != nil")
-	} else if that1.Machine != nil {
+	if this.Machine != that1.Machine {
 		return fmt.Errorf("Machine this(%v) Not Equal that(%v)", this.Machine, that1.Machine)
 	}
-	if this.Memo != nil && that1.Memo != nil {
-		if *this.Memo != *that1.Memo {
-			return fmt.Errorf("Memo this(%v) Not Equal that(%v)", *this.Memo, *that1.Memo)
-		}
-	} else if this.Memo != nil {
-		return fmt.Errorf("this.Memo == nil && that.Memo != nil")
-	} else if that1.Memo != nil {
+	if this.Memo != that1.Memo {
 		return fmt.Errorf("Memo this(%v) Not Equal that(%v)", this.Memo, that1.Memo)
 	}
-	if this.CreateDatetime != nil && that1.CreateDatetime != nil {
-		if *this.CreateDatetime != *that1.CreateDatetime {
-			return fmt.Errorf("CreateDatetime this(%v) Not Equal that(%v)", *this.CreateDatetime, *that1.CreateDatetime)
-		}
-	} else if this.CreateDatetime != nil {
-		return fmt.Errorf("this.CreateDatetime == nil && that.CreateDatetime != nil")
-	} else if that1.CreateDatetime != nil {
+	if this.CreateDatetime != that1.CreateDatetime {
 		return fmt.Errorf("CreateDatetime this(%v) Not Equal that(%v)", this.CreateDatetime, that1.CreateDatetime)
 	}
-	if this.SubmitDatetime != nil && that1.SubmitDatetime != nil {
-		if *this.SubmitDatetime != *that1.SubmitDatetime {
-			return fmt.Errorf("SubmitDatetime this(%v) Not Equal that(%v)", *this.SubmitDatetime, *that1.SubmitDatetime)
-		}
-	} else if this.SubmitDatetime != nil {
-		return fmt.Errorf("this.SubmitDatetime == nil && that.SubmitDatetime != nil")
-	} else if that1.SubmitDatetime != nil {
+	if this.SubmitDatetime != that1.SubmitDatetime {
 		return fmt.Errorf("SubmitDatetime this(%v) Not Equal that(%v)", this.SubmitDatetime, that1.SubmitDatetime)
 	}
 	if len(this.Executions) != len(that1.Executions) {
 		return fmt.Errorf("Executions this(%v) Not Equal that(%v)", len(this.Executions), len(that1.Executions))
 	}
 	for i := range this.Executions {
-		if !this.Executions[i].Equal(that1.Executions[i]) {
+		if !this.Executions[i].Equal(&that1.Executions[i]) {
 			return fmt.Errorf("Executions this[%v](%v) Not Equal that[%v](%v)", i, this.Executions[i], i, that1.Executions[i])
 		}
 	}
@@ -6245,7 +5403,7 @@ func (this *Order) VerboseEqual(that interface{}) error {
 		return fmt.Errorf("Allocations this(%v) Not Equal that(%v)", len(this.Allocations), len(that1.Allocations))
 	}
 	for i := range this.Allocations {
-		if !this.Allocations[i].Equal(that1.Allocations[i]) {
+		if !this.Allocations[i].Equal(&that1.Allocations[i]) {
 			return fmt.Errorf("Allocations this[%v](%v) Not Equal that[%v](%v)", i, this.Allocations[i], i, that1.Allocations[i])
 		}
 	}
@@ -6274,326 +5432,116 @@ func (this *Order) Equal(that interface{}) bool {
 	} else if this == nil {
 		return false
 	}
-	if this.ClientGuid != nil && that1.ClientGuid != nil {
-		if *this.ClientGuid != *that1.ClientGuid {
-			return false
-		}
-	} else if this.ClientGuid != nil {
-		return false
-	} else if that1.ClientGuid != nil {
+	if this.ClientGuid != that1.ClientGuid {
 		return false
 	}
-	if this.OrderId != nil && that1.OrderId != nil {
-		if *this.OrderId != *that1.OrderId {
-			return false
-		}
-	} else if this.OrderId != nil {
-		return false
-	} else if that1.OrderId != nil {
+	if this.OrderId != that1.OrderId {
 		return false
 	}
-	if this.OrderKey != nil && that1.OrderKey != nil {
-		if *this.OrderKey != *that1.OrderKey {
-			return false
-		}
-	} else if this.OrderKey != nil {
-		return false
-	} else if that1.OrderKey != nil {
+	if this.OrderKey != that1.OrderKey {
 		return false
 	}
-	if this.Version != nil && that1.Version != nil {
-		if *this.Version != *that1.Version {
-			return false
-		}
-	} else if this.Version != nil {
-		return false
-	} else if that1.Version != nil {
+	if this.Version != that1.Version {
 		return false
 	}
-	if this.Instruction != nil && that1.Instruction != nil {
-		if *this.Instruction != *that1.Instruction {
-			return false
-		}
-	} else if this.Instruction != nil {
-		return false
-	} else if that1.Instruction != nil {
+	if this.Instruction != that1.Instruction {
 		return false
 	}
-	if this.Side != nil && that1.Side != nil {
-		if *this.Side != *that1.Side {
-			return false
-		}
-	} else if this.Side != nil {
-		return false
-	} else if that1.Side != nil {
+	if this.Side != that1.Side {
 		return false
 	}
-	if this.Quantity != nil && that1.Quantity != nil {
-		if *this.Quantity != *that1.Quantity {
-			return false
-		}
-	} else if this.Quantity != nil {
-		return false
-	} else if that1.Quantity != nil {
+	if this.Quantity != that1.Quantity {
 		return false
 	}
-	if this.Symbol != nil && that1.Symbol != nil {
-		if *this.Symbol != *that1.Symbol {
-			return false
-		}
-	} else if this.Symbol != nil {
-		return false
-	} else if that1.Symbol != nil {
+	if this.Symbol != that1.Symbol {
 		return false
 	}
-	if this.OrderType != nil && that1.OrderType != nil {
-		if *this.OrderType != *that1.OrderType {
-			return false
-		}
-	} else if this.OrderType != nil {
-		return false
-	} else if that1.OrderType != nil {
+	if this.OrderType != that1.OrderType {
 		return false
 	}
-	if this.Timeinforce != nil && that1.Timeinforce != nil {
-		if *this.Timeinforce != *that1.Timeinforce {
-			return false
-		}
-	} else if this.Timeinforce != nil {
-		return false
-	} else if that1.Timeinforce != nil {
+	if this.Timeinforce != that1.Timeinforce {
 		return false
 	}
-	if this.LimitPrice != nil && that1.LimitPrice != nil {
-		if *this.LimitPrice != *that1.LimitPrice {
-			return false
-		}
-	} else if this.LimitPrice != nil {
-		return false
-	} else if that1.LimitPrice != nil {
+	if this.LimitPrice != that1.LimitPrice {
 		return false
 	}
-	if this.Exchange != nil && that1.Exchange != nil {
-		if *this.Exchange != *that1.Exchange {
-			return false
-		}
-	} else if this.Exchange != nil {
-		return false
-	} else if that1.Exchange != nil {
+	if this.Exchange != that1.Exchange {
 		return false
 	}
-	if this.Description != nil && that1.Description != nil {
-		if *this.Description != *that1.Description {
-			return false
-		}
-	} else if this.Description != nil {
-		return false
-	} else if that1.Description != nil {
+	if this.Description != that1.Description {
 		return false
 	}
-	if this.FilledQuantity != nil && that1.FilledQuantity != nil {
-		if *this.FilledQuantity != *that1.FilledQuantity {
-			return false
-		}
-	} else if this.FilledQuantity != nil {
-		return false
-	} else if that1.FilledQuantity != nil {
+	if this.FilledQuantity != that1.FilledQuantity {
 		return false
 	}
-	if this.FilledAvgPrice != nil && that1.FilledAvgPrice != nil {
-		if *this.FilledAvgPrice != *that1.FilledAvgPrice {
-			return false
-		}
-	} else if this.FilledAvgPrice != nil {
-		return false
-	} else if that1.FilledAvgPrice != nil {
+	if this.FilledAvgPrice != that1.FilledAvgPrice {
 		return false
 	}
-	if this.OrderStatus != nil && that1.OrderStatus != nil {
-		if *this.OrderStatus != *that1.OrderStatus {
-			return false
-		}
-	} else if this.OrderStatus != nil {
-		return false
-	} else if that1.OrderStatus != nil {
+	if this.OrderStatus != that1.OrderStatus {
 		return false
 	}
-	if this.AccountId != nil && that1.AccountId != nil {
-		if *this.AccountId != *that1.AccountId {
-			return false
-		}
-	} else if this.AccountId != nil {
-		return false
-	} else if that1.AccountId != nil {
+	if this.AccountId != that1.AccountId {
 		return false
 	}
-	if this.BrokerUserid != nil && that1.BrokerUserid != nil {
-		if *this.BrokerUserid != *that1.BrokerUserid {
-			return false
-		}
-	} else if this.BrokerUserid != nil {
-		return false
-	} else if that1.BrokerUserid != nil {
+	if this.BrokerUserid != that1.BrokerUserid {
 		return false
 	}
-	if this.BrokerAccount != nil && that1.BrokerAccount != nil {
-		if *this.BrokerAccount != *that1.BrokerAccount {
-			return false
-		}
-	} else if this.BrokerAccount != nil {
-		return false
-	} else if that1.BrokerAccount != nil {
+	if this.BrokerAccount != that1.BrokerAccount {
 		return false
 	}
-	if this.MarketConnector != nil && that1.MarketConnector != nil {
-		if *this.MarketConnector != *that1.MarketConnector {
-			return false
-		}
-	} else if this.MarketConnector != nil {
-		return false
-	} else if that1.MarketConnector != nil {
+	if this.MarketConnector != that1.MarketConnector {
 		return false
 	}
-	if this.SettlCcy != nil && that1.SettlCcy != nil {
-		if *this.SettlCcy != *that1.SettlCcy {
-			return false
-		}
-	} else if this.SettlCcy != nil {
-		return false
-	} else if that1.SettlCcy != nil {
+	if this.SettlCcy != that1.SettlCcy {
 		return false
 	}
-	if this.HandleInst != nil && that1.HandleInst != nil {
-		if *this.HandleInst != *that1.HandleInst {
-			return false
-		}
-	} else if this.HandleInst != nil {
-		return false
-	} else if that1.HandleInst != nil {
+	if this.HandleInst != that1.HandleInst {
 		return false
 	}
-	if this.Algo != nil && that1.Algo != nil {
-		if *this.Algo != *that1.Algo {
-			return false
-		}
-	} else if this.Algo != nil {
-		return false
-	} else if that1.Algo != nil {
+	if this.Algo != that1.Algo {
 		return false
 	}
-	if this.IsComplete != nil && that1.IsComplete != nil {
-		if *this.IsComplete != *that1.IsComplete {
-			return false
-		}
-	} else if this.IsComplete != nil {
-		return false
-	} else if that1.IsComplete != nil {
+	if this.IsComplete != that1.IsComplete {
 		return false
 	}
-	if this.IsBooked != nil && that1.IsBooked != nil {
-		if *this.IsBooked != *that1.IsBooked {
-			return false
-		}
-	} else if this.IsBooked != nil {
-		return false
-	} else if that1.IsBooked != nil {
+	if this.IsBooked != that1.IsBooked {
 		return false
 	}
-	if this.IsExpired != nil && that1.IsExpired != nil {
-		if *this.IsExpired != *that1.IsExpired {
-			return false
-		}
-	} else if this.IsExpired != nil {
-		return false
-	} else if that1.IsExpired != nil {
+	if this.IsExpired != that1.IsExpired {
 		return false
 	}
-	if this.TradeBookingId != nil && that1.TradeBookingId != nil {
-		if *this.TradeBookingId != *that1.TradeBookingId {
-			return false
-		}
-	} else if this.TradeBookingId != nil {
-		return false
-	} else if that1.TradeBookingId != nil {
+	if this.TradeBookingId != that1.TradeBookingId {
 		return false
 	}
-	if this.OpenClose != nil && that1.OpenClose != nil {
-		if *this.OpenClose != *that1.OpenClose {
-			return false
-		}
-	} else if this.OpenClose != nil {
-		return false
-	} else if that1.OpenClose != nil {
+	if this.OpenClose != that1.OpenClose {
 		return false
 	}
-	if this.Source != nil && that1.Source != nil {
-		if *this.Source != *that1.Source {
-			return false
-		}
-	} else if this.Source != nil {
-		return false
-	} else if that1.Source != nil {
+	if this.Source != that1.Source {
 		return false
 	}
-	if this.Trader != nil && that1.Trader != nil {
-		if *this.Trader != *that1.Trader {
-			return false
-		}
-	} else if this.Trader != nil {
-		return false
-	} else if that1.Trader != nil {
+	if this.Trader != that1.Trader {
 		return false
 	}
-	if this.TraderId != nil && that1.TraderId != nil {
-		if *this.TraderId != *that1.TraderId {
-			return false
-		}
-	} else if this.TraderId != nil {
-		return false
-	} else if that1.TraderId != nil {
+	if this.TraderId != that1.TraderId {
 		return false
 	}
-	if this.Machine != nil && that1.Machine != nil {
-		if *this.Machine != *that1.Machine {
-			return false
-		}
-	} else if this.Machine != nil {
-		return false
-	} else if that1.Machine != nil {
+	if this.Machine != that1.Machine {
 		return false
 	}
-	if this.Memo != nil && that1.Memo != nil {
-		if *this.Memo != *that1.Memo {
-			return false
-		}
-	} else if this.Memo != nil {
-		return false
-	} else if that1.Memo != nil {
+	if this.Memo != that1.Memo {
 		return false
 	}
-	if this.CreateDatetime != nil && that1.CreateDatetime != nil {
-		if *this.CreateDatetime != *that1.CreateDatetime {
-			return false
-		}
-	} else if this.CreateDatetime != nil {
-		return false
-	} else if that1.CreateDatetime != nil {
+	if this.CreateDatetime != that1.CreateDatetime {
 		return false
 	}
-	if this.SubmitDatetime != nil && that1.SubmitDatetime != nil {
-		if *this.SubmitDatetime != *that1.SubmitDatetime {
-			return false
-		}
-	} else if this.SubmitDatetime != nil {
-		return false
-	} else if that1.SubmitDatetime != nil {
+	if this.SubmitDatetime != that1.SubmitDatetime {
 		return false
 	}
 	if len(this.Executions) != len(that1.Executions) {
 		return false
 	}
 	for i := range this.Executions {
-		if !this.Executions[i].Equal(that1.Executions[i]) {
+		if !this.Executions[i].Equal(&that1.Executions[i]) {
 			return false
 		}
 	}
@@ -6601,7 +5549,7 @@ func (this *Order) Equal(that interface{}) bool {
 		return false
 	}
 	for i := range this.Allocations {
-		if !this.Allocations[i].Equal(that1.Allocations[i]) {
+		if !this.Allocations[i].Equal(&that1.Allocations[i]) {
 			return false
 		}
 	}
@@ -6630,202 +5578,70 @@ func (this *Execution) VerboseEqual(that interface{}) error {
 	} else if this == nil {
 		return fmt.Errorf("that is type *Executionbut is not nil && this == nil")
 	}
-	if this.ExecutionId != nil && that1.ExecutionId != nil {
-		if *this.ExecutionId != *that1.ExecutionId {
-			return fmt.Errorf("ExecutionId this(%v) Not Equal that(%v)", *this.ExecutionId, *that1.ExecutionId)
-		}
-	} else if this.ExecutionId != nil {
-		return fmt.Errorf("this.ExecutionId == nil && that.ExecutionId != nil")
-	} else if that1.ExecutionId != nil {
+	if this.ExecutionId != that1.ExecutionId {
 		return fmt.Errorf("ExecutionId this(%v) Not Equal that(%v)", this.ExecutionId, that1.ExecutionId)
 	}
-	if this.OrderId != nil && that1.OrderId != nil {
-		if *this.OrderId != *that1.OrderId {
-			return fmt.Errorf("OrderId this(%v) Not Equal that(%v)", *this.OrderId, *that1.OrderId)
-		}
-	} else if this.OrderId != nil {
-		return fmt.Errorf("this.OrderId == nil && that.OrderId != nil")
-	} else if that1.OrderId != nil {
+	if this.OrderId != that1.OrderId {
 		return fmt.Errorf("OrderId this(%v) Not Equal that(%v)", this.OrderId, that1.OrderId)
 	}
-	if this.OrderKey != nil && that1.OrderKey != nil {
-		if *this.OrderKey != *that1.OrderKey {
-			return fmt.Errorf("OrderKey this(%v) Not Equal that(%v)", *this.OrderKey, *that1.OrderKey)
-		}
-	} else if this.OrderKey != nil {
-		return fmt.Errorf("this.OrderKey == nil && that.OrderKey != nil")
-	} else if that1.OrderKey != nil {
+	if this.OrderKey != that1.OrderKey {
 		return fmt.Errorf("OrderKey this(%v) Not Equal that(%v)", this.OrderKey, that1.OrderKey)
 	}
-	if this.ClientOrderId != nil && that1.ClientOrderId != nil {
-		if *this.ClientOrderId != *that1.ClientOrderId {
-			return fmt.Errorf("ClientOrderId this(%v) Not Equal that(%v)", *this.ClientOrderId, *that1.ClientOrderId)
-		}
-	} else if this.ClientOrderId != nil {
-		return fmt.Errorf("this.ClientOrderId == nil && that.ClientOrderId != nil")
-	} else if that1.ClientOrderId != nil {
+	if this.ClientOrderId != that1.ClientOrderId {
 		return fmt.Errorf("ClientOrderId this(%v) Not Equal that(%v)", this.ClientOrderId, that1.ClientOrderId)
 	}
-	if this.BrokerOrderId != nil && that1.BrokerOrderId != nil {
-		if *this.BrokerOrderId != *that1.BrokerOrderId {
-			return fmt.Errorf("BrokerOrderId this(%v) Not Equal that(%v)", *this.BrokerOrderId, *that1.BrokerOrderId)
-		}
-	} else if this.BrokerOrderId != nil {
-		return fmt.Errorf("this.BrokerOrderId == nil && that.BrokerOrderId != nil")
-	} else if that1.BrokerOrderId != nil {
+	if this.BrokerOrderId != that1.BrokerOrderId {
 		return fmt.Errorf("BrokerOrderId this(%v) Not Equal that(%v)", this.BrokerOrderId, that1.BrokerOrderId)
 	}
-	if this.BrokerExecId != nil && that1.BrokerExecId != nil {
-		if *this.BrokerExecId != *that1.BrokerExecId {
-			return fmt.Errorf("BrokerExecId this(%v) Not Equal that(%v)", *this.BrokerExecId, *that1.BrokerExecId)
-		}
-	} else if this.BrokerExecId != nil {
-		return fmt.Errorf("this.BrokerExecId == nil && that.BrokerExecId != nil")
-	} else if that1.BrokerExecId != nil {
+	if this.BrokerExecId != that1.BrokerExecId {
 		return fmt.Errorf("BrokerExecId this(%v) Not Equal that(%v)", this.BrokerExecId, that1.BrokerExecId)
 	}
-	if this.PrevBrokerExecId != nil && that1.PrevBrokerExecId != nil {
-		if *this.PrevBrokerExecId != *that1.PrevBrokerExecId {
-			return fmt.Errorf("PrevBrokerExecId this(%v) Not Equal that(%v)", *this.PrevBrokerExecId, *that1.PrevBrokerExecId)
-		}
-	} else if this.PrevBrokerExecId != nil {
-		return fmt.Errorf("this.PrevBrokerExecId == nil && that.PrevBrokerExecId != nil")
-	} else if that1.PrevBrokerExecId != nil {
+	if this.PrevBrokerExecId != that1.PrevBrokerExecId {
 		return fmt.Errorf("PrevBrokerExecId this(%v) Not Equal that(%v)", this.PrevBrokerExecId, that1.PrevBrokerExecId)
 	}
-	if this.CancelReplaceByExececutionId != nil && that1.CancelReplaceByExececutionId != nil {
-		if *this.CancelReplaceByExececutionId != *that1.CancelReplaceByExececutionId {
-			return fmt.Errorf("CancelReplaceByExececutionId this(%v) Not Equal that(%v)", *this.CancelReplaceByExececutionId, *that1.CancelReplaceByExececutionId)
-		}
-	} else if this.CancelReplaceByExececutionId != nil {
-		return fmt.Errorf("this.CancelReplaceByExececutionId == nil && that.CancelReplaceByExececutionId != nil")
-	} else if that1.CancelReplaceByExececutionId != nil {
+	if this.CancelReplaceByExececutionId != that1.CancelReplaceByExececutionId {
 		return fmt.Errorf("CancelReplaceByExececutionId this(%v) Not Equal that(%v)", this.CancelReplaceByExececutionId, that1.CancelReplaceByExececutionId)
 	}
-	if this.OrderStatus != nil && that1.OrderStatus != nil {
-		if *this.OrderStatus != *that1.OrderStatus {
-			return fmt.Errorf("OrderStatus this(%v) Not Equal that(%v)", *this.OrderStatus, *that1.OrderStatus)
-		}
-	} else if this.OrderStatus != nil {
-		return fmt.Errorf("this.OrderStatus == nil && that.OrderStatus != nil")
-	} else if that1.OrderStatus != nil {
+	if this.OrderStatus != that1.OrderStatus {
 		return fmt.Errorf("OrderStatus this(%v) Not Equal that(%v)", this.OrderStatus, that1.OrderStatus)
 	}
-	if this.ExecType != nil && that1.ExecType != nil {
-		if *this.ExecType != *that1.ExecType {
-			return fmt.Errorf("ExecType this(%v) Not Equal that(%v)", *this.ExecType, *that1.ExecType)
-		}
-	} else if this.ExecType != nil {
-		return fmt.Errorf("this.ExecType == nil && that.ExecType != nil")
-	} else if that1.ExecType != nil {
+	if this.ExecType != that1.ExecType {
 		return fmt.Errorf("ExecType this(%v) Not Equal that(%v)", this.ExecType, that1.ExecType)
 	}
-	if this.Quantity != nil && that1.Quantity != nil {
-		if *this.Quantity != *that1.Quantity {
-			return fmt.Errorf("Quantity this(%v) Not Equal that(%v)", *this.Quantity, *that1.Quantity)
-		}
-	} else if this.Quantity != nil {
-		return fmt.Errorf("this.Quantity == nil && that.Quantity != nil")
-	} else if that1.Quantity != nil {
+	if this.Quantity != that1.Quantity {
 		return fmt.Errorf("Quantity this(%v) Not Equal that(%v)", this.Quantity, that1.Quantity)
 	}
-	if this.Price != nil && that1.Price != nil {
-		if *this.Price != *that1.Price {
-			return fmt.Errorf("Price this(%v) Not Equal that(%v)", *this.Price, *that1.Price)
-		}
-	} else if this.Price != nil {
-		return fmt.Errorf("this.Price == nil && that.Price != nil")
-	} else if that1.Price != nil {
+	if this.Price != that1.Price {
 		return fmt.Errorf("Price this(%v) Not Equal that(%v)", this.Price, that1.Price)
 	}
-	if this.Text != nil && that1.Text != nil {
-		if *this.Text != *that1.Text {
-			return fmt.Errorf("Text this(%v) Not Equal that(%v)", *this.Text, *that1.Text)
-		}
-	} else if this.Text != nil {
-		return fmt.Errorf("this.Text == nil && that.Text != nil")
-	} else if that1.Text != nil {
+	if this.Text != that1.Text {
 		return fmt.Errorf("Text this(%v) Not Equal that(%v)", this.Text, that1.Text)
 	}
-	if this.Lastmkt != nil && that1.Lastmkt != nil {
-		if *this.Lastmkt != *that1.Lastmkt {
-			return fmt.Errorf("Lastmkt this(%v) Not Equal that(%v)", *this.Lastmkt, *that1.Lastmkt)
-		}
-	} else if this.Lastmkt != nil {
-		return fmt.Errorf("this.Lastmkt == nil && that.Lastmkt != nil")
-	} else if that1.Lastmkt != nil {
+	if this.Lastmkt != that1.Lastmkt {
 		return fmt.Errorf("Lastmkt this(%v) Not Equal that(%v)", this.Lastmkt, that1.Lastmkt)
 	}
-	if this.ExecBroker != nil && that1.ExecBroker != nil {
-		if *this.ExecBroker != *that1.ExecBroker {
-			return fmt.Errorf("ExecBroker this(%v) Not Equal that(%v)", *this.ExecBroker, *that1.ExecBroker)
-		}
-	} else if this.ExecBroker != nil {
-		return fmt.Errorf("this.ExecBroker == nil && that.ExecBroker != nil")
-	} else if that1.ExecBroker != nil {
+	if this.ExecBroker != that1.ExecBroker {
 		return fmt.Errorf("ExecBroker this(%v) Not Equal that(%v)", this.ExecBroker, that1.ExecBroker)
 	}
-	if this.LastLiquidity != nil && that1.LastLiquidity != nil {
-		if *this.LastLiquidity != *that1.LastLiquidity {
-			return fmt.Errorf("LastLiquidity this(%v) Not Equal that(%v)", *this.LastLiquidity, *that1.LastLiquidity)
-		}
-	} else if this.LastLiquidity != nil {
-		return fmt.Errorf("this.LastLiquidity == nil && that.LastLiquidity != nil")
-	} else if that1.LastLiquidity != nil {
+	if this.LastLiquidity != that1.LastLiquidity {
 		return fmt.Errorf("LastLiquidity this(%v) Not Equal that(%v)", this.LastLiquidity, that1.LastLiquidity)
 	}
-	if this.CumQuantity != nil && that1.CumQuantity != nil {
-		if *this.CumQuantity != *that1.CumQuantity {
-			return fmt.Errorf("CumQuantity this(%v) Not Equal that(%v)", *this.CumQuantity, *that1.CumQuantity)
-		}
-	} else if this.CumQuantity != nil {
-		return fmt.Errorf("this.CumQuantity == nil && that.CumQuantity != nil")
-	} else if that1.CumQuantity != nil {
+	if this.CumQuantity != that1.CumQuantity {
 		return fmt.Errorf("CumQuantity this(%v) Not Equal that(%v)", this.CumQuantity, that1.CumQuantity)
 	}
-	if this.AvgPrice != nil && that1.AvgPrice != nil {
-		if *this.AvgPrice != *that1.AvgPrice {
-			return fmt.Errorf("AvgPrice this(%v) Not Equal that(%v)", *this.AvgPrice, *that1.AvgPrice)
-		}
-	} else if this.AvgPrice != nil {
-		return fmt.Errorf("this.AvgPrice == nil && that.AvgPrice != nil")
-	} else if that1.AvgPrice != nil {
+	if this.AvgPrice != that1.AvgPrice {
 		return fmt.Errorf("AvgPrice this(%v) Not Equal that(%v)", this.AvgPrice, that1.AvgPrice)
 	}
-	if this.CalcCumQuantity != nil && that1.CalcCumQuantity != nil {
-		if *this.CalcCumQuantity != *that1.CalcCumQuantity {
-			return fmt.Errorf("CalcCumQuantity this(%v) Not Equal that(%v)", *this.CalcCumQuantity, *that1.CalcCumQuantity)
-		}
-	} else if this.CalcCumQuantity != nil {
-		return fmt.Errorf("this.CalcCumQuantity == nil && that.CalcCumQuantity != nil")
-	} else if that1.CalcCumQuantity != nil {
+	if this.CalcCumQuantity != that1.CalcCumQuantity {
 		return fmt.Errorf("CalcCumQuantity this(%v) Not Equal that(%v)", this.CalcCumQuantity, that1.CalcCumQuantity)
 	}
-	if this.CalcAvgPrice != nil && that1.CalcAvgPrice != nil {
-		if *this.CalcAvgPrice != *that1.CalcAvgPrice {
-			return fmt.Errorf("CalcAvgPrice this(%v) Not Equal that(%v)", *this.CalcAvgPrice, *that1.CalcAvgPrice)
-		}
-	} else if this.CalcAvgPrice != nil {
-		return fmt.Errorf("this.CalcAvgPrice == nil && that.CalcAvgPrice != nil")
-	} else if that1.CalcAvgPrice != nil {
+	if this.CalcAvgPrice != that1.CalcAvgPrice {
 		return fmt.Errorf("CalcAvgPrice this(%v) Not Equal that(%v)", this.CalcAvgPrice, that1.CalcAvgPrice)
 	}
-	if this.BrokerExecDatetime != nil && that1.BrokerExecDatetime != nil {
-		if *this.BrokerExecDatetime != *that1.BrokerExecDatetime {
-			return fmt.Errorf("BrokerExecDatetime this(%v) Not Equal that(%v)", *this.BrokerExecDatetime, *that1.BrokerExecDatetime)
-		}
-	} else if this.BrokerExecDatetime != nil {
-		return fmt.Errorf("this.BrokerExecDatetime == nil && that.BrokerExecDatetime != nil")
-	} else if that1.BrokerExecDatetime != nil {
+	if this.BrokerExecDatetime != that1.BrokerExecDatetime {
 		return fmt.Errorf("BrokerExecDatetime this(%v) Not Equal that(%v)", this.BrokerExecDatetime, that1.BrokerExecDatetime)
 	}
-	if this.CreateDatetime != nil && that1.CreateDatetime != nil {
-		if *this.CreateDatetime != *that1.CreateDatetime {
-			return fmt.Errorf("CreateDatetime this(%v) Not Equal that(%v)", *this.CreateDatetime, *that1.CreateDatetime)
-		}
-	} else if this.CreateDatetime != nil {
-		return fmt.Errorf("this.CreateDatetime == nil && that.CreateDatetime != nil")
-	} else if that1.CreateDatetime != nil {
+	if this.CreateDatetime != that1.CreateDatetime {
 		return fmt.Errorf("CreateDatetime this(%v) Not Equal that(%v)", this.CreateDatetime, that1.CreateDatetime)
 	}
 	if !bytes.Equal(this.XXX_unrecognized, that1.XXX_unrecognized) {
@@ -6853,202 +5669,70 @@ func (this *Execution) Equal(that interface{}) bool {
 	} else if this == nil {
 		return false
 	}
-	if this.ExecutionId != nil && that1.ExecutionId != nil {
-		if *this.ExecutionId != *that1.ExecutionId {
-			return false
-		}
-	} else if this.ExecutionId != nil {
-		return false
-	} else if that1.ExecutionId != nil {
+	if this.ExecutionId != that1.ExecutionId {
 		return false
 	}
-	if this.OrderId != nil && that1.OrderId != nil {
-		if *this.OrderId != *that1.OrderId {
-			return false
-		}
-	} else if this.OrderId != nil {
-		return false
-	} else if that1.OrderId != nil {
+	if this.OrderId != that1.OrderId {
 		return false
 	}
-	if this.OrderKey != nil && that1.OrderKey != nil {
-		if *this.OrderKey != *that1.OrderKey {
-			return false
-		}
-	} else if this.OrderKey != nil {
-		return false
-	} else if that1.OrderKey != nil {
+	if this.OrderKey != that1.OrderKey {
 		return false
 	}
-	if this.ClientOrderId != nil && that1.ClientOrderId != nil {
-		if *this.ClientOrderId != *that1.ClientOrderId {
-			return false
-		}
-	} else if this.ClientOrderId != nil {
-		return false
-	} else if that1.ClientOrderId != nil {
+	if this.ClientOrderId != that1.ClientOrderId {
 		return false
 	}
-	if this.BrokerOrderId != nil && that1.BrokerOrderId != nil {
-		if *this.BrokerOrderId != *that1.BrokerOrderId {
-			return false
-		}
-	} else if this.BrokerOrderId != nil {
-		return false
-	} else if that1.BrokerOrderId != nil {
+	if this.BrokerOrderId != that1.BrokerOrderId {
 		return false
 	}
-	if this.BrokerExecId != nil && that1.BrokerExecId != nil {
-		if *this.BrokerExecId != *that1.BrokerExecId {
-			return false
-		}
-	} else if this.BrokerExecId != nil {
-		return false
-	} else if that1.BrokerExecId != nil {
+	if this.BrokerExecId != that1.BrokerExecId {
 		return false
 	}
-	if this.PrevBrokerExecId != nil && that1.PrevBrokerExecId != nil {
-		if *this.PrevBrokerExecId != *that1.PrevBrokerExecId {
-			return false
-		}
-	} else if this.PrevBrokerExecId != nil {
-		return false
-	} else if that1.PrevBrokerExecId != nil {
+	if this.PrevBrokerExecId != that1.PrevBrokerExecId {
 		return false
 	}
-	if this.CancelReplaceByExececutionId != nil && that1.CancelReplaceByExececutionId != nil {
-		if *this.CancelReplaceByExececutionId != *that1.CancelReplaceByExececutionId {
-			return false
-		}
-	} else if this.CancelReplaceByExececutionId != nil {
-		return false
-	} else if that1.CancelReplaceByExececutionId != nil {
+	if this.CancelReplaceByExececutionId != that1.CancelReplaceByExececutionId {
 		return false
 	}
-	if this.OrderStatus != nil && that1.OrderStatus != nil {
-		if *this.OrderStatus != *that1.OrderStatus {
-			return false
-		}
-	} else if this.OrderStatus != nil {
-		return false
-	} else if that1.OrderStatus != nil {
+	if this.OrderStatus != that1.OrderStatus {
 		return false
 	}
-	if this.ExecType != nil && that1.ExecType != nil {
-		if *this.ExecType != *that1.ExecType {
-			return false
-		}
-	} else if this.ExecType != nil {
-		return false
-	} else if that1.ExecType != nil {
+	if this.ExecType != that1.ExecType {
 		return false
 	}
-	if this.Quantity != nil && that1.Quantity != nil {
-		if *this.Quantity != *that1.Quantity {
-			return false
-		}
-	} else if this.Quantity != nil {
-		return false
-	} else if that1.Quantity != nil {
+	if this.Quantity != that1.Quantity {
 		return false
 	}
-	if this.Price != nil && that1.Price != nil {
-		if *this.Price != *that1.Price {
-			return false
-		}
-	} else if this.Price != nil {
-		return false
-	} else if that1.Price != nil {
+	if this.Price != that1.Price {
 		return false
 	}
-	if this.Text != nil && that1.Text != nil {
-		if *this.Text != *that1.Text {
-			return false
-		}
-	} else if this.Text != nil {
-		return false
-	} else if that1.Text != nil {
+	if this.Text != that1.Text {
 		return false
 	}
-	if this.Lastmkt != nil && that1.Lastmkt != nil {
-		if *this.Lastmkt != *that1.Lastmkt {
-			return false
-		}
-	} else if this.Lastmkt != nil {
-		return false
-	} else if that1.Lastmkt != nil {
+	if this.Lastmkt != that1.Lastmkt {
 		return false
 	}
-	if this.ExecBroker != nil && that1.ExecBroker != nil {
-		if *this.ExecBroker != *that1.ExecBroker {
-			return false
-		}
-	} else if this.ExecBroker != nil {
-		return false
-	} else if that1.ExecBroker != nil {
+	if this.ExecBroker != that1.ExecBroker {
 		return false
 	}
-	if this.LastLiquidity != nil && that1.LastLiquidity != nil {
-		if *this.LastLiquidity != *that1.LastLiquidity {
-			return false
-		}
-	} else if this.LastLiquidity != nil {
-		return false
-	} else if that1.LastLiquidity != nil {
+	if this.LastLiquidity != that1.LastLiquidity {
 		return false
 	}
-	if this.CumQuantity != nil && that1.CumQuantity != nil {
-		if *this.CumQuantity != *that1.CumQuantity {
-			return false
-		}
-	} else if this.CumQuantity != nil {
-		return false
-	} else if that1.CumQuantity != nil {
+	if this.CumQuantity != that1.CumQuantity {
 		return false
 	}
-	if this.AvgPrice != nil && that1.AvgPrice != nil {
-		if *this.AvgPrice != *that1.AvgPrice {
-			return false
-		}
-	} else if this.AvgPrice != nil {
-		return false
-	} else if that1.AvgPrice != nil {
+	if this.AvgPrice != that1.AvgPrice {
 		return false
 	}
-	if this.CalcCumQuantity != nil && that1.CalcCumQuantity != nil {
-		if *this.CalcCumQuantity != *that1.CalcCumQuantity {
-			return false
-		}
-	} else if this.CalcCumQuantity != nil {
-		return false
-	} else if that1.CalcCumQuantity != nil {
+	if this.CalcCumQuantity != that1.CalcCumQuantity {
 		return false
 	}
-	if this.CalcAvgPrice != nil && that1.CalcAvgPrice != nil {
-		if *this.CalcAvgPrice != *that1.CalcAvgPrice {
-			return false
-		}
-	} else if this.CalcAvgPrice != nil {
-		return false
-	} else if that1.CalcAvgPrice != nil {
+	if this.CalcAvgPrice != that1.CalcAvgPrice {
 		return false
 	}
-	if this.BrokerExecDatetime != nil && that1.BrokerExecDatetime != nil {
-		if *this.BrokerExecDatetime != *that1.BrokerExecDatetime {
-			return false
-		}
-	} else if this.BrokerExecDatetime != nil {
-		return false
-	} else if that1.BrokerExecDatetime != nil {
+	if this.BrokerExecDatetime != that1.BrokerExecDatetime {
 		return false
 	}
-	if this.CreateDatetime != nil && that1.CreateDatetime != nil {
-		if *this.CreateDatetime != *that1.CreateDatetime {
-			return false
-		}
-	} else if this.CreateDatetime != nil {
-		return false
-	} else if that1.CreateDatetime != nil {
+	if this.CreateDatetime != that1.CreateDatetime {
 		return false
 	}
 	if !bytes.Equal(this.XXX_unrecognized, that1.XXX_unrecognized) {
@@ -7076,49 +5760,19 @@ func (this *Allocation) VerboseEqual(that interface{}) error {
 	} else if this == nil {
 		return fmt.Errorf("that is type *Allocationbut is not nil && this == nil")
 	}
-	if this.AllocationId != nil && that1.AllocationId != nil {
-		if *this.AllocationId != *that1.AllocationId {
-			return fmt.Errorf("AllocationId this(%v) Not Equal that(%v)", *this.AllocationId, *that1.AllocationId)
-		}
-	} else if this.AllocationId != nil {
-		return fmt.Errorf("this.AllocationId == nil && that.AllocationId != nil")
-	} else if that1.AllocationId != nil {
+	if this.AllocationId != that1.AllocationId {
 		return fmt.Errorf("AllocationId this(%v) Not Equal that(%v)", this.AllocationId, that1.AllocationId)
 	}
-	if this.OrderKey != nil && that1.OrderKey != nil {
-		if *this.OrderKey != *that1.OrderKey {
-			return fmt.Errorf("OrderKey this(%v) Not Equal that(%v)", *this.OrderKey, *that1.OrderKey)
-		}
-	} else if this.OrderKey != nil {
-		return fmt.Errorf("this.OrderKey == nil && that.OrderKey != nil")
-	} else if that1.OrderKey != nil {
+	if this.OrderKey != that1.OrderKey {
 		return fmt.Errorf("OrderKey this(%v) Not Equal that(%v)", this.OrderKey, that1.OrderKey)
 	}
-	if this.StrategyId != nil && that1.StrategyId != nil {
-		if *this.StrategyId != *that1.StrategyId {
-			return fmt.Errorf("StrategyId this(%v) Not Equal that(%v)", *this.StrategyId, *that1.StrategyId)
-		}
-	} else if this.StrategyId != nil {
-		return fmt.Errorf("this.StrategyId == nil && that.StrategyId != nil")
-	} else if that1.StrategyId != nil {
+	if this.StrategyId != that1.StrategyId {
 		return fmt.Errorf("StrategyId this(%v) Not Equal that(%v)", this.StrategyId, that1.StrategyId)
 	}
-	if this.Quantity != nil && that1.Quantity != nil {
-		if *this.Quantity != *that1.Quantity {
-			return fmt.Errorf("Quantity this(%v) Not Equal that(%v)", *this.Quantity, *that1.Quantity)
-		}
-	} else if this.Quantity != nil {
-		return fmt.Errorf("this.Quantity == nil && that.Quantity != nil")
-	} else if that1.Quantity != nil {
+	if this.Quantity != that1.Quantity {
 		return fmt.Errorf("Quantity this(%v) Not Equal that(%v)", this.Quantity, that1.Quantity)
 	}
-	if this.Ratio != nil && that1.Ratio != nil {
-		if *this.Ratio != *that1.Ratio {
-			return fmt.Errorf("Ratio this(%v) Not Equal that(%v)", *this.Ratio, *that1.Ratio)
-		}
-	} else if this.Ratio != nil {
-		return fmt.Errorf("this.Ratio == nil && that.Ratio != nil")
-	} else if that1.Ratio != nil {
+	if this.Ratio != that1.Ratio {
 		return fmt.Errorf("Ratio this(%v) Not Equal that(%v)", this.Ratio, that1.Ratio)
 	}
 	if !bytes.Equal(this.XXX_unrecognized, that1.XXX_unrecognized) {
@@ -7146,49 +5800,19 @@ func (this *Allocation) Equal(that interface{}) bool {
 	} else if this == nil {
 		return false
 	}
-	if this.AllocationId != nil && that1.AllocationId != nil {
-		if *this.AllocationId != *that1.AllocationId {
-			return false
-		}
-	} else if this.AllocationId != nil {
-		return false
-	} else if that1.AllocationId != nil {
+	if this.AllocationId != that1.AllocationId {
 		return false
 	}
-	if this.OrderKey != nil && that1.OrderKey != nil {
-		if *this.OrderKey != *that1.OrderKey {
-			return false
-		}
-	} else if this.OrderKey != nil {
-		return false
-	} else if that1.OrderKey != nil {
+	if this.OrderKey != that1.OrderKey {
 		return false
 	}
-	if this.StrategyId != nil && that1.StrategyId != nil {
-		if *this.StrategyId != *that1.StrategyId {
-			return false
-		}
-	} else if this.StrategyId != nil {
-		return false
-	} else if that1.StrategyId != nil {
+	if this.StrategyId != that1.StrategyId {
 		return false
 	}
-	if this.Quantity != nil && that1.Quantity != nil {
-		if *this.Quantity != *that1.Quantity {
-			return false
-		}
-	} else if this.Quantity != nil {
-		return false
-	} else if that1.Quantity != nil {
+	if this.Quantity != that1.Quantity {
 		return false
 	}
-	if this.Ratio != nil && that1.Ratio != nil {
-		if *this.Ratio != *that1.Ratio {
-			return false
-		}
-	} else if this.Ratio != nil {
-		return false
-	} else if that1.Ratio != nil {
+	if this.Ratio != that1.Ratio {
 		return false
 	}
 	if !bytes.Equal(this.XXX_unrecognized, that1.XXX_unrecognized) {
@@ -7272,13 +5896,7 @@ func (this *NewOrderResponse) VerboseEqual(that interface{}) error {
 	} else if this == nil {
 		return fmt.Errorf("that is type *NewOrderResponsebut is not nil && this == nil")
 	}
-	if this.ErrorCode != nil && that1.ErrorCode != nil {
-		if *this.ErrorCode != *that1.ErrorCode {
-			return fmt.Errorf("ErrorCode this(%v) Not Equal that(%v)", *this.ErrorCode, *that1.ErrorCode)
-		}
-	} else if this.ErrorCode != nil {
-		return fmt.Errorf("this.ErrorCode == nil && that.ErrorCode != nil")
-	} else if that1.ErrorCode != nil {
+	if this.ErrorCode != that1.ErrorCode {
 		return fmt.Errorf("ErrorCode this(%v) Not Equal that(%v)", this.ErrorCode, that1.ErrorCode)
 	}
 	if this.ErrorMessage != nil && that1.ErrorMessage != nil {
@@ -7318,13 +5936,7 @@ func (this *NewOrderResponse) Equal(that interface{}) bool {
 	} else if this == nil {
 		return false
 	}
-	if this.ErrorCode != nil && that1.ErrorCode != nil {
-		if *this.ErrorCode != *that1.ErrorCode {
-			return false
-		}
-	} else if this.ErrorCode != nil {
-		return false
-	} else if that1.ErrorCode != nil {
+	if this.ErrorCode != that1.ErrorCode {
 		return false
 	}
 	if this.ErrorMessage != nil && that1.ErrorMessage != nil {
@@ -7364,76 +5976,28 @@ func (this *CancelOrderRequest) VerboseEqual(that interface{}) error {
 	} else if this == nil {
 		return fmt.Errorf("that is type *CancelOrderRequestbut is not nil && this == nil")
 	}
-	if this.ClientGuid != nil && that1.ClientGuid != nil {
-		if *this.ClientGuid != *that1.ClientGuid {
-			return fmt.Errorf("ClientGuid this(%v) Not Equal that(%v)", *this.ClientGuid, *that1.ClientGuid)
-		}
-	} else if this.ClientGuid != nil {
-		return fmt.Errorf("this.ClientGuid == nil && that.ClientGuid != nil")
-	} else if that1.ClientGuid != nil {
+	if this.ClientGuid != that1.ClientGuid {
 		return fmt.Errorf("ClientGuid this(%v) Not Equal that(%v)", this.ClientGuid, that1.ClientGuid)
 	}
-	if this.OrderId != nil && that1.OrderId != nil {
-		if *this.OrderId != *that1.OrderId {
-			return fmt.Errorf("OrderId this(%v) Not Equal that(%v)", *this.OrderId, *that1.OrderId)
-		}
-	} else if this.OrderId != nil {
-		return fmt.Errorf("this.OrderId == nil && that.OrderId != nil")
-	} else if that1.OrderId != nil {
+	if this.OrderId != that1.OrderId {
 		return fmt.Errorf("OrderId this(%v) Not Equal that(%v)", this.OrderId, that1.OrderId)
 	}
-	if this.OrderKey != nil && that1.OrderKey != nil {
-		if *this.OrderKey != *that1.OrderKey {
-			return fmt.Errorf("OrderKey this(%v) Not Equal that(%v)", *this.OrderKey, *that1.OrderKey)
-		}
-	} else if this.OrderKey != nil {
-		return fmt.Errorf("this.OrderKey == nil && that.OrderKey != nil")
-	} else if that1.OrderKey != nil {
+	if this.OrderKey != that1.OrderKey {
 		return fmt.Errorf("OrderKey this(%v) Not Equal that(%v)", this.OrderKey, that1.OrderKey)
 	}
-	if this.Version != nil && that1.Version != nil {
-		if *this.Version != *that1.Version {
-			return fmt.Errorf("Version this(%v) Not Equal that(%v)", *this.Version, *that1.Version)
-		}
-	} else if this.Version != nil {
-		return fmt.Errorf("this.Version == nil && that.Version != nil")
-	} else if that1.Version != nil {
+	if this.Version != that1.Version {
 		return fmt.Errorf("Version this(%v) Not Equal that(%v)", this.Version, that1.Version)
 	}
-	if this.Source != nil && that1.Source != nil {
-		if *this.Source != *that1.Source {
-			return fmt.Errorf("Source this(%v) Not Equal that(%v)", *this.Source, *that1.Source)
-		}
-	} else if this.Source != nil {
-		return fmt.Errorf("this.Source == nil && that.Source != nil")
-	} else if that1.Source != nil {
+	if this.Source != that1.Source {
 		return fmt.Errorf("Source this(%v) Not Equal that(%v)", this.Source, that1.Source)
 	}
-	if this.Trader != nil && that1.Trader != nil {
-		if *this.Trader != *that1.Trader {
-			return fmt.Errorf("Trader this(%v) Not Equal that(%v)", *this.Trader, *that1.Trader)
-		}
-	} else if this.Trader != nil {
-		return fmt.Errorf("this.Trader == nil && that.Trader != nil")
-	} else if that1.Trader != nil {
+	if this.Trader != that1.Trader {
 		return fmt.Errorf("Trader this(%v) Not Equal that(%v)", this.Trader, that1.Trader)
 	}
-	if this.TraderId != nil && that1.TraderId != nil {
-		if *this.TraderId != *that1.TraderId {
-			return fmt.Errorf("TraderId this(%v) Not Equal that(%v)", *this.TraderId, *that1.TraderId)
-		}
-	} else if this.TraderId != nil {
-		return fmt.Errorf("this.TraderId == nil && that.TraderId != nil")
-	} else if that1.TraderId != nil {
+	if this.TraderId != that1.TraderId {
 		return fmt.Errorf("TraderId this(%v) Not Equal that(%v)", this.TraderId, that1.TraderId)
 	}
-	if this.Machine != nil && that1.Machine != nil {
-		if *this.Machine != *that1.Machine {
-			return fmt.Errorf("Machine this(%v) Not Equal that(%v)", *this.Machine, *that1.Machine)
-		}
-	} else if this.Machine != nil {
-		return fmt.Errorf("this.Machine == nil && that.Machine != nil")
-	} else if that1.Machine != nil {
+	if this.Machine != that1.Machine {
 		return fmt.Errorf("Machine this(%v) Not Equal that(%v)", this.Machine, that1.Machine)
 	}
 	if !bytes.Equal(this.XXX_unrecognized, that1.XXX_unrecognized) {
@@ -7461,76 +6025,28 @@ func (this *CancelOrderRequest) Equal(that interface{}) bool {
 	} else if this == nil {
 		return false
 	}
-	if this.ClientGuid != nil && that1.ClientGuid != nil {
-		if *this.ClientGuid != *that1.ClientGuid {
-			return false
-		}
-	} else if this.ClientGuid != nil {
-		return false
-	} else if that1.ClientGuid != nil {
+	if this.ClientGuid != that1.ClientGuid {
 		return false
 	}
-	if this.OrderId != nil && that1.OrderId != nil {
-		if *this.OrderId != *that1.OrderId {
-			return false
-		}
-	} else if this.OrderId != nil {
-		return false
-	} else if that1.OrderId != nil {
+	if this.OrderId != that1.OrderId {
 		return false
 	}
-	if this.OrderKey != nil && that1.OrderKey != nil {
-		if *this.OrderKey != *that1.OrderKey {
-			return false
-		}
-	} else if this.OrderKey != nil {
-		return false
-	} else if that1.OrderKey != nil {
+	if this.OrderKey != that1.OrderKey {
 		return false
 	}
-	if this.Version != nil && that1.Version != nil {
-		if *this.Version != *that1.Version {
-			return false
-		}
-	} else if this.Version != nil {
-		return false
-	} else if that1.Version != nil {
+	if this.Version != that1.Version {
 		return false
 	}
-	if this.Source != nil && that1.Source != nil {
-		if *this.Source != *that1.Source {
-			return false
-		}
-	} else if this.Source != nil {
-		return false
-	} else if that1.Source != nil {
+	if this.Source != that1.Source {
 		return false
 	}
-	if this.Trader != nil && that1.Trader != nil {
-		if *this.Trader != *that1.Trader {
-			return false
-		}
-	} else if this.Trader != nil {
-		return false
-	} else if that1.Trader != nil {
+	if this.Trader != that1.Trader {
 		return false
 	}
-	if this.TraderId != nil && that1.TraderId != nil {
-		if *this.TraderId != *that1.TraderId {
-			return false
-		}
-	} else if this.TraderId != nil {
-		return false
-	} else if that1.TraderId != nil {
+	if this.TraderId != that1.TraderId {
 		return false
 	}
-	if this.Machine != nil && that1.Machine != nil {
-		if *this.Machine != *that1.Machine {
-			return false
-		}
-	} else if this.Machine != nil {
-		return false
-	} else if that1.Machine != nil {
+	if this.Machine != that1.Machine {
 		return false
 	}
 	if !bytes.Equal(this.XXX_unrecognized, that1.XXX_unrecognized) {
@@ -7558,13 +6074,7 @@ func (this *CancelOrderResponse) VerboseEqual(that interface{}) error {
 	} else if this == nil {
 		return fmt.Errorf("that is type *CancelOrderResponsebut is not nil && this == nil")
 	}
-	if this.ErrorCode != nil && that1.ErrorCode != nil {
-		if *this.ErrorCode != *that1.ErrorCode {
-			return fmt.Errorf("ErrorCode this(%v) Not Equal that(%v)", *this.ErrorCode, *that1.ErrorCode)
-		}
-	} else if this.ErrorCode != nil {
-		return fmt.Errorf("this.ErrorCode == nil && that.ErrorCode != nil")
-	} else if that1.ErrorCode != nil {
+	if this.ErrorCode != that1.ErrorCode {
 		return fmt.Errorf("ErrorCode this(%v) Not Equal that(%v)", this.ErrorCode, that1.ErrorCode)
 	}
 	if this.ErrorMessage != nil && that1.ErrorMessage != nil {
@@ -7604,13 +6114,7 @@ func (this *CancelOrderResponse) Equal(that interface{}) bool {
 	} else if this == nil {
 		return false
 	}
-	if this.ErrorCode != nil && that1.ErrorCode != nil {
-		if *this.ErrorCode != *that1.ErrorCode {
-			return false
-		}
-	} else if this.ErrorCode != nil {
-		return false
-	} else if that1.ErrorCode != nil {
+	if this.ErrorCode != that1.ErrorCode {
 		return false
 	}
 	if this.ErrorMessage != nil && that1.ErrorMessage != nil {
@@ -7653,40 +6157,16 @@ func (this *ReplaceOrderRequest) VerboseEqual(that interface{}) error {
 	if !this.Order.Equal(that1.Order) {
 		return fmt.Errorf("Order this(%v) Not Equal that(%v)", this.Order, that1.Order)
 	}
-	if this.Source != nil && that1.Source != nil {
-		if *this.Source != *that1.Source {
-			return fmt.Errorf("Source this(%v) Not Equal that(%v)", *this.Source, *that1.Source)
-		}
-	} else if this.Source != nil {
-		return fmt.Errorf("this.Source == nil && that.Source != nil")
-	} else if that1.Source != nil {
+	if this.Source != that1.Source {
 		return fmt.Errorf("Source this(%v) Not Equal that(%v)", this.Source, that1.Source)
 	}
-	if this.Trader != nil && that1.Trader != nil {
-		if *this.Trader != *that1.Trader {
-			return fmt.Errorf("Trader this(%v) Not Equal that(%v)", *this.Trader, *that1.Trader)
-		}
-	} else if this.Trader != nil {
-		return fmt.Errorf("this.Trader == nil && that.Trader != nil")
-	} else if that1.Trader != nil {
+	if this.Trader != that1.Trader {
 		return fmt.Errorf("Trader this(%v) Not Equal that(%v)", this.Trader, that1.Trader)
 	}
-	if this.TraderId != nil && that1.TraderId != nil {
-		if *this.TraderId != *that1.TraderId {
-			return fmt.Errorf("TraderId this(%v) Not Equal that(%v)", *this.TraderId, *that1.TraderId)
-		}
-	} else if this.TraderId != nil {
-		return fmt.Errorf("this.TraderId == nil && that.TraderId != nil")
-	} else if that1.TraderId != nil {
+	if this.TraderId != that1.TraderId {
 		return fmt.Errorf("TraderId this(%v) Not Equal that(%v)", this.TraderId, that1.TraderId)
 	}
-	if this.Machine != nil && that1.Machine != nil {
-		if *this.Machine != *that1.Machine {
-			return fmt.Errorf("Machine this(%v) Not Equal that(%v)", *this.Machine, *that1.Machine)
-		}
-	} else if this.Machine != nil {
-		return fmt.Errorf("this.Machine == nil && that.Machine != nil")
-	} else if that1.Machine != nil {
+	if this.Machine != that1.Machine {
 		return fmt.Errorf("Machine this(%v) Not Equal that(%v)", this.Machine, that1.Machine)
 	}
 	if !bytes.Equal(this.XXX_unrecognized, that1.XXX_unrecognized) {
@@ -7717,40 +6197,16 @@ func (this *ReplaceOrderRequest) Equal(that interface{}) bool {
 	if !this.Order.Equal(that1.Order) {
 		return false
 	}
-	if this.Source != nil && that1.Source != nil {
-		if *this.Source != *that1.Source {
-			return false
-		}
-	} else if this.Source != nil {
-		return false
-	} else if that1.Source != nil {
+	if this.Source != that1.Source {
 		return false
 	}
-	if this.Trader != nil && that1.Trader != nil {
-		if *this.Trader != *that1.Trader {
-			return false
-		}
-	} else if this.Trader != nil {
-		return false
-	} else if that1.Trader != nil {
+	if this.Trader != that1.Trader {
 		return false
 	}
-	if this.TraderId != nil && that1.TraderId != nil {
-		if *this.TraderId != *that1.TraderId {
-			return false
-		}
-	} else if this.TraderId != nil {
-		return false
-	} else if that1.TraderId != nil {
+	if this.TraderId != that1.TraderId {
 		return false
 	}
-	if this.Machine != nil && that1.Machine != nil {
-		if *this.Machine != *that1.Machine {
-			return false
-		}
-	} else if this.Machine != nil {
-		return false
-	} else if that1.Machine != nil {
+	if this.Machine != that1.Machine {
 		return false
 	}
 	if !bytes.Equal(this.XXX_unrecognized, that1.XXX_unrecognized) {
@@ -7778,13 +6234,7 @@ func (this *ReplaceOrderResponse) VerboseEqual(that interface{}) error {
 	} else if this == nil {
 		return fmt.Errorf("that is type *ReplaceOrderResponsebut is not nil && this == nil")
 	}
-	if this.ErrorCode != nil && that1.ErrorCode != nil {
-		if *this.ErrorCode != *that1.ErrorCode {
-			return fmt.Errorf("ErrorCode this(%v) Not Equal that(%v)", *this.ErrorCode, *that1.ErrorCode)
-		}
-	} else if this.ErrorCode != nil {
-		return fmt.Errorf("this.ErrorCode == nil && that.ErrorCode != nil")
-	} else if that1.ErrorCode != nil {
+	if this.ErrorCode != that1.ErrorCode {
 		return fmt.Errorf("ErrorCode this(%v) Not Equal that(%v)", this.ErrorCode, that1.ErrorCode)
 	}
 	if this.ErrorMessage != nil && that1.ErrorMessage != nil {
@@ -7824,13 +6274,7 @@ func (this *ReplaceOrderResponse) Equal(that interface{}) bool {
 	} else if this == nil {
 		return false
 	}
-	if this.ErrorCode != nil && that1.ErrorCode != nil {
-		if *this.ErrorCode != *that1.ErrorCode {
-			return false
-		}
-	} else if this.ErrorCode != nil {
-		return false
-	} else if that1.ErrorCode != nil {
+	if this.ErrorCode != that1.ErrorCode {
 		return false
 	}
 	if this.ErrorMessage != nil && that1.ErrorMessage != nil {

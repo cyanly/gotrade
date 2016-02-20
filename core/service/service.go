@@ -50,12 +50,12 @@ func NewService(c Config) *Service {
 	//Heartbeating
 	currDateTime := time.Now().UTC().Format(time.RFC3339)
 	hbMsg := &proto.Heartbeat{
-		Name:             &svc.Config.ServiceName,
-		Id:               &uuid,
+		Name:             svc.Config.ServiceName,
+		Id:               uuid,
 		Status:           proto.STARTING,
-		Machine:          &hostname,
-		CreationDatetime: &currDateTime,
-		CurrentDatetime:  &currDateTime,
+		Machine:          hostname,
+		CreationDatetime: currDateTime,
+		CurrentDatetime:  currDateTime,
 	}
 	svc.lastHBMsg = hbMsg
 	hbTicker := time.NewTicker(time.Second * time.Duration(svc.Config.HeartbeatFreq))
@@ -63,8 +63,7 @@ func NewService(c Config) *Service {
 		publish_address := "service.Heartbeat." + svc.Config.ServiceName
 
 		for range hbTicker.C {
-			currDateTime := time.Now().UTC().Format(time.RFC3339)
-			hbMsg.CurrentDatetime = &currDateTime
+			hbMsg.CurrentDatetime = time.Now().UTC().Format(time.RFC3339)
 			hbMsg.Status = svc.Status
 
 			if data, _ := hbMsg.Marshal(); data != nil {
@@ -79,8 +78,7 @@ func NewService(c Config) *Service {
 				if svc.Status != proto.ERROR {
 					svc.Status = proto.STOPPED
 				}
-				currDateTime := time.Now().UTC().Format(time.RFC3339)
-				hbMsg.CurrentDatetime = &currDateTime
+				hbMsg.CurrentDatetime = time.Now().UTC().Format(time.RFC3339)
 				hbMsg.Status = svc.Status
 				if data, _ := hbMsg.Marshal(); data != nil {
 					messageBus.Publish(publish_address, data)
@@ -111,8 +109,7 @@ func (self *Service) Start() chan bool {
 	self.Status = proto.RUNNING
 
 	// Immediately publish heartbeat
-	currDateTime := time.Now().UTC().Format(time.RFC3339)
-	self.lastHBMsg.CurrentDatetime = &currDateTime
+	self.lastHBMsg.CurrentDatetime = time.Now().UTC().Format(time.RFC3339)
 	self.lastHBMsg.Status = self.Status
 	if data, _ := self.lastHBMsg.Marshal(); data != nil {
 		self.messageBus.Publish("service.Heartbeat."+self.Config.ServiceName, data)

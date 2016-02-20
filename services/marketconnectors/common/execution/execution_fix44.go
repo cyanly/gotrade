@@ -35,8 +35,7 @@ func NewExecutionFromFIX44Message(msg fix44er.Message) (*proto.Execution, quickf
 	if clOrdId, err := msg.ClOrdID(); err != nil {
 		return nil, err
 	} else {
-		pclordId := string(clOrdId.FIXString)
-		er.ClientOrderId = &pclordId
+		er.ClientOrderId = string(clOrdId.FIXString)
 
 		//split into order key and version
 	}
@@ -44,73 +43,61 @@ func NewExecutionFromFIX44Message(msg fix44er.Message) (*proto.Execution, quickf
 	if execType, err := msg.ExecType(); err != nil {
 		return nil, err
 	} else {
-		pexecType := proto.Execution_ExecType(util.FIXEnumToProtoEnum(string(execType.FIXString)))
-		er.ExecType = &pexecType
+		er.ExecType = proto.Execution_ExecType(util.FIXEnumToProtoEnum(string(execType.FIXString)))
 	}
 
 	if ordStatus, err := msg.OrdStatus(); err != nil {
 		return nil, err
 	} else {
-		pordStatus := proto.OrderStatus(util.FIXEnumToProtoEnum(string(ordStatus.FIXString)))
-		er.OrderStatus = &pordStatus
+		er.OrderStatus = proto.OrderStatus(util.FIXEnumToProtoEnum(string(ordStatus.FIXString)))
 	}
 
 	if execId, err := msg.ExecID(); err != nil {
 		return nil, err
 	} else {
-		pexecId := string(execId.FIXString)
-		er.BrokerExecId = &pexecId
+		er.BrokerExecId = string(execId.FIXString)
 	}
 
 	if cumQty, err := msg.CumQty(); err != nil {
 		return nil, err
 	} else {
-		pcumQty := float64(cumQty.FIXFloat)
-		er.CumQuantity = &pcumQty
+		er.CumQuantity = float64(cumQty.FIXFloat)
 	}
 
 	if avgPx, err := msg.AvgPx(); err != nil {
 		return nil, err
 	} else {
-		pavgPx := float64(avgPx.FIXFloat)
-		er.AvgPrice = &pavgPx
+		er.AvgPrice = float64(avgPx.FIXFloat)
 	}
 
 	// optional common tags
 
 	if lastQty, err := msg.LastQty(); err == nil {
-		plastQty := float64(lastQty.FIXFloat)
-		er.Quantity = &plastQty
+		er.Quantity = float64(lastQty.FIXFloat)
 	}
 
 	if lastPx, err := msg.LastPx(); err == nil {
-		plastPx := float64(lastPx.FIXFloat)
-		er.Price = &plastPx
+		er.Price = float64(lastPx.FIXFloat)
 	}
 
 	if lastMkt, err := msg.LastMkt(); err == nil {
-		plastMkt := string(lastMkt.FIXString)
-		er.Lastmkt = &plastMkt
+		er.Lastmkt = string(lastMkt.FIXString)
 	}
 
 	if execTime, err := msg.TransactTime(); err == nil {
-		pexecTime := execTime.FIXUTCTimestamp.Value.UTC().Format(time.RFC3339Nano)
-		er.BrokerExecDatetime = &pexecTime
+		er.BrokerExecDatetime = execTime.FIXUTCTimestamp.Value.UTC().Format(time.RFC3339Nano)
 	}
 
 	if brkOrdId, err := msg.OrderID(); err == nil {
-		pbrkOrdId := string(brkOrdId.FIXString)
-		er.BrokerOrderId = &pbrkOrdId
+		er.BrokerOrderId = string(brkOrdId.FIXString)
 	}
 
 	if prevExecId, err := msg.ExecRefID(); err == nil {
-		pprevExecId := string(prevExecId.FIXString)
-		er.PrevBrokerExecId = &pprevExecId
+		er.PrevBrokerExecId = string(prevExecId.FIXString)
 	}
 
 	if text, err := msg.Text(); err == nil {
-		ptext := string(text.FIXString)
-		er.Text = &ptext
+		er.Text = string(text.FIXString)
 	}
 
 	//TODO: Check for Dups - Tags.PossDupFlag
