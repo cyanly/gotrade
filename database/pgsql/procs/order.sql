@@ -1,6 +1,6 @@
 -- !Select GetOrderByOrderId
 -- $1: orderId int32
--- $ret: *Order()
+-- $ret: *Order(OrderId,ClientGuid,OrderKey,Version,SubmitDatetime,Instruction,MarketConnector,OrderType,Timeinforce,HandleInst,Symbol,Exchange,Side,Quantity,LimitPrice,FilledQuantity,FilledAvgPrice,OrderStatus,IsComplete,IsExpired,TradeBookingId,TraderId,AccountId,BrokerUserid,BrokerAccount,Description,Source,OpenClose,Algo)
 SELECT
     order_id,
     client_guid,
