@@ -3,13 +3,13 @@ package sellsidesim
 import (
 	"github.com/quickfixgo/quickfix"
 	"github.com/quickfixgo/quickfix/enum"
-	"github.com/quickfixgo/quickfix/field"
 
 	fix44er "github.com/quickfixgo/quickfix/fix44/executionreport"
 	fix44nos "github.com/quickfixgo/quickfix/fix44/newordersingle"
 
 	logger "github.com/apex/log"
 	"strconv"
+	"github.com/quickfixgo/quickfix/fix44/orderqtydata"
 )
 
 type Executor struct {
@@ -55,66 +55,44 @@ func (e *Executor) FromApp(msg quickfix.Message, sessionID quickfix.SessionID) (
 	return e.Route(msg, sessionID)
 }
 
+func stringPtr(s string) *string { return &s }
+
 func (e *Executor) OnFIX44NewOrderSingle(msg fix44nos.Message, sessionID quickfix.SessionID) (err quickfix.MessageRejectError) {
-	logger.Infof("FIX->SIM: FIX44NewOrderSingle \n%v", msg.String())
-	symbol, err := msg.Symbol()
-	if err != nil {
+	logger.Infof("FIX->SIM: FIX44NewOrderSingle \n%v", msg)
+
+	symbol := msg.Symbol
+	side := msg.Side
+	orderQty := msg.OrderQty
+	ordType := msg.OrdType
+
+	if ordType != enum.OrdType_LIMIT {
+		err = quickfix.ValueIsIncorrect(quickfix.Tag(40))
 		return
 	}
+	price := msg.Price
+	clOrdID := msg.ClOrdID
 
-	side, err := msg.Side()
-	if err != nil {
-		return
+	execReport := fix44er.Message{
+		ClOrdID: stringPtr(e.genOrderID()),
+		ExecID: e.genExecID(),
+		ExecType: enum.ExecType_FILL,
+		OrdStatus: enum.OrdStatus_FILLED,
+		Side: side,
+		LeavesQty: 0,
+		CumQty: *orderQty,
+		AvgPx: *price,
 	}
 
-	orderQty, err := msg.OrderQty()
-	if err != nil {
-		return
-	}
+	execReport.ClOrdID = &clOrdID
+	execReport.Instrument.Symbol = symbol
+	execReport.OrderQtyData = orderqtydata.New()
+	execReport.OrderQtyData.OrderQty = orderQty
+	execReport.LastQty = orderQty
+	execReport.LastPx = price
+	execReport.LastMkt = stringPtr("SIM")
+	execReport.Account = msg.Account
 
-	ordType, err := msg.OrdType()
-	if err != nil {
-		return
-	}
-
-	if ordType.String() != enum.OrdType_LIMIT {
-		err = quickfix.ValueIsIncorrect(ordType.Tag())
-		return
-	}
-
-	price, err := msg.Price()
-	if err != nil {
-		return
-	}
-
-	clOrdID, err := msg.ClOrdID()
-	if err != nil {
-		return
-	}
-
-	execReport := fix44er.New(
-		field.NewOrderID(e.genOrderID()),
-		field.NewExecID(e.genExecID()),
-		field.NewExecType(enum.ExecType_FILL),
-		field.NewOrdStatus(enum.OrdStatus_FILLED),
-		side,
-		field.NewLeavesQty(0),
-		field.NewCumQty(float64(orderQty.FIXFloat)),
-		field.NewAvgPx(float64(price.FIXFloat)),
-	)
-
-	execReport.Body.Set(clOrdID)
-	execReport.Body.Set(symbol)
-	execReport.Body.Set(orderQty)
-	execReport.Body.Set(field.NewLastQty(float64(orderQty.FIXFloat)))
-	execReport.Body.Set(field.NewLastPx(float64(price.FIXFloat)))
-	execReport.Body.Set(field.NewLastMkt("SIM"))
-
-	if acct, err := msg.Account(); err != nil {
-		execReport.Body.Set(acct)
-	}
-
-	quickfix.SendToTarget(execReport.Message, sessionID)
+	quickfix.SendToTarget(execReport, sessionID)
 
 	return
 }

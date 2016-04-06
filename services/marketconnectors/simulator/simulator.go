@@ -7,17 +7,17 @@ import (
 	util "github.com/cyanly/gotrade/services/marketconnectors"
 	//execCore "github.com/cyanly/gotrade/core/order/execution"
 	proto "github.com/cyanly/gotrade/proto/order"
-	common "github.com/cyanly/gotrade/services/marketconnectors/common"
+	"github.com/cyanly/gotrade/services/marketconnectors/common"
 
 	"github.com/quickfixgo/quickfix"
 	_ "github.com/quickfixgo/quickfix/enum"
-	"github.com/quickfixgo/quickfix/field"
 	fix44nos "github.com/quickfixgo/quickfix/fix44/newordersingle"
 	_ "github.com/quickfixgo/quickfix/tag"
 
 	"github.com/nats-io/nats"
 	"log"
 	"strconv"
+	"time"
 )
 
 const (
@@ -78,6 +78,8 @@ func NewMarketConnector(c Config) *MCSimulator {
 	return mc
 }
 
+func stringPtr(s string) *string { return &s }
+
 func (mc *MCSimulator) Start() {
 	if err := mc.initiator.Start(); err != nil {
 		log.Panic(err)
@@ -88,33 +90,33 @@ func (mc *MCSimulator) Start() {
 		if err := request.Unmarshal(m.Data); err == nil {
 			order := request.Order
 
-			fixmsg := fix44nos.New(
-				field.NewClOrdID(strconv.Itoa(int(order.OrderKey))+"."+strconv.Itoa(int(order.Version))),
-				field.NewSide(util.ProtoEnumToFIXEnum(int(order.Side))),
-				&field.TransactTimeField{},
-				field.NewOrdType(util.ProtoEnumToFIXEnum(int(order.OrderType))),
-			)
+			fixmsg := fix44nos.Message{
+				ClOrdID: strconv.Itoa(int(order.OrderKey)) + "." + strconv.Itoa(int(order.Version)),
+				Side: util.ProtoEnumToFIXEnum(int(order.Side)),
+				TransactTime: time.Now(),
+				OrdType: util.ProtoEnumToFIXEnum(int(order.OrderType)),
+			}
 
 			// Instrument
 			//TODO: migrate marketconnectors/common/... for common fields
-			fixmsg.Body.Set(field.NewSymbol(order.Symbol))
+			fixmsg.Instrument.Symbol = &order.Symbol
 
 			//TODO: migrate common limit checks into common/limit
-			fixmsg.Body.Set(field.NewOrderQty(order.Quantity))
+			fixmsg.OrderQty = &order.Quantity
 			if order.OrderType == proto.OrderType_LIMIT || order.OrderType == proto.OrderType_LIMIT_ON_CLOSE {
-				fixmsg.Body.Set(field.NewPrice(order.LimitPrice))
+				fixmsg.Price = &order.LimitPrice
 			}
 
 			// Broker specific
-			fixmsg.Body.Set(field.NewAccount(order.BrokerAccount))
-			fixmsg.Body.Set(field.NewHandlInst(util.ProtoEnumToFIXEnum(int(order.HandleInst))))
+			fixmsg.Account = &order.BrokerAccount
+			fixmsg.HandlInst = stringPtr(util.ProtoEnumToFIXEnum(int(order.HandleInst)))
 
 			// 142 SenderLocationID
 			//     Mandatory for CME exchanges. It contains a 2-character country. For the US and Canada, the state/province is included.
-			fixmsg.Body.SetField(142, quickfix.NewFIXString("UK"))
+			fixmsg.SenderLocationID = stringPtr("UK")
 
 			logger.Info("MC->FIX FIX44NewOrderSingle")
-			if err := quickfix.SendToTarget(fixmsg.Message, mc.session); err != nil {
+			if err := quickfix.SendToTarget(fixmsg, mc.session); err != nil {
 				log.Panic(err)
 			}
 
