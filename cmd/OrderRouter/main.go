@@ -4,6 +4,7 @@ package main
 import (
 	"github.com/cyanly/gotrade/core/service"
 	"github.com/cyanly/gotrade/services/orderrouter"
+	_ "github.com/cyanly/gotrade/database/memstore"
 )
 
 func main() {
@@ -15,11 +16,12 @@ func main() {
 	sc.ServiceName = "OrderRouter"
 	svc := service.NewService(sc)
 
-	// Initialise Database Connection
-
 	// Initialise OrderRouter
 	orc := orderrouter.NewConfig()
 	orc.ServiceMessageBusURL = sc.MessageBusURL
+
+	// Initialise Database Connection
+	orc.DatabaseDriver = "memstore"
 
 	orsvc := orderrouter.NewOrderRouter(orc)
 	orsvc.Start()
