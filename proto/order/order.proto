@@ -28,12 +28,12 @@ message Order {
     required int32          order_id = 2 [(gogoproto.nullable) = false];
     required int32         order_key = 3 [(gogoproto.nullable) = false];
     required int32           version = 4 [(gogoproto.nullable) = false];
-    enum OrderInstruction {
+    enum OrderMessageType {
         NEW         = 0;
         CANCEL   	= 1;
         REPLACE     = 2;
     }
-    optional OrderInstruction instruction = 5 [(gogoproto.nullable) = false];
+    optional OrderMessageType message_type = 5 [(gogoproto.nullable) = false];
 
     // basic
     required Side               side = 6 [(gogoproto.nullable) = false];
@@ -273,10 +273,10 @@ message NewOrderResponse {
 }
 
 message CancelOrderRequest {
-    required string      client_guid = 1 [(gogoproto.nullable) = false];
-    optional int32          order_id = 2 [(gogoproto.nullable) = false];
-    required int32         order_key = 3 [(gogoproto.nullable) = false];
-    optional int32           version = 4 [(gogoproto.nullable) = false];
+    optional string      client_guid = 1  [(gogoproto.nullable) = false];
+    required int32          order_id = 2  [(gogoproto.nullable) = false];
+    optional int32         order_key = 3  [(gogoproto.nullable) = false];
+    optional int32           version = 4  [(gogoproto.nullable) = false];
     optional string           source = 50 [(gogoproto.nullable) = false];
     optional string           trader = 51 [(gogoproto.nullable) = false];
     required int32         trader_id = 52 [(gogoproto.nullable) = false];

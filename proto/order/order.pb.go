@@ -483,39 +483,39 @@ func (x *LastLiquidityInd) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-type Order_OrderInstruction int32
+type Order_OrderMessageType int32
 
 const (
-	Order_NEW     Order_OrderInstruction = 0
-	Order_CANCEL  Order_OrderInstruction = 1
-	Order_REPLACE Order_OrderInstruction = 2
+	Order_NEW     Order_OrderMessageType = 0
+	Order_CANCEL  Order_OrderMessageType = 1
+	Order_REPLACE Order_OrderMessageType = 2
 )
 
-var Order_OrderInstruction_name = map[int32]string{
+var Order_OrderMessageType_name = map[int32]string{
 	0: "NEW",
 	1: "CANCEL",
 	2: "REPLACE",
 }
-var Order_OrderInstruction_value = map[string]int32{
+var Order_OrderMessageType_value = map[string]int32{
 	"NEW":     0,
 	"CANCEL":  1,
 	"REPLACE": 2,
 }
 
-func (x Order_OrderInstruction) Enum() *Order_OrderInstruction {
-	p := new(Order_OrderInstruction)
+func (x Order_OrderMessageType) Enum() *Order_OrderMessageType {
+	p := new(Order_OrderMessageType)
 	*p = x
 	return p
 }
-func (x Order_OrderInstruction) String() string {
-	return proto.EnumName(Order_OrderInstruction_name, int32(x))
+func (x Order_OrderMessageType) String() string {
+	return proto.EnumName(Order_OrderMessageType_name, int32(x))
 }
-func (x *Order_OrderInstruction) UnmarshalJSON(data []byte) error {
-	value, err := proto.UnmarshalJSONEnum(Order_OrderInstruction_value, data, "Order_OrderInstruction")
+func (x *Order_OrderMessageType) UnmarshalJSON(data []byte) error {
+	value, err := proto.UnmarshalJSONEnum(Order_OrderMessageType_value, data, "Order_OrderMessageType")
 	if err != nil {
 		return err
 	}
-	*x = Order_OrderInstruction(value)
+	*x = Order_OrderMessageType(value)
 	return nil
 }
 
@@ -609,7 +609,7 @@ type Order struct {
 	OrderId     int32                  `protobuf:"varint,2,req,name=order_id" json:"order_id"`
 	OrderKey    int32                  `protobuf:"varint,3,req,name=order_key" json:"order_key"`
 	Version     int32                  `protobuf:"varint,4,req,name=version" json:"version"`
-	Instruction Order_OrderInstruction `protobuf:"varint,5,opt,name=instruction,enum=proto.order.Order_OrderInstruction" json:"instruction"`
+	MessageType Order_OrderMessageType `protobuf:"varint,5,opt,name=message_type,enum=proto.order.Order_OrderMessageType" json:"message_type"`
 	// basic
 	Side     Side    `protobuf:"varint,6,req,name=side,enum=proto.order.Side" json:"side"`
 	Quantity float64 `protobuf:"fixed64,7,req,name=quantity" json:"quantity"`
@@ -683,9 +683,9 @@ func (m *Order) GetVersion() int32 {
 	return 0
 }
 
-func (m *Order) GetInstruction() Order_OrderInstruction {
+func (m *Order) GetMessageType() Order_OrderMessageType {
 	if m != nil {
-		return m.Instruction
+		return m.MessageType
 	}
 	return Order_NEW
 }
@@ -1192,9 +1192,9 @@ func (m *NewOrderResponse) GetOrder() *Order {
 }
 
 type CancelOrderRequest struct {
-	ClientGuid       string `protobuf:"bytes,1,req,name=client_guid" json:"client_guid"`
-	OrderId          int32  `protobuf:"varint,2,opt,name=order_id" json:"order_id"`
-	OrderKey         int32  `protobuf:"varint,3,req,name=order_key" json:"order_key"`
+	ClientGuid       string `protobuf:"bytes,1,opt,name=client_guid" json:"client_guid"`
+	OrderId          int32  `protobuf:"varint,2,req,name=order_id" json:"order_id"`
+	OrderKey         int32  `protobuf:"varint,3,opt,name=order_key" json:"order_key"`
 	Version          int32  `protobuf:"varint,4,opt,name=version" json:"version"`
 	Source           string `protobuf:"bytes,50,opt,name=source" json:"source"`
 	Trader           string `protobuf:"bytes,51,opt,name=trader" json:"trader"`
@@ -1378,7 +1378,7 @@ func init() {
 	proto.RegisterEnum("proto.order.TimeInForce", TimeInForce_name, TimeInForce_value)
 	proto.RegisterEnum("proto.order.HandlInst", HandlInst_name, HandlInst_value)
 	proto.RegisterEnum("proto.order.LastLiquidityInd", LastLiquidityInd_name, LastLiquidityInd_value)
-	proto.RegisterEnum("proto.order.Order_OrderInstruction", Order_OrderInstruction_name, Order_OrderInstruction_value)
+	proto.RegisterEnum("proto.order.Order_OrderMessageType", Order_OrderMessageType_name, Order_OrderMessageType_value)
 	proto.RegisterEnum("proto.order.Execution_ExecType", Execution_ExecType_name, Execution_ExecType_value)
 }
 func (m *Order) Unmarshal(data []byte) error {
@@ -1474,7 +1474,7 @@ func (m *Order) Unmarshal(data []byte) error {
 			hasFields[0] |= uint64(0x00000008)
 		case 5:
 			if wireType != 0 {
-				return fmt.Errorf("proto: wrong wireType = %d for field Instruction", wireType)
+				return fmt.Errorf("proto: wrong wireType = %d for field MessageType", wireType)
 			}
 			for shift := uint(0); ; shift += 7 {
 				if iNdEx >= l {
@@ -1482,7 +1482,7 @@ func (m *Order) Unmarshal(data []byte) error {
 				}
 				b := data[iNdEx]
 				iNdEx++
-				m.Instruction |= (Order_OrderInstruction(b) & 0x7F) << shift
+				m.MessageType |= (Order_OrderMessageType(b) & 0x7F) << shift
 				if b < 0x80 {
 					break
 				}
@@ -2985,7 +2985,6 @@ func (m *CancelOrderRequest) Unmarshal(data []byte) error {
 			}
 			m.ClientGuid = string(data[iNdEx:postIndex])
 			iNdEx = postIndex
-			hasFields[0] |= uint64(0x00000001)
 		case 2:
 			if wireType != 0 {
 				return fmt.Errorf("proto: wrong wireType = %d for field OrderId", wireType)
@@ -3001,6 +3000,7 @@ func (m *CancelOrderRequest) Unmarshal(data []byte) error {
 					break
 				}
 			}
+			hasFields[0] |= uint64(0x00000001)
 		case 3:
 			if wireType != 0 {
 				return fmt.Errorf("proto: wrong wireType = %d for field OrderKey", wireType)
@@ -3016,7 +3016,6 @@ func (m *CancelOrderRequest) Unmarshal(data []byte) error {
 					break
 				}
 			}
-			hasFields[0] |= uint64(0x00000002)
 		case 4:
 			if wireType != 0 {
 				return fmt.Errorf("proto: wrong wireType = %d for field Version", wireType)
@@ -3091,7 +3090,7 @@ func (m *CancelOrderRequest) Unmarshal(data []byte) error {
 					break
 				}
 			}
-			hasFields[0] |= uint64(0x00000004)
+			hasFields[0] |= uint64(0x00000002)
 		case 53:
 			if wireType != 2 {
 				return fmt.Errorf("proto: wrong wireType = %d for field Machine", wireType)
@@ -3136,12 +3135,9 @@ func (m *CancelOrderRequest) Unmarshal(data []byte) error {
 		}
 	}
 	if hasFields[0]&uint64(0x00000001) == 0 {
-		return github_com_gogo_protobuf_proto.NewRequiredNotSetError("client_guid")
+		return github_com_gogo_protobuf_proto.NewRequiredNotSetError("order_id")
 	}
 	if hasFields[0]&uint64(0x00000002) == 0 {
-		return github_com_gogo_protobuf_proto.NewRequiredNotSetError("order_key")
-	}
-	if hasFields[0]&uint64(0x00000004) == 0 {
 		return github_com_gogo_protobuf_proto.NewRequiredNotSetError("trader_id")
 	}
 
@@ -3612,7 +3608,7 @@ func (this *Order) String() string {
 		`OrderId:` + fmt.Sprintf("%v", this.OrderId) + `,`,
 		`OrderKey:` + fmt.Sprintf("%v", this.OrderKey) + `,`,
 		`Version:` + fmt.Sprintf("%v", this.Version) + `,`,
-		`Instruction:` + fmt.Sprintf("%v", this.Instruction) + `,`,
+		`MessageType:` + fmt.Sprintf("%v", this.MessageType) + `,`,
 		`Side:` + fmt.Sprintf("%v", this.Side) + `,`,
 		`Quantity:` + fmt.Sprintf("%v", this.Quantity) + `,`,
 		`Symbol:` + fmt.Sprintf("%v", this.Symbol) + `,`,
@@ -3796,7 +3792,7 @@ func (m *Order) Size() (n int) {
 	n += 1 + sovOrder(uint64(m.OrderId))
 	n += 1 + sovOrder(uint64(m.OrderKey))
 	n += 1 + sovOrder(uint64(m.Version))
-	n += 1 + sovOrder(uint64(m.Instruction))
+	n += 1 + sovOrder(uint64(m.MessageType))
 	n += 1 + sovOrder(uint64(m.Side))
 	n += 9
 	l = len(m.Symbol)
@@ -4050,7 +4046,7 @@ func NewPopulatedOrder(r randyOrder, easy bool) *Order {
 	if r.Intn(2) == 0 {
 		this.Version *= -1
 	}
-	this.Instruction = Order_OrderInstruction([]int32{0, 1, 2}[r.Intn(3)])
+	this.MessageType = Order_OrderMessageType([]int32{0, 1, 2}[r.Intn(3)])
 	this.Side = Side([]int32{0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16}[r.Intn(17)])
 	this.Quantity = float64(r.Float64())
 	if r.Intn(2) == 0 {
@@ -4428,7 +4424,7 @@ func (m *Order) MarshalTo(data []byte) (n int, err error) {
 	i = encodeVarintOrder(data, i, uint64(m.Version))
 	data[i] = 0x28
 	i++
-	i = encodeVarintOrder(data, i, uint64(m.Instruction))
+	i = encodeVarintOrder(data, i, uint64(m.MessageType))
 	data[i] = 0x30
 	i++
 	i = encodeVarintOrder(data, i, uint64(m.Side))
@@ -5087,11 +5083,11 @@ func (this *Order) GoString() string {
 		return "nil"
 	}
 	s := strings.Join([]string{`&order.Order{` +
-		`ClientGuid:` + fmt.Sprintf("%#v", this.ClientGuid),
+	`ClientGuid:` + fmt.Sprintf("%#v", this.ClientGuid),
 		`OrderId:` + fmt.Sprintf("%#v", this.OrderId),
 		`OrderKey:` + fmt.Sprintf("%#v", this.OrderKey),
 		`Version:` + fmt.Sprintf("%#v", this.Version),
-		`Instruction:` + fmt.Sprintf("%#v", this.Instruction),
+		`MessageType:` + fmt.Sprintf("%#v", this.MessageType),
 		`Side:` + fmt.Sprintf("%#v", this.Side),
 		`Quantity:` + fmt.Sprintf("%#v", this.Quantity),
 		`Symbol:` + fmt.Sprintf("%#v", this.Symbol),
@@ -5132,7 +5128,7 @@ func (this *Execution) GoString() string {
 		return "nil"
 	}
 	s := strings.Join([]string{`&order.Execution{` +
-		`ExecutionId:` + fmt.Sprintf("%#v", this.ExecutionId),
+	`ExecutionId:` + fmt.Sprintf("%#v", this.ExecutionId),
 		`OrderId:` + fmt.Sprintf("%#v", this.OrderId),
 		`OrderKey:` + fmt.Sprintf("%#v", this.OrderKey),
 		`ClientOrderId:` + fmt.Sprintf("%#v", this.ClientOrderId),
@@ -5162,7 +5158,7 @@ func (this *Allocation) GoString() string {
 		return "nil"
 	}
 	s := strings.Join([]string{`&order.Allocation{` +
-		`AllocationId:` + fmt.Sprintf("%#v", this.AllocationId),
+	`AllocationId:` + fmt.Sprintf("%#v", this.AllocationId),
 		`OrderKey:` + fmt.Sprintf("%#v", this.OrderKey),
 		`StrategyId:` + fmt.Sprintf("%#v", this.StrategyId),
 		`Quantity:` + fmt.Sprintf("%#v", this.Quantity),
@@ -5175,7 +5171,7 @@ func (this *NewOrderRequest) GoString() string {
 		return "nil"
 	}
 	s := strings.Join([]string{`&order.NewOrderRequest{` +
-		`Order:` + fmt.Sprintf("%#v", this.Order),
+	`Order:` + fmt.Sprintf("%#v", this.Order),
 		`XXX_unrecognized:` + fmt.Sprintf("%#v", this.XXX_unrecognized) + `}`}, ", ")
 	return s
 }
@@ -5184,7 +5180,7 @@ func (this *NewOrderResponse) GoString() string {
 		return "nil"
 	}
 	s := strings.Join([]string{`&order.NewOrderResponse{` +
-		`ErrorCode:` + fmt.Sprintf("%#v", this.ErrorCode),
+	`ErrorCode:` + fmt.Sprintf("%#v", this.ErrorCode),
 		`ErrorMessage:` + valueToGoStringOrder(this.ErrorMessage, "string"),
 		`Order:` + fmt.Sprintf("%#v", this.Order),
 		`XXX_unrecognized:` + fmt.Sprintf("%#v", this.XXX_unrecognized) + `}`}, ", ")
@@ -5195,7 +5191,7 @@ func (this *CancelOrderRequest) GoString() string {
 		return "nil"
 	}
 	s := strings.Join([]string{`&order.CancelOrderRequest{` +
-		`ClientGuid:` + fmt.Sprintf("%#v", this.ClientGuid),
+	`ClientGuid:` + fmt.Sprintf("%#v", this.ClientGuid),
 		`OrderId:` + fmt.Sprintf("%#v", this.OrderId),
 		`OrderKey:` + fmt.Sprintf("%#v", this.OrderKey),
 		`Version:` + fmt.Sprintf("%#v", this.Version),
@@ -5211,7 +5207,7 @@ func (this *CancelOrderResponse) GoString() string {
 		return "nil"
 	}
 	s := strings.Join([]string{`&order.CancelOrderResponse{` +
-		`ErrorCode:` + fmt.Sprintf("%#v", this.ErrorCode),
+	`ErrorCode:` + fmt.Sprintf("%#v", this.ErrorCode),
 		`ErrorMessage:` + valueToGoStringOrder(this.ErrorMessage, "string"),
 		`Order:` + fmt.Sprintf("%#v", this.Order),
 		`XXX_unrecognized:` + fmt.Sprintf("%#v", this.XXX_unrecognized) + `}`}, ", ")
@@ -5222,7 +5218,7 @@ func (this *ReplaceOrderRequest) GoString() string {
 		return "nil"
 	}
 	s := strings.Join([]string{`&order.ReplaceOrderRequest{` +
-		`Order:` + fmt.Sprintf("%#v", this.Order),
+	`Order:` + fmt.Sprintf("%#v", this.Order),
 		`Source:` + fmt.Sprintf("%#v", this.Source),
 		`Trader:` + fmt.Sprintf("%#v", this.Trader),
 		`TraderId:` + fmt.Sprintf("%#v", this.TraderId),
@@ -5235,7 +5231,7 @@ func (this *ReplaceOrderResponse) GoString() string {
 		return "nil"
 	}
 	s := strings.Join([]string{`&order.ReplaceOrderResponse{` +
-		`ErrorCode:` + fmt.Sprintf("%#v", this.ErrorCode),
+	`ErrorCode:` + fmt.Sprintf("%#v", this.ErrorCode),
 		`ErrorMessage:` + valueToGoStringOrder(this.ErrorMessage, "string"),
 		`Order:` + fmt.Sprintf("%#v", this.Order),
 		`XXX_unrecognized:` + fmt.Sprintf("%#v", this.XXX_unrecognized) + `}`}, ", ")
@@ -5298,8 +5294,8 @@ func (this *Order) VerboseEqual(that interface{}) error {
 	if this.Version != that1.Version {
 		return fmt.Errorf("Version this(%v) Not Equal that(%v)", this.Version, that1.Version)
 	}
-	if this.Instruction != that1.Instruction {
-		return fmt.Errorf("Instruction this(%v) Not Equal that(%v)", this.Instruction, that1.Instruction)
+	if this.MessageType != that1.MessageType {
+		return fmt.Errorf("MessageType this(%v) Not Equal that(%v)", this.MessageType, that1.MessageType)
 	}
 	if this.Side != that1.Side {
 		return fmt.Errorf("Side this(%v) Not Equal that(%v)", this.Side, that1.Side)
@@ -5444,7 +5440,7 @@ func (this *Order) Equal(that interface{}) bool {
 	if this.Version != that1.Version {
 		return false
 	}
-	if this.Instruction != that1.Instruction {
+	if this.MessageType != that1.MessageType {
 		return false
 	}
 	if this.Side != that1.Side {
