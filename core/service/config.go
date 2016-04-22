@@ -1,10 +1,12 @@
 package service
 
-import "github.com/nats-io/nats"
+import (
+	"github.com/cyanly/gotrade/core/messagebus"
+)
 
 const (
 	// DefaultMessageBusURL is the default MessageBus URL for service communications.
-	DefaultMessageBusURL = nats.DefaultURL
+	DefaultMessageBusURL = messagebus.DefaultUrl
 	// DefaultHeartbeatFreq is the period between service heartbeats in seconds.
 	DefaultHeartbeatFreq = int(3)
 )

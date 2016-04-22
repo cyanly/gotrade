@@ -2,17 +2,15 @@
 package service
 
 import (
-	logger "github.com/apex/log"
-	"github.com/apex/log/handlers/cli"
-	proto "github.com/cyanly/gotrade/proto/service"
-	"github.com/nats-io/nats"
-
 	"fmt"
-	"log"
 	"os"
 	"os/signal"
 	"syscall"
 	"time"
+
+	log "github.com/cyanly/gotrade/core/logger"
+	proto "github.com/cyanly/gotrade/proto/service"
+	messagebus "github.com/nats-io/nats"
 )
 
 type Service struct {
@@ -20,18 +18,26 @@ type Service struct {
 	Status proto.Heartbeat_Status
 
 	shutdownChannel chan bool
-	messageBus      *nats.Conn
+	messageBus      *messagebus.Conn
+	lastHBMsg       *proto.Heartbeat
+	publishAddress  string
+}
+
+type Service struct {
+	Config Config
+	Status proto.Heartbeat_Status
+
+	shutdownChannel chan bool
+	messageBus      *messagebus.Conn
 	lastHBMsg       *proto.Heartbeat
 	publishAddress  string
 }
 
 func NewService(c Config) *Service {
-	// Structured Logging
-	logger.SetHandler(cli.Default)
 
 	// Hardware Info
 	uuid = fmt.Sprint(hostname, ":", pid)
-	log.Println("Service [", c.ServiceName, "] starting @ ", uuid)
+	log.Infof("Service [%v] starting @ %v", c.ServiceName, uuid)
 
 	// Service handle
 	svc := &Service{
@@ -41,10 +47,10 @@ func NewService(c Config) *Service {
 	}
 
 	// Messaging bus
-	messageBus, err := nats.Connect(svc.Config.MessageBusURL)
+	messageBus, err := messagebus.Connect(svc.Config.MessageBusURL)
 	svc.messageBus = messageBus
 	if err != nil {
-		log.Fatal("error: Cannot connect to message bus @ ", svc.Config.MessageBusURL)
+		log.WithField("MessageBusURL", svc.Config.MessageBusURL).Fatal("error: Cannot connect to message bus")
 	}
 
 	//Heartbeating
@@ -74,7 +80,7 @@ func NewService(c Config) *Service {
 			case <-shutdownChannel:
 				hbTicker.Stop()
 
-				//Publish Stop heartbeat
+			//Publish Stop heartbeat
 				if svc.Status != proto.ERROR {
 					svc.Status = proto.STOPPED
 				}
@@ -86,7 +92,7 @@ func NewService(c Config) *Service {
 
 				messageBus.Close()
 
-				log.Println("Server Terminated")
+				log.Info("Server Terminated")
 				return
 			}
 		}
@@ -115,7 +121,7 @@ func (self *Service) Start() chan bool {
 		self.messageBus.Publish("service.Heartbeat."+self.Config.ServiceName, data)
 	}
 
-	log.Println("Service [", self.Config.ServiceName, "] Started")
+	log.Infof("Service [%v] Started", self.Config.ServiceName)
 	return shutdownCallerChannel
 }
 

@@ -1,15 +1,15 @@
 package service
 
 import (
-	proto "github.com/cyanly/gotrade/proto/service"
-	gnatsd "github.com/nats-io/gnatsd/test"
 	"testing"
 	"time"
+
+	"github.com/cyanly/gotrade/core/messagebus/test"
+	proto "treotradegit/treotrade-go/proto/service"
 )
 
 func TestServiceStartAndStop(t *testing.T) {
-	gnatsd.DefaultTestOptions.Port = 22222
-	ts := gnatsd.RunDefaultServer()
+	ts := test.RunDefaultServer()
 	defer ts.Shutdown()
 
 	sc := NewConfig()
