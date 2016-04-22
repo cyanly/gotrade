@@ -1,31 +1,22 @@
 package simulator
 
 import (
-	logger "github.com/apex/log"
-	"github.com/apex/log/handlers/cli"
-	order "github.com/cyanly/gotrade/core/order"
+	messagebus "github.com/nats-io/nats"
+	"github.com/cyanly/gotrade/core/messagebus/test"
+	_ "github.com/cyanly/gotrade/database/memstore"
 	proto "github.com/cyanly/gotrade/proto/order"
+	"github.com/cyanly/gotrade/services/marketconnectors/common"
 	"github.com/cyanly/gotrade/services/marketconnectors/sellsidesim"
 	testOrder "github.com/cyanly/gotrade/test/order"
-	gnatsd "github.com/nats-io/gnatsd/test"
-	"github.com/nats-io/nats"
 
-	"database/sql"
-	"database/sql/driver"
-	"github.com/erikstmartin/go-testdb"
-	"log"
 	"os"
-	"strings"
 	"testing"
 	"time"
 )
 
 func TestMain(m *testing.M) {
-	logger.SetHandler(cli.Default)
-
 	//mock message bus
-	gnatsd.DefaultTestOptions.Port = 22222
-	ts := gnatsd.RunDefaultServer()
+	ts := test.RunDefaultServer()
 	defer ts.Shutdown()
 
 	//simulate a sell side FIX server
@@ -33,41 +24,15 @@ func TestMain(m *testing.M) {
 	sellsvc.Start()
 	defer sellsvc.Close()
 
-	//mock db
-	db, _ := sql.Open("testdb", "")
-	order.DB = db
-	testdb.SetQueryWithArgsFunc(func(query string, args []driver.Value) (result driver.Rows, err error) {
-		columns := []string{"id", "name", "age", "created"}
-		rows := "unknown"
-
-		if strings.Contains(query, "INSERT INTO execution") {
-			columns = []string{"execution_id"}
-			rows = "111"
-		}
-
-		if strings.Contains(query, "SELECT order_id FROM orders") {
-			columns = []string{"order_id"}
-			rows = "123"
-		}
-
-		if rows == "unknown" {
-			log.Println(query)
-		}
-
-		//if args[0] == "joe" {
-		//	rows = "2,joe,25,2012-10-02 02:00:02"
-		//}
-		return testdb.RowsFromCSVString(columns, rows), nil
-	})
-
 	code := m.Run()
 	os.Exit(code)
 }
 
 func TestNewMarketConnectorStartAndStop(t *testing.T) {
 	//config
-	sc := NewConfig()
+	sc := common.NewConfig()
 	sc.MessageBusURL = "nats://localhost:22222"
+	sc.DatabaseDriver = "memstore"
 
 	//start MC
 	svc := NewMarketConnector(sc)
@@ -82,8 +47,9 @@ func TestNewMarketConnectorStartAndStop(t *testing.T) {
 
 func TestNewMarketConnectorNewOrderRequest(t *testing.T) {
 	//config
-	sc := NewConfig()
+	sc := common.NewConfig()
 	sc.MessageBusURL = "nats://localhost:22222"
+	sc.DatabaseDriver = "memstore"
 
 	//start MC
 	svc := NewMarketConnector(sc)
@@ -97,22 +63,21 @@ func TestNewMarketConnectorNewOrderRequest(t *testing.T) {
 	}
 	request.Order.OrderStatus = proto.OrderStatus_ORDER_RECEIVED
 	request.Order.SubmitDatetime = time.Now().UTC().Format(time.RFC3339Nano)
-	request.Order.Instruction = proto.Order_NEW
-	request.Order.OrderId = int32(123)
+	request.Order.MessageType = proto.Order_NEW
 	request.Order.OrderKey = int32(321)
-	request.Order.Version = int32(1)
+	svc.app.OrderStore.OrderCreate(request.Order)
 
 	// subscribe to check if we can receive a fill execution report from sim broker
 	recvExecutionReport := false
-	svc.msgbus.Subscribe("order.Execution", func(m *nats.Msg) {
+	svc.app.MessageBus.Subscribe("order.Execution", func(m *messagebus.Msg) {
 		recvExecutionReport = true
 		exec := new(proto.Execution)
 		if err := exec.Unmarshal(m.Data); err == nil {
 			if exec.ClientOrderId != "321.1" {
 				t.Fatalf("unexpected execution report ClOrdId %v, expecting 321.1", exec.ClientOrderId)
 			}
-			if exec.OrderId != 123 {
-				t.Fatalf("unexpected execution report OrderId %v, expecting 123", exec.OrderId)
+			if exec.OrderId != 1 {
+				t.Fatalf("unexpected execution report OrderId %v, expecting 1", exec.OrderId)
 			}
 		} else {
 			t.Fatalf("unexpected execution report: %v", err)
@@ -121,7 +86,7 @@ func TestNewMarketConnectorNewOrderRequest(t *testing.T) {
 
 	// send above mock NewOrderRequest
 	data, _ := request.Marshal()
-	svc.msgbus.Publish("order.NewOrderRequest.MC."+MarketConnectorName, data)
+	svc.app.MessageBus.Publish("order.NewOrderRequest.MC."+MarketConnectorName, data)
 
 	time.Sleep(100 * time.Millisecond)
 

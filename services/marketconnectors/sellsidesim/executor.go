@@ -1,15 +1,15 @@
 package sellsidesim
 
 import (
+	"strconv"
+
 	"github.com/quickfixgo/quickfix"
 	"github.com/quickfixgo/quickfix/enum"
-
 	fix44er "github.com/quickfixgo/quickfix/fix44/executionreport"
 	fix44nos "github.com/quickfixgo/quickfix/fix44/newordersingle"
 
-	logger "github.com/apex/log"
-	"strconv"
-	"github.com/quickfixgo/quickfix/fix44/orderqtydata"
+	"github.com/quickfixgo/quickfix/tag"
+	log "github.com/cyanly/gotrade/core/logger"
 )
 
 type Executor struct {
@@ -52,45 +52,35 @@ func (e Executor) FromAdmin(msg quickfix.Message, sessionID quickfix.SessionID) 
 
 //Use Message Cracker on Incoming Application Messages
 func (e *Executor) FromApp(msg quickfix.Message, sessionID quickfix.SessionID) (reject quickfix.MessageRejectError) {
+	log.Infof("FIX->SIM: FIX44NewOrderSingle \n%v", msg.String())
 	return e.Route(msg, sessionID)
 }
 
 func stringPtr(s string) *string { return &s }
 
 func (e *Executor) OnFIX44NewOrderSingle(msg fix44nos.Message, sessionID quickfix.SessionID) (err quickfix.MessageRejectError) {
-	logger.Infof("FIX->SIM: FIX44NewOrderSingle \n%v", msg)
-
-	symbol := msg.Symbol
-	side := msg.Side
-	orderQty := msg.OrderQty
-	ordType := msg.OrdType
-
-	if ordType != enum.OrdType_LIMIT {
-		err = quickfix.ValueIsIncorrect(quickfix.Tag(40))
+	if msg.OrdType != enum.OrdType_LIMIT {
+		err = quickfix.ValueIsIncorrect(tag.OrdType)
 		return
 	}
-	price := msg.Price
-	clOrdID := msg.ClOrdID
 
 	execReport := fix44er.Message{
-		ClOrdID: stringPtr(e.genOrderID()),
-		ExecID: e.genExecID(),
-		ExecType: enum.ExecType_FILL,
-		OrdStatus: enum.OrdStatus_FILLED,
-		Side: side,
-		LeavesQty: 0,
-		CumQty: *orderQty,
-		AvgPx: *price,
+		ClOrdID:      &msg.ClOrdID,
+		Account:      msg.Account,
+		OrderID:      e.genOrderID(),
+		ExecID:       e.genExecID(),
+		ExecType:     enum.ExecType_FILL,
+		OrdStatus:    enum.OrdStatus_FILLED,
+		Side:         msg.Side,
+		Instrument:   msg.Instrument,
+		OrderQtyData: &msg.OrderQtyData,
+		LeavesQty:    0,
+		LastQty:      msg.OrderQtyData.OrderQty,
+		CumQty:       *msg.OrderQtyData.OrderQty,
+		AvgPx:        *msg.Price,
+		LastPx:       msg.Price,
+		LastMkt:      stringPtr("SIM"),
 	}
-
-	execReport.ClOrdID = &clOrdID
-	execReport.Instrument.Symbol = symbol
-	execReport.OrderQtyData = orderqtydata.New()
-	execReport.OrderQtyData.OrderQty = orderQty
-	execReport.LastQty = orderQty
-	execReport.LastPx = price
-	execReport.LastMkt = stringPtr("SIM")
-	execReport.Account = msg.Account
 
 	quickfix.SendToTarget(execReport, sessionID)
 

@@ -1,25 +1,20 @@
 package benchmark
 
 import (
-	logger "github.com/apex/log"
-	"github.com/apex/log/handlers/discard"
-	order "github.com/cyanly/gotrade/core/order"
+	"github.com/nats-io/nats"
+	logger "github.com/cyanly/gotrade/core/logger"
+	"github.com/cyanly/gotrade/core/messagebus/test"
 	"github.com/cyanly/gotrade/core/service"
+	_ "github.com/cyanly/gotrade/database/memstore"
 	proto "github.com/cyanly/gotrade/proto/order"
+	MCCommon "github.com/cyanly/gotrade/services/marketconnectors/common"
 	"github.com/cyanly/gotrade/services/marketconnectors/sellsidesim"
 	MCSimulator "github.com/cyanly/gotrade/services/marketconnectors/simulator"
 	"github.com/cyanly/gotrade/services/orderrouter"
 	testOrder "github.com/cyanly/gotrade/test/order"
-	gnatsd "github.com/nats-io/gnatsd/test"
-	"github.com/nats-io/nats"
 
-	"database/sql"
-	"database/sql/driver"
-	"fmt"
-	"github.com/erikstmartin/go-testdb"
 	"log"
 	"os"
-	"strings"
 	"testing"
 	"time"
 )
@@ -29,21 +24,15 @@ var (
 )
 
 func TestMain(m *testing.M) {
-
 	// Start a temporary messaging broker
-	gnatsd.DefaultTestOptions.Port = 22222
-	ts := gnatsd.RunDefaultServer()
+	ts := test.RunDefaultServer()
 	defer ts.Shutdown()
-
-	// Start a test DB
-	db, _ := sql.Open("testdb", "")
-	order.DB = db
-	mockDB()
 
 	// Start OrderRouter service
 	orSC := orderrouter.NewConfig()
 	orSC.MessageBusURL = "nats://localhost:22222"
 	orSC.ServiceMessageBusURL = "nats://localhost:22222"
+	orSC.DatabaseDriver = "memstore"
 	orSvc := orderrouter.NewOrderRouter(orSC)
 	orSvc.Start()
 	defer orSvc.Close()
@@ -54,11 +43,14 @@ func TestMain(m *testing.M) {
 	defer sellsvc.Close()
 
 	// Start a MarketConnector Service for simuilated market
-	mcSC := MCSimulator.NewConfig()
+	// 1. MC (implementation)
+	mcSC := MCCommon.NewConfig()
 	mcSC.MessageBusURL = "nats://localhost:22222"
+	mcSC.DatabaseDriver = "memstore"
 	mcSvc := MCSimulator.NewMarketConnector(mcSC)
 	mcSvc.Start()
 	defer mcSvc.Close()
+	// 2. Service (heartbeating etc)
 	sc := service.NewConfig()
 	sc.MessageBusURL = "nats://localhost:22222"
 	sc.ServiceName = "MC." + mcSvc.Name()
@@ -67,7 +59,7 @@ func TestMain(m *testing.M) {
 	defer svc.Stop()
 
 	// Turn off logging to measure performance
-	logger.SetHandler(discard.Default)
+	logger.Discard()
 
 	time.Sleep(100 * time.Millisecond) // async
 
@@ -119,65 +111,4 @@ func BenchmarkTradeflow(b *testing.B) {
 			}
 		}
 	}
-
-}
-
-// Simulate Database behaviours
-func mockDB() {
-
-	orderKey := int(0)
-	testdb.SetQueryWithArgsFunc(func(query string, args []driver.Value) (result driver.Rows, err error) {
-		columns := []string{"id", "name", "age", "created"}
-		rows := "unknown"
-
-		// Orders
-		if strings.Contains(query, "INSERT INTO orders") {
-			columns = []string{"order_id"}
-			rows = "123"
-		}
-
-		if strings.Contains(query, "INSERT INTO execution") {
-			columns = []string{"execution_id"}
-			rows = "111"
-		}
-
-		if strings.Contains(query, "SELECT nextval('orderkeysequence')::INT") {
-			columns = []string{"orderkeysequence"}
-			orderKey++
-			rows = fmt.Sprint(orderKey)
-		}
-
-		// Executions
-		if strings.Contains(query, "INSERT INTO execution") {
-			columns = []string{"execution_id"}
-			rows = "111"
-		}
-
-		if strings.Contains(query, "SELECT order_id FROM orders") {
-			columns = []string{"order_id"}
-			rows = "123"
-		}
-
-		if rows == "unknown" {
-			log.Println(query)
-		}
-
-		return testdb.RowsFromCSVString(columns, rows), nil
-	})
-	testdb.SetExecWithArgsFunc(func(query string, args []driver.Value) (result driver.Result, err error) {
-		return testResult{1, 1}, nil
-	})
-}
-
-type testResult struct {
-	lastId       int64
-	affectedRows int64
-}
-
-func (r testResult) LastInsertId() (int64, error) {
-	return r.lastId, nil
-}
-
-func (r testResult) RowsAffected() (int64, error) {
-	return r.affectedRows, nil
 }

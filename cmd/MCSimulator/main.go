@@ -3,6 +3,8 @@ package main
 
 import (
 	"github.com/cyanly/gotrade/core/service"
+	_ "github.com/cyanly/gotrade/database/memstore"
+	"github.com/cyanly/gotrade/services/marketconnectors/common"
 	"github.com/cyanly/gotrade/services/marketconnectors/simulator"
 )
 
@@ -15,11 +17,12 @@ func main() {
 	sc.ServiceName = "Simulator"
 	svc := service.NewService(sc)
 
-	// Initialise Database Connection
-
 	// Initialise Component
-	orc := simulator.NewConfig()
+	orc := common.NewConfig()
 	orc.MessageBusURL = sc.MessageBusURL
+
+	// Initialise Database Connection
+	orc.DatabaseDriver = "memstore"
 
 	orsvc := simulator.NewMarketConnector(orc)
 	orsvc.Start()

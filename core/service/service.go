@@ -23,16 +23,6 @@ type Service struct {
 	publishAddress  string
 }
 
-type Service struct {
-	Config Config
-	Status proto.Heartbeat_Status
-
-	shutdownChannel chan bool
-	messageBus      *messagebus.Conn
-	lastHBMsg       *proto.Heartbeat
-	publishAddress  string
-}
-
 func NewService(c Config) *Service {
 
 	// Hardware Info

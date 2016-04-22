@@ -5,7 +5,7 @@ import (
 	"time"
 
 	"github.com/cyanly/gotrade/core/messagebus/test"
-	proto "treotradegit/treotrade-go/proto/service"
+	proto "github.com/cyanly/gotrade/proto/service"
 )
 
 func TestServiceStartAndStop(t *testing.T) {
