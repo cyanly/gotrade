@@ -11,10 +11,10 @@ import (
 
 	messagebus "github.com/nats-io/nats"
 	"github.com/quickfixgo/quickfix"
-	fix44er "github.com/quickfixgo/quickfix/fix44/executionreport"
-	fix44nos "github.com/quickfixgo/quickfix/fix44/newordersingle"
-	fix44ocj "github.com/quickfixgo/quickfix/fix44/ordercancelreject"
-	"github.com/quickfixgo/quickfix/tag"
+	fix44er "github.com/quickfixgo/fix44/executionreport"
+	fix44nos "github.com/quickfixgo/fix44/newordersingle"
+	fix44ocj "github.com/quickfixgo/fix44/ordercancelreject"
+	"github.com/quickfixgo/tag"
 
 	"strings"
 	log "github.com/cyanly/gotrade/core/logger"

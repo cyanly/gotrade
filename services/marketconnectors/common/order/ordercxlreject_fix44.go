@@ -2,7 +2,7 @@ package order
 
 import (
 	"github.com/quickfixgo/quickfix"
-	fix44ocj "github.com/quickfixgo/quickfix/fix44/ordercancelreject"
+	fix44ocj "github.com/quickfixgo/fix44/ordercancelreject"
 )
 
 func (app FIXClient) onFIX44OrderCancelReject(msg fix44ocj.Message, sessionID quickfix.SessionID) quickfix.MessageRejectError {

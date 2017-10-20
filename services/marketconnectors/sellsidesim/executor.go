@@ -4,11 +4,11 @@ import (
 	"strconv"
 
 	"github.com/quickfixgo/quickfix"
-	"github.com/quickfixgo/quickfix/enum"
-	fix44er "github.com/quickfixgo/quickfix/fix44/executionreport"
-	fix44nos "github.com/quickfixgo/quickfix/fix44/newordersingle"
+	"github.com/quickfixgo/enum"
+	fix44er "github.com/quickfixgo/fix44/executionreport"
+	fix44nos "github.com/quickfixgo/fix44/newordersingle"
 
-	"github.com/quickfixgo/quickfix/tag"
+	"github.com/quickfixgo/tag"
 	log "github.com/cyanly/gotrade/core/logger"
 )
 
