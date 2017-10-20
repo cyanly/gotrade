@@ -4,7 +4,7 @@ import (
 	"time"
 
 	"github.com/quickfixgo/quickfix"
-	fix44er "github.com/quickfixgo/quickfix/fix44/executionreport"
+	fix44er "github.com/quickfixgo/fix44/executionreport"
 
 	proto "github.com/cyanly/gotrade/proto/order"
 	util "github.com/cyanly/gotrade/services/marketconnectors"
