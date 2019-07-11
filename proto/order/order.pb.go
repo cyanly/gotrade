@@ -5083,7 +5083,7 @@ func (this *Order) GoString() string {
 		return "nil"
 	}
 	s := strings.Join([]string{`&order.Order{` +
-	`ClientGuid:` + fmt.Sprintf("%#v", this.ClientGuid),
+		`ClientGuid:` + fmt.Sprintf("%#v", this.ClientGuid),
 		`OrderId:` + fmt.Sprintf("%#v", this.OrderId),
 		`OrderKey:` + fmt.Sprintf("%#v", this.OrderKey),
 		`Version:` + fmt.Sprintf("%#v", this.Version),
@@ -5128,7 +5128,7 @@ func (this *Execution) GoString() string {
 		return "nil"
 	}
 	s := strings.Join([]string{`&order.Execution{` +
-	`ExecutionId:` + fmt.Sprintf("%#v", this.ExecutionId),
+		`ExecutionId:` + fmt.Sprintf("%#v", this.ExecutionId),
 		`OrderId:` + fmt.Sprintf("%#v", this.OrderId),
 		`OrderKey:` + fmt.Sprintf("%#v", this.OrderKey),
 		`ClientOrderId:` + fmt.Sprintf("%#v", this.ClientOrderId),
@@ -5158,7 +5158,7 @@ func (this *Allocation) GoString() string {
 		return "nil"
 	}
 	s := strings.Join([]string{`&order.Allocation{` +
-	`AllocationId:` + fmt.Sprintf("%#v", this.AllocationId),
+		`AllocationId:` + fmt.Sprintf("%#v", this.AllocationId),
 		`OrderKey:` + fmt.Sprintf("%#v", this.OrderKey),
 		`StrategyId:` + fmt.Sprintf("%#v", this.StrategyId),
 		`Quantity:` + fmt.Sprintf("%#v", this.Quantity),
@@ -5171,7 +5171,7 @@ func (this *NewOrderRequest) GoString() string {
 		return "nil"
 	}
 	s := strings.Join([]string{`&order.NewOrderRequest{` +
-	`Order:` + fmt.Sprintf("%#v", this.Order),
+		`Order:` + fmt.Sprintf("%#v", this.Order),
 		`XXX_unrecognized:` + fmt.Sprintf("%#v", this.XXX_unrecognized) + `}`}, ", ")
 	return s
 }
@@ -5180,7 +5180,7 @@ func (this *NewOrderResponse) GoString() string {
 		return "nil"
 	}
 	s := strings.Join([]string{`&order.NewOrderResponse{` +
-	`ErrorCode:` + fmt.Sprintf("%#v", this.ErrorCode),
+		`ErrorCode:` + fmt.Sprintf("%#v", this.ErrorCode),
 		`ErrorMessage:` + valueToGoStringOrder(this.ErrorMessage, "string"),
 		`Order:` + fmt.Sprintf("%#v", this.Order),
 		`XXX_unrecognized:` + fmt.Sprintf("%#v", this.XXX_unrecognized) + `}`}, ", ")
@@ -5191,7 +5191,7 @@ func (this *CancelOrderRequest) GoString() string {
 		return "nil"
 	}
 	s := strings.Join([]string{`&order.CancelOrderRequest{` +
-	`ClientGuid:` + fmt.Sprintf("%#v", this.ClientGuid),
+		`ClientGuid:` + fmt.Sprintf("%#v", this.ClientGuid),
 		`OrderId:` + fmt.Sprintf("%#v", this.OrderId),
 		`OrderKey:` + fmt.Sprintf("%#v", this.OrderKey),
 		`Version:` + fmt.Sprintf("%#v", this.Version),
@@ -5207,7 +5207,7 @@ func (this *CancelOrderResponse) GoString() string {
 		return "nil"
 	}
 	s := strings.Join([]string{`&order.CancelOrderResponse{` +
-	`ErrorCode:` + fmt.Sprintf("%#v", this.ErrorCode),
+		`ErrorCode:` + fmt.Sprintf("%#v", this.ErrorCode),
 		`ErrorMessage:` + valueToGoStringOrder(this.ErrorMessage, "string"),
 		`Order:` + fmt.Sprintf("%#v", this.Order),
 		`XXX_unrecognized:` + fmt.Sprintf("%#v", this.XXX_unrecognized) + `}`}, ", ")
@@ -5218,7 +5218,7 @@ func (this *ReplaceOrderRequest) GoString() string {
 		return "nil"
 	}
 	s := strings.Join([]string{`&order.ReplaceOrderRequest{` +
-	`Order:` + fmt.Sprintf("%#v", this.Order),
+		`Order:` + fmt.Sprintf("%#v", this.Order),
 		`Source:` + fmt.Sprintf("%#v", this.Source),
 		`Trader:` + fmt.Sprintf("%#v", this.Trader),
 		`TraderId:` + fmt.Sprintf("%#v", this.TraderId),
@@ -5231,7 +5231,7 @@ func (this *ReplaceOrderResponse) GoString() string {
 		return "nil"
 	}
 	s := strings.Join([]string{`&order.ReplaceOrderResponse{` +
-	`ErrorCode:` + fmt.Sprintf("%#v", this.ErrorCode),
+		`ErrorCode:` + fmt.Sprintf("%#v", this.ErrorCode),
 		`ErrorMessage:` + valueToGoStringOrder(this.ErrorMessage, "string"),
 		`Order:` + fmt.Sprintf("%#v", this.Order),
 		`XXX_unrecognized:` + fmt.Sprintf("%#v", this.XXX_unrecognized) + `}`}, ", ")

@@ -1,6 +1,6 @@
 package messagebus
 
-import "github.com/nats-io/nats"
+import "github.com/nats-io/nats.go"
 
 // Config represents the configuration.
 type Config struct {

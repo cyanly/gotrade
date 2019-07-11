@@ -1,13 +1,13 @@
 package simulator
 
 import (
-	messagebus "github.com/nats-io/nats"
 	"github.com/cyanly/gotrade/core/messagebus/test"
 	_ "github.com/cyanly/gotrade/database/memstore"
 	proto "github.com/cyanly/gotrade/proto/order"
 	"github.com/cyanly/gotrade/services/marketconnectors/common"
 	"github.com/cyanly/gotrade/services/marketconnectors/sellsidesim"
 	testOrder "github.com/cyanly/gotrade/test/order"
+	messagebus "github.com/nats-io/nats.go"
 
 	"os"
 	"testing"

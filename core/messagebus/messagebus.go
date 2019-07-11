@@ -1,7 +1,7 @@
 package messagebus
 
 import (
-	"github.com/nats-io/nats"
+	"github.com/nats-io/nats.go"
 )
 
 type Msg nats.Msg

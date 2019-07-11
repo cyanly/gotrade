@@ -3,8 +3,8 @@ package main
 
 import (
 	"github.com/cyanly/gotrade/core/service"
-	"github.com/cyanly/gotrade/services/orderrouter"
 	_ "github.com/cyanly/gotrade/database/memstore"
+	"github.com/cyanly/gotrade/services/orderrouter"
 )
 
 func main() {
