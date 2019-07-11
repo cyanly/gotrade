@@ -2,12 +2,12 @@
 package orderrouter
 
 import (
-	messagebus "github.com/nats-io/nats"
 	log "github.com/cyanly/gotrade/core/logger"
 	"github.com/cyanly/gotrade/core/order"
 	"github.com/cyanly/gotrade/database"
 	proto "github.com/cyanly/gotrade/proto/order"
 	"github.com/cyanly/gotrade/proto/service"
+	messagebus "github.com/nats-io/nats.go"
 
 	"fmt"
 	"strings"
@@ -239,7 +239,7 @@ func (self *OrderRouter) Start() {
 							// rule.1: working orders
 							if prev_order.MessageType == proto.Order_NEW {
 								if !(prev_order.OrderStatus == proto.OrderStatus_PARTIALLY_FILLED ||
-								prev_order.OrderStatus == proto.OrderStatus_NEW) {
+									prev_order.OrderStatus == proto.OrderStatus_NEW) {
 									requestError = fmt.Sprintf("Disallowed due to order status: %s", prev_order.OrderStatus)
 									return
 								}
@@ -254,8 +254,8 @@ func (self *OrderRouter) Start() {
 							// rule.2: pending replace acked by broker
 							if prev_order.MessageType == proto.Order_REPLACE {
 								if !(prev_order.OrderStatus == proto.OrderStatus_NEW ||
-								prev_order.OrderStatus == proto.OrderStatus_REPLACED ||
-								prev_order.OrderStatus == proto.OrderStatus_REJECTED) {
+									prev_order.OrderStatus == proto.OrderStatus_REPLACED ||
+									prev_order.OrderStatus == proto.OrderStatus_REJECTED) {
 									requestError = "Pending replace on order"
 									return
 								}

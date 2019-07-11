@@ -9,19 +9,19 @@ import (
 	"strconv"
 	"time"
 
-	messagebus "github.com/nats-io/nats"
+	messagebus "github.com/nats-io/nats.go"
 	"github.com/quickfixgo/quickfix"
 	fix44er "github.com/quickfixgo/quickfix/fix44/executionreport"
 	fix44nos "github.com/quickfixgo/quickfix/fix44/newordersingle"
 	fix44ocj "github.com/quickfixgo/quickfix/fix44/ordercancelreject"
 	"github.com/quickfixgo/quickfix/tag"
 
-	"strings"
 	log "github.com/cyanly/gotrade/core/logger"
 	"github.com/cyanly/gotrade/database"
 	proto "github.com/cyanly/gotrade/proto/order"
 	util "github.com/cyanly/gotrade/services/marketconnectors"
 	"github.com/cyanly/gotrade/services/marketconnectors/common"
+	"strings"
 )
 
 type FIXClient struct {

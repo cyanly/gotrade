@@ -10,7 +10,7 @@ import (
 
 	log "github.com/cyanly/gotrade/core/logger"
 	proto "github.com/cyanly/gotrade/proto/service"
-	messagebus "github.com/nats-io/nats"
+	messagebus "github.com/nats-io/nats.go"
 )
 
 type Service struct {
@@ -70,7 +70,7 @@ func NewService(c Config) *Service {
 			case <-shutdownChannel:
 				hbTicker.Stop()
 
-			//Publish Stop heartbeat
+				//Publish Stop heartbeat
 				if svc.Status != proto.ERROR {
 					svc.Status = proto.STOPPED
 				}

@@ -1,7 +1,6 @@
 package benchmark
 
 import (
-	"github.com/nats-io/nats"
 	logger "github.com/cyanly/gotrade/core/logger"
 	"github.com/cyanly/gotrade/core/messagebus/test"
 	"github.com/cyanly/gotrade/core/service"
@@ -12,6 +11,7 @@ import (
 	MCSimulator "github.com/cyanly/gotrade/services/marketconnectors/simulator"
 	"github.com/cyanly/gotrade/services/orderrouter"
 	testOrder "github.com/cyanly/gotrade/test/order"
+	"github.com/nats-io/nats.go"
 
 	"log"
 	"os"

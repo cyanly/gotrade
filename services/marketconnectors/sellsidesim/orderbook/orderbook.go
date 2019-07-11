@@ -8,7 +8,7 @@ import (
 	er "github.com/cyanly/gotrade/core/order/execution"
 	ems "github.com/cyanly/gotrade/proto/order"
 	marketdata "github.com/cyanly/gotrade/proto/pricing"
-	"github.com/nats-io/nats"
+	"github.com/nats-io/nats.go"
 
 	"fmt"
 	"log"

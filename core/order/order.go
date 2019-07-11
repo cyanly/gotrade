@@ -2,12 +2,11 @@
 package order
 
 import (
-
 	"errors"
 	"fmt"
 
-	messagebus "github.com/nats-io/nats"
 	proto "github.com/cyanly/gotrade/proto/order"
+	messagebus "github.com/nats-io/nats.go"
 )
 
 var (
